@@ -4,9 +4,9 @@ export default function Navbar() {
  
 
   return (
-    <nav cla>
+    <header className='flex justify-between items-center'>
       <img src="" alt="" />
       <h1>BOUNJOUR Mme NAIMA</h1>
-    </nav>
+    </header>
   )
 }
