@@ -3,10 +3,13 @@ function App() {
 
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-      </Routes>
+      <Route path="/secretary">
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="stagiaires" element={<StagiaireDashboard />} />
+        <Route path="stagiaires/ajouter" element={<AjouerStagiaire />} />
+        <Route path="controles" element={<Controles />} />
+        {/* ... other secretary routes */}
+      </Route>
     </>
   )
 }
