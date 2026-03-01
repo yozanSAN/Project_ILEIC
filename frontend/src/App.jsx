@@ -1,10 +1,13 @@
-import Login from "./pages/auth/Login-page";
+import PersonalDetail from "./pages/formateur/PersonalDetailFormateur"
+import Etatformateur from "./pages/formateur/EtatFormateur"
+import AbsencesPage from "./pages/formateur/AbsencesFormateur"
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center">
-      <Login />
+    <div className="min-h-screen bg-[#ECECEC]">
+      <AbsencesPage />;
     </div>
+   
   );
 }
 
