@@ -2,12 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body,
-#root {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+@layer base {
+  body {
+    /* 1. The Global Background from your config (#EFE6DE) */
+    @apply bg-background;
+
+    /* 2. The Global Font (Sans for readability) */
+    @apply font-sans text-text;
+
+    /* 3. The Mac Smoothing we discussed */
+    @apply antialiased;
+
+    /* 4. Ensure the background fills the screen */
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  /* Setting a global line-height so text isn't squished */
+  p, span, td {
+    line-height: 1.5;
+  }
 }

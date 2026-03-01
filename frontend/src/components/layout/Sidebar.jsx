@@ -1,6 +1,7 @@
 import { Settings, LogOut } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+
 export default function Sidebar({ items }) {
   const location = useLocation();
   const navigate = useNavigate();
