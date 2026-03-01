@@ -7,7 +7,7 @@ export default function Sidebar({ items }) {
   const navigate = useNavigate();
 
   return (
-    <div className="w-64 bg-sidebar h-screen text-white flex flex-col p-4 fixed left-0 top-0 z-50">
+    <div className="w-72 bg-sidebar h-screen text-white flex flex-col p-4 fixed left-0 top-0 z-50">
       
       {/* 1. Profile Section */}
       <div className="flex flex-col items-center py-8 border-b border-white/10 mb-6">
@@ -15,7 +15,7 @@ export default function Sidebar({ items }) {
           <img 
             src="/logo-ileic.svg" 
             className="w-full h-full object-cover" 
-            alt="User Avatar" 
+            alt="school avatar" 
           />
         </div>
         <h3 className="font-bold text-lg">ILEIC</h3>
@@ -39,7 +39,7 @@ export default function Sidebar({ items }) {
                 }`}
             >
               <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
-              <span className="text-sm tracking-wide">{item.label}</span>
+              <span className="text-sm ">{item.label}</span>
               
               {/* Optional: The small "cut-out" effect indicator */}
               {isActive && (
