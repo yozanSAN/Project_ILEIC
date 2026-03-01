@@ -13,15 +13,12 @@ export default function Sidebar({ items }) {
       <div className="flex flex-col items-center py-8 border-b border-white/10 mb-6">
         <div className="w-20 h-20 rounded-full border-2 border-white overflow-hidden mb-3 shadow-lg">
           <img 
-            src="/avatar.png" 
+            src="/logo-ileic.svg" 
             className="w-full h-full object-cover" 
             alt="User Avatar" 
           />
         </div>
-        <h3 className="font-bold text-lg">Mme. Naima</h3>
-        <p className="text-[10px] opacity-70 uppercase tracking-[3px] font-medium">
-          Administration
-        </p>
+        <h3 className="font-bold text-lg">ILEIC</h3>
       </div>
 
       {/* 2. Dynamic Navigation Links */}

@@ -1,17 +1,20 @@
 import React from 'react'
 
-export default function Navbar() {
+export default function Navbar({ user }) {
 
   return (
-    <header className='flex justify-between items-center'>
-      <div>
+    <header className='flex justify-between items-center bg-white ml-64 px-10 font-bold'>
+      <div className='flex justify-between items-center gap-4 '>
         <p>Dashboard</p>
-        <p>Gestion Stagiaire</p>
+        <p className='font-bold'>&gt;</p>
+        <p className='text-primary'>Gestion Stagiaire</p>
       </div>
-      <div>
-        <img src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="inline-block size-6 rounded-full ring-2 ring-gray-900 outline -outline-offset-1 outline-white/10" />
-        <p>Madame Naima</p>
-        <p>Secrétaire Principal</p>
+      <div className='p-2 flex justify-center items-center gap-4'>
+        <div className='flex flex-col justify-center items-center'>
+          <p>Mme.{user.name}</p>
+          <p className='text-muted'>{user.role}</p>
+        </div>
+        <img src="/default_pdp.SVG" alt="" class="inline-block size-10 rounded-full ring-2 ring-gray-900 outline -outline-offset-1 outline-white/10" />
       </div>
     </header>
   )
