@@ -1,10 +1,17 @@
+import { Routes, Route } from "react-router-dom";
+import StagiaireDashboard from "./pages/secretary/Stagiaires/StagiaireDashboard";
 // import Login from "./pages/auth/Login-page";
-import MainLayout from "./components/layout/MainLayout";
 
 function App() {
   return (
-    <div >
-      <MainLayout/>
+    <div>
+      <Routes>
+        {/* Default route
+        <Route path="/" element={<Login />} /> */}
+
+        {/* Dashboard routes */}
+        <Route path="/dashboard" element={<StagiaireDashboard />} />
+      </Routes>
     </div>
   );
 }
