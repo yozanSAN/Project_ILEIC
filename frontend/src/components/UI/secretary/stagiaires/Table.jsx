@@ -6,7 +6,7 @@ export default function Table() {
   const [hoveredRow, setHoveredRow] = useState(null)
 
   return (
-    <div className=" bg-background font-sans w-full">
+    <div className=" bg-background w-full">
       
       {/* Table Card */}
       <div

@@ -21,7 +21,7 @@ export default function MainLayout({ children }) {
           
           {/* 5. CONTENT LIMITER: Keeps your tables/forms from stretching too wide 
               mx-auto centers it. max-w-7xl keeps it readable on big screens. */}
-          <div className="max-w-7xl mx-auto w-full mr-10">
+          <div className="ml-60 max-w-fit">
             {children}
           </div>
           

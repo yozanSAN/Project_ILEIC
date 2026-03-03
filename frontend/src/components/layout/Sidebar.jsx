@@ -7,7 +7,7 @@ export default function Sidebar({ items }) {
   const navigate = useNavigate();
 
   return (
-    <div className="w-72 bg-sidebar h-screen text-white flex flex-col p-4 fixed left-0 top-0 z-50">
+    <div className="w-64 bg-sidebar min-h-screen text-white flex flex-col p-4 fixed left-0 top-0 z-50 ">
       
       {/* 1. Profile Section */}
       <div className="flex flex-col items-center py-8 border-b border-white/10 mb-6">

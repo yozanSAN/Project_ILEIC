@@ -1,9 +1,14 @@
 import React from 'react';
 import { UserRoundPlus, Search } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 
 export default function Filtering() {
+    const navigate = useNavigate();
+    const handleClick = () => {
+    navigate('/AjouterStagiaire');
+  };
     return (
-        <div className="flex justify-evenly items-center bg-surface rounded-xl gap-5 py-5 w-full ">
+        <div className="flex justify-evenly items-center bg-surface rounded-xl gap-5 py-5 px-4 w-full ">
             {/* Search Input with Icon */}
             <div className='flex flex-col'>
                 <label htmlFor="Filiere" className="block mb-2.5 text-sm font-medium ">
@@ -52,7 +57,8 @@ export default function Filtering() {
             </div>
 
             {/* Button with Icon */}
-            <button className="flex items-center gap-2 px-4 py-2 mt-5 bg-primary text-white rounded-xl hover:bg-primaryHover transition">
+            <button onClick={handleClick} className="flex items-center gap-2 px-4 py-2 mt-5 bg-primary text-white rounded-xl hover:bg-primaryHover transition">
+
                 <UserRoundPlus className="w-5 h-5" />
                 Ajouter Stagiaire
             </button>
