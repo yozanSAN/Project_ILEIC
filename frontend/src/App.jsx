@@ -1,16 +1,17 @@
 import { Routes, Route } from "react-router-dom";
-import StagiaireDashboard from "./pages/secretary/Stagiaires/StagiaireDashboard";
-// import Login from "./pages/auth/Login-page";
+import secretaryRoutes from "./routes/secretaryRoutes";
+import formateurRoutes from "./routes/formateurRoutes";
+import etudiantRoutes from "./routes/etudiantRoutes";
+
+const allRoutes = [...secretaryRoutes, ...formateurRoutes, ...etudiantRoutes];
 
 function App() {
   return (
     <div>
       <Routes>
-        {/* Default route
-        <Route path="/" element={<Login />} /> */}
-
-        {/* Dashboard routes */}
-        <Route path="/dashboard" element={<StagiaireDashboard />} />
+        {allRoutes.map(({ path, element }) => (
+          <Route key={path} path={path} element={element} />
+        ))}
       </Routes>
     </div>
   );
