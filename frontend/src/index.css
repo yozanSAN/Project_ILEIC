@@ -3,7 +3,10 @@
 @tailwind utilities;
 
 @layer base {
-  body {
+  html, body, #root  {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     /* 1. The Global Background from your config (#EFE6DE) */
     @apply bg-background;
 
@@ -12,14 +15,22 @@
 
     /* 3. The Mac Smoothing we discussed */
     @apply antialiased;
-    
+
     /* 4. Ensure the background fills the screen */
     min-height: 100vh;
     margin: 0;
   }
 
+  /*Global placeholder styling */
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-muted;
+  }
+
   /* Setting a global line-height so text isn't squished */
-  p, span, td {
+  p,
+  span,
+  td {
     line-height: 1.5;
   }
 }

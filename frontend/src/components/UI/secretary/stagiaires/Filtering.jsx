@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 export default function Filtering() {
     const navigate = useNavigate();
     const handleClick = () => {
-    navigate('/AjouterStagiaire');
+    navigate('/secretaire/stagiaire/ajouterStagiaire');
   };
     return (
-        <div className="flex justify-evenly items-center bg-surface rounded-xl gap-5 py-5 px-4 w-full ">
+        <div className="flex justify-around items-center bg-surface rounded-xl  py-5 px-4 w-full ">
             {/* Search Input with Icon */}
             <div className='flex flex-col'>
                 <label htmlFor="Filiere" className="block mb-2.5 text-sm font-medium ">

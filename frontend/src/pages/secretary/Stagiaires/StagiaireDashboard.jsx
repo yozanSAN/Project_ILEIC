@@ -5,12 +5,12 @@ import Filtering from '../../../components/UI/secretary/stagiaires/Filtering'
 
 export default function StagiaireDashboard() {
   return (
-    <div>
+    <div >
       <MainLayout>
-        <div className='flex flex-col gap-4 w-full px-6 py-6'>
+        <div className='flex flex-col gap-4 w-full mx-5 px-6 '>
           <div>
             <h1 className="text-2xl font-bold text-text">Gestion des Stagiaires</h1>
-            <p className="text-muted text-sm mt-1">Bienvenue sur la page de gestion des étudiants.</p>
+            <p className="text-muted text-sm ">Bienvenue sur la page de gestion des étudiants.</p>
           </div>
           <Filtering />
           <Table />
