@@ -1,7 +1,9 @@
 import { Routes, Route } from "react-router-dom";
-import secretaryRoutes from "./routes/secretaryRoutes";
-import formateurRoutes from "./routes/formateurRoutes";
+
+import secretaryRoutes from "./routes/SecretaryRoutes";
 import etudiantRoutes from "./routes/etudiantRoutes";
+import formateurRoutes from "./routes/formateurRoutes";
+
 
 const allRoutes = [...secretaryRoutes, ...formateurRoutes, ...etudiantRoutes];
 
