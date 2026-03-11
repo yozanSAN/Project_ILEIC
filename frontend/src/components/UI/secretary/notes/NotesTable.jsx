@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import stagiaires from '../../../../data/secretary/stagiaires'
 import { stagiaireStatus } from '../../../../utils/StagiaireStatus.js'
 import { calculateStudentYear } from '../../../../utils/CalculerAnnee.js'
 
-export default function NotesTable() {
+export default function NotesTable({ stagiaires }) {
     const [hoveredRow, setHoveredRow] = useState(null)
     return (
         <div className=" bg-background w-full">
