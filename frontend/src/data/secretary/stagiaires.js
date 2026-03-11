@@ -5,6 +5,7 @@ const stagiaires = [
     Filiere: "Développement Digital",
     CNE: "AJ30098",
     AnneeDincription: 2023,
+    Note:14.00
   },
   {
     id: 1112,
@@ -12,6 +13,7 @@ const stagiaires = [
     Filiere: "Réseaux Informatiques",
     CNE: "SR40122",
     AnneeDincription: 2022,
+    Note:14.00
   },
   {
     id: 1113,
@@ -19,6 +21,7 @@ const stagiaires = [
     Filiere: "Design Graphique",
     CNE: "YS50987",
     AnneeDincription: 2024,
+    Note:14.00
   },
   {
     id: 1114,
@@ -26,6 +29,7 @@ const stagiaires = [
     Filiere: "Marketing Digital",
     CNE: "FT67890",
     AnneeDincription: 2023,
+    Note:14.00
   },
   {
     id: 1115,
@@ -33,6 +37,7 @@ const stagiaires = [
     Filiere: "Développement Web",
     CNE: "MD11223",
     AnneeDincription: 2021,
+    Note:14.00
   },
   {
     id: 1116,
@@ -40,6 +45,7 @@ const stagiaires = [
     Filiere: "Comptabilité",
     CNE: "IM33445",
     AnneeDincription: 2022,
+    Note:8.00
   },
   {
     id: 1117,
@@ -47,6 +53,7 @@ const stagiaires = [
     Filiere: "Gestion des Entreprises",
     CNE: "KR55667",
     AnneeDincription: 2024,
+    Note:14.00
   },
   {
     id: 1118,
@@ -54,6 +61,7 @@ const stagiaires = [
     Filiere: "Intelligence Artificielle",
     CNE: "ND77889",
     AnneeDincription: 2023,
+    Note:14.00
   },
 ];
 export default stagiaires;
