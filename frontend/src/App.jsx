@@ -1,11 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 
-import secretaryRoutes from "./routes/SecretaryRoutes";
-// import etudiantRoutes from "./routes/etudiantRoutes";
-import formateurRoutes from "./routes/formateurRoutes";
+
+import formateurRoutes from "./routes/formateurRoutes"; 
+import etudaintsRoutes from "./routes/EtudiantRoutes";
+import secretaryRoutes from "./routes/secretaryRoutes";
 
 
-const allRoutes = [...secretaryRoutes, ...formateurRoutes];
+const allRoutes = [...secretaryRoutes, ...formateurRoutes ,...etudaintsRoutes];
 
 function App() {
   return (

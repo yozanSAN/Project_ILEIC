@@ -2,9 +2,9 @@
 import AbsencesFormateur from './../pages/formateur/AbsencesFormateur';
 import ControleFormateur from './../pages/formateur/ControleFormateur';
 
-const secretaryRoutes = [
+const formateurRoutes = [
     { path: "/dashboardff", element: <AbsencesFormateur /> },
     { path: "/AjouterStagiaireff", element: <ControleFormateur /> },
 ];
 
-export default secretaryRoutes;
+export default formateurRoutes;
