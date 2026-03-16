@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function InformaionsStagiaires() {
+export default function InformationsStagiaires() {
     return (
         <div className='bg-surface rounded-xl shadow-card px-5 py-4 '>
             <div className='my-5'>

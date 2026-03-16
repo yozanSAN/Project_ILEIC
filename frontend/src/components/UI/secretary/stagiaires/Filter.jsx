@@ -2,7 +2,7 @@ import React from 'react';
 import { UserRoundPlus, Search } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 
-export default function Filtering({ search, setSearch,
+export default function Filter({ search, setSearch,
     selectedFiliere, setSelectedFiliere,
     selectedAnnee, setSelectedAnnee, }) {
     const navigate = useNavigate();

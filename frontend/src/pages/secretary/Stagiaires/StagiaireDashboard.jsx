@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import MainLayout from '../../../components/layout/MainLayout'
 import Table from '../../../components/UI/secretary/stagiaires/Table'
-import Filtering from '../../../components/UI/secretary/stagiaires/Filtering'
+import Filtering from '../../../components/UI/secretary/stagiaires/Filter'
 import stagiaires from '../../../data/secretary/stagiaires'
 import { calculateStudentYear } from '../../../utils/CalculerAnnee'
 export default function StagiaireDashboard() {
