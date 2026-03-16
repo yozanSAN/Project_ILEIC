@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import MainLayout from '../../../components/layout/MainLayout'
 import Table from '../../../components/UI/secretary/stagiaires/Table'
-import Filtering from '../../../components/UI/secretary/stagiaires/Filter'
+import Filter from '../../../components/UI/secretary/stagiaires/Filter'
 import stagiaires from '../../../data/secretary/stagiaires'
 import { calculateStudentYear } from '../../../utils/CalculerAnnee'
 export default function StagiaireDashboard() {
@@ -24,9 +24,9 @@ export default function StagiaireDashboard() {
             <h1 className="text-2xl font-bold text-text">Gestion des Stagiaires</h1>
             <p className="text-muted text-sm ">Bienvenue sur la page de gestion des étudiants.</p>
           </div>
-          <Filtering search={search} setSearch={setSearch} selectedFiliere={selectedFiliere} setSelectedFiliere={setSelectedFiliere}
+          <Filter search={search} setSearch={setSearch} selectedFiliere={selectedFiliere} setSelectedFiliere={setSelectedFiliere}
             selectedAnnee={selectedAnnee} setSelectedAnnee={setSelectedAnnee}
-             />
+          />
 
           <Table stagiaires={filteredStagiaires} />
         </div>
