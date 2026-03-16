@@ -16,6 +16,7 @@ export default {
         text: "#1F2937",
         muted: "#6B7280",
         borderLight: "#E5E7EB",
+        borderPrimary: "#9A0002",
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
