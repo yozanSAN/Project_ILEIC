@@ -8,10 +8,10 @@ import {
 } from "lucide-react";
 
 export const secretaryItems = [
-  { label: "Stagiaires", path: "/secretary/stagiaires", icon: Users }, 
-  { label: "Contrôles", path: "/secretary/controles", icon: FileText },
-  { label: "Cours", path: "/secretary/cours", icon: BookOpen },
-  { label: "Inscription Documents", path: "/secretary/documents", icon: ClipboardList },
-  { label: "Notes", path: "/secretary/notes", icon: FileCheck },
-  { label: "Paiements", path: "/secretary/payments", icon: CreditCard },
+  { label: "Stagiaires", path: "/secretaire/stagiaire", icon: Users }, 
+  { label: "Contrôles", path: "/secretaire/controles", icon: FileText },
+  { label: "Cours", path: "/secretaire/cours", icon: BookOpen },
+  { label: "Inscription Documents", path: "/secretaire/documents", icon: ClipboardList },
+  { label: "Notes", path: "/secretaire/notes", icon: FileCheck },
+  { label: "Paiements", path: "/secretaire/payments", icon: CreditCard },
 ];
