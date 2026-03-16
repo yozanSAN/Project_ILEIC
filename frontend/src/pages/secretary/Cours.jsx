@@ -3,7 +3,6 @@ import MainLayout from "../../components/layout/MainLayout"
 import Filter from "../../components/UI/secretary/cours/Filter"
 import CoursTable from "../../components/UI/secretary/cours/CoursTable"
 import cours from "../../data/secretary/cours"
-import { calculateStudentYear } from "../../utils/CalculerAnnee"
 import { calculateSemestre } from "../../utils/calculateSemestre"
 
 export default function Cours() {

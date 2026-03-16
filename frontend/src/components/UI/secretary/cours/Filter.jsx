@@ -1,5 +1,4 @@
 import { Search } from "lucide-react"
-import { calculateStudentYear } from "../../../../utils/CalculerAnnee"
 import cours from "../../../../data/secretary/cours"
 
 export default function Filter({
@@ -9,7 +8,6 @@ export default function Filter({
   onReset
 }) {
   const filieres = [...new Set(cours.map(c => c.filiere))]
-  const annees = [...new Set(cours.map(c => calculateStudentYear(c.AnneeDincription)))]
 
   const selectClass = "w-full px-3 py-2 text-sm rounded-xl bg-background border border-borderLight text-text focus:outline-none focus:ring-2 focus:ring-primary/20 transition-colors"
   const labelClass = "block mb-2 text-xs font-bold text-muted uppercase tracking-wider"
