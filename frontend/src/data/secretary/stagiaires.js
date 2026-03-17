@@ -7,6 +7,7 @@ const stagiaires = [
     AnneeDincription: "2023-09-01",
     Note: 14.0,
     semestre: 1,
+    numInscription: "REG-2023-001",
   },
   {
     id: 1112,
@@ -16,6 +17,7 @@ const stagiaires = [
     AnneeDincription: "2022-09-01",
     Note: 14.0,
     semestre: 2,
+    numInscription: "REG-2022-002",
   },
   {
     id: 1113,
@@ -25,6 +27,7 @@ const stagiaires = [
     AnneeDincription: "2024-09-01",
     Note: 14.0,
     semestre: 1,
+    numInscription: "REG-2024-003",
   },
   {
     id: 1114,
@@ -34,6 +37,7 @@ const stagiaires = [
     AnneeDincription: "2023-09-01",
     Note: 14.0,
     semestre: 2,
+    numInscription: "REG-2023-004",
   },
   {
     id: 1115,
@@ -43,6 +47,7 @@ const stagiaires = [
     AnneeDincription: "2021-09-01",
     Note: 14.0,
     semestre: 1,
+    numInscription: "REG-2021-005",
   },
   {
     id: 1116,
@@ -52,6 +57,7 @@ const stagiaires = [
     AnneeDincription: "2022-09-01",
     Note: 8.0,
     semestre: 2,
+    numInscription: "REG-2022-006",
   },
   {
     id: 1117,
@@ -61,6 +67,7 @@ const stagiaires = [
     AnneeDincription: "2024-09-01",
     Note: 14.0,
     semestre: 1,
+    numInscription: "REG-2024-007",
   },
   {
     id: 1118,
@@ -70,7 +77,8 @@ const stagiaires = [
     AnneeDincription: "2023-09-01",
     Note: 14.0,
     semestre: 2,
+    numInscription: "REG-2023-008",
   },
 ];
 
-export default stagiaires;
+export default stagiaires
