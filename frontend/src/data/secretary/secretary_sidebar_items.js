@@ -13,5 +13,5 @@ export const secretaryItems = [
   { label: "Cours", path:  "/secretaire/cours", icon: BookOpen },
   { label: "Inscription Documents", path: "/secretaire/documents", icon: ClipboardList },
   { label: "Notes", path: "/secretaire/notes", icon: FileCheck },
-  { label: "Paiements", path: "/secretaire/payments", icon: CreditCard },
+  { label: "Paiements", path: "/secretaire/paiements", icon: CreditCard },
 ];
