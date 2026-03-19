@@ -4,7 +4,8 @@ import {
   BookOpen, 
   ClipboardList, 
   FileCheck, 
-  CreditCard 
+  CreditCard,
+  CalendarDays
 } from "lucide-react";
 
 export const secretaryItems = [
@@ -14,6 +15,7 @@ export const secretaryItems = [
   { label: "Notes", path: "/secretaire/notes", icon: FileCheck },
   { label: "Paiements", path: "/secretaire/paiements", icon: CreditCard },
   { label: "Inscription Documents", path: "/secretaire/documents", icon: ClipboardList },
+  { label: "Emplois Du Temps", path: "/secretaire/emploisDuTemps", icon: CalendarDays },
   
   
 ];
