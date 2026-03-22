@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import stagiaires from '../../../../data/secretary/stagiaires'
 import { calculateStudentYear } from '../../../../utils/CalculerAnnee'
 
-export default function Table() {
+export default function Table({stagiaires}) {
   const [hoveredRow, setHoveredRow] = useState(null)
 
   return (

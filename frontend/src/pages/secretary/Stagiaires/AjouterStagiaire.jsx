@@ -1,5 +1,5 @@
 import MainLayout from "../../../components/layout/MainLayout"
-import InformaionsStagiaires from "../../../components/UI/secretary/stagiaires/InformaionsStagiaires"
+import InformationsStagiaires from "../../../components/UI/secretary/stagiaires/InformationsStagiaires"
 export default function AjouterStagiaire() {
   return (
     <>
@@ -9,7 +9,7 @@ export default function AjouterStagiaire() {
             <h1 className="text-2xl font-bold text-text">Ajouter un Stagiaire</h1>
             <p className="text-muted text-sm mt-1">Enregistrez un noubeau stagiaire dons le center</p>
           </div>
-          <InformaionsStagiaires />
+          <InformationsStagiaires />
         </div>
       </MainLayout>
     </>

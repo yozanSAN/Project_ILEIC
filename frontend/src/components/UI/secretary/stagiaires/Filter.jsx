@@ -2,11 +2,13 @@ import React from 'react';
 import { UserRoundPlus, Search } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 
-export default function Filtering() {
+export default function Filter({ search, setSearch,
+    selectedFiliere, setSelectedFiliere,
+    selectedAnnee, setSelectedAnnee, }) {
     const navigate = useNavigate();
     const handleClick = () => {
-    navigate('/secretaire/stagiaire/ajouterStagiaire');
-  };
+        navigate('/secretaire/stagiaire/ajouterStagiaire');
+    };
     return (
         <div className="flex justify-around items-center bg-surface rounded-xl  py-5 px-4 w-full ">
             {/* Search Input with Icon */}
@@ -20,6 +22,8 @@ export default function Filtering() {
                     <input
                         type="text"
                         placeholder="recherche par nom"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
                         className="w-full bg-transparent placeholder:text-text text-sm focus:outline-none"
                     />
                 </div>
@@ -33,11 +37,19 @@ export default function Filtering() {
                 </label>
                 <select
                     id="Filiere"
+                    value={selectedFiliere}
+                    onChange={e => setSelectedFiliere(e.target.value)}
                     className="block w-full px-3 py-2 bg-neutral-secondary-medium border border-default-medium text-sm rounded-xl focus:ring-brand focus:border-brand placeholder:text-body"
                 >
-                    <option value="dev">Development Digital</option>
-                    <option value="ig">Gestion</option>
-                    <option value="reseaux">Réseaux</option>
+                    <option value="">Tout les Filiere</option>
+                    <option value="Développement Digital">Développement Digital</option>
+                    <option value="Réseaux Informatiques">Réseaux Informatiques</option>
+                    <option value="Design Graphique">Design Graphique</option>
+                    <option value="Marketing Digital">Marketing Digital</option>
+                    <option value="Développement Web">Développement Web</option>
+                    <option value="Comptabilité">Comptabilité</option>
+                    <option value="Gestion des Entreprises">Gestion des Entreprises</option>
+                    <option value="Intelligence Artificielle">Intelligence Artificielle</option>
                 </select>
             </div>
 
@@ -47,12 +59,17 @@ export default function Filtering() {
                     Année (Tous)
                 </label>
                 <select
+                    value={selectedAnnee}
+                    onChange={e => setSelectedAnnee(e.target.value)}
                     id="annee"
                     className="block w-full px-3 py-2  bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-xl focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
                 >
-                    <option value="1ere">1ère année</option>
-                    <option value="2eme">2ème année</option>
-                    <option value="3eme">3ème année</option>
+                    <option value="">Toutes les années</option>
+                    <option value="1ère année">1ère année</option>
+                    <option value="2ème année">2ème année</option>
+                    <option value="3ème année">3ème année</option>
+                    <option value="4ème année">4ème année</option>
+                    <option value="5ème année">5ème année</option>
                 </select>
             </div>
 

@@ -1,7 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-
-
-
 import formateurRoutes from "./routes/FormateurRoutes"; 
 import etudaintsRoutes from "./routes/EtudiantRoutes";
 import secretaryRoutes from "./routes/secretaryRoutes";
