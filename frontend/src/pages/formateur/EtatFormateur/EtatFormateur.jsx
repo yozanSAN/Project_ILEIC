@@ -51,18 +51,18 @@ export default function EtatFormateur() {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-[#ECECEC] overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-bachground ">
       {/* HEADER - fixed height */}
-      <div className="shrink-0 bg-white border-b px-6 py-4 flex items-center gap-3">
+      <div className="shrink-0 bg-bachground border-b px-6 py-4 flex items-center gap-3">
         <ArrowLeft className="cursor-pointer text-gray-700" size={24} />
         <h1 className="font-semibold text-gray-700">Etat</h1>
       </div>
 
       {/* MAIN CONTENT AREA - takes remaining height, allows internal scroll */}
-      <div className="flex-1 overflow-hidden px-6 py-6">
+      <div className="flex-1  px-6 py-6">
         <div className="h-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 overflow-hidden">
           {/* LEFT COLUMN - scrolls with parent if needed */}
-          <div className="lg:col-span-2 space-y-6 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+          <div className="lg:col-span-2 space-y-6 pr-2">
             {/* INFORMATIONS */}
             <div className="bg-white rounded-xl p-6 shadow-sm">
               <div className="flex items-center gap-3 mb-6">
@@ -191,7 +191,7 @@ export default function EtatFormateur() {
           </div>
 
           {/* RIGHT COLUMN - independent scroll */}
-          <div className="space-y-6 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+          <div className="space-y-6  pr-2">
             {/* VOLUMES UF */}
             <div className="bg-white rounded-xl p-6 shadow-sm">
               <h3 className="font-semibold text-sm mb-4 text-gray-700">
@@ -289,29 +289,38 @@ export default function EtatFormateur() {
       </div>
 
       {/* FIXED BOTTOM BAR */}
-      <div className="shrink-0 bg-white border-t px-6 py-4 flex flex-wrap gap-4 justify-between items-center shadow-lg">
+      <div className="mt-auto backdrop-blur-md bg-white/70 border-t px-6 py-4 flex flex-wrap gap-4 justify-between items-center shadow-lg rounded-[20px]">
+
+      {/* VALIDATE BUTTON */}
+      <button
+        onClick={handleValider}
+        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-[20px] flex items-center gap-2 transition"
+      >
+        <CheckCircle2 size={18} />
+        Valider
+      </button>
+
+      <div className="flex gap-3 flex-wrap">
+
+        {/* CLEAR BUTTON */}
         <button
-          onClick={handleValider}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition"
+          onClick={handleVider}
+          className="px-5 py-3 bg-white/60 border border-gray-300 hover:bg-gray-100 rounded-[20px] transition"
         >
-          <CheckCircle2 size={18} />
-          Valider
+          Vider
         </button>
 
-        <div className="flex gap-3 flex-wrap">
-          <button
-            onClick={handleVider}
-            className="px-5 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg transition"
-          >
-            Vider
-          </button>
-          <button className="px-5 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition">
-            Mes États
-          </button>
-          <button className="px-5 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition">
-            Fermer
-          </button>
-        </div>
+        {/* MY STATES BUTTON */}
+        <button className="px-5 py-3 bg-white/60 border border-gray-300 hover:bg-gray-100 rounded-[20px] transition">
+          Mes États
+        </button>
+
+        {/* CLOSE BUTTON */}
+        <button className="px-5 py-3 bg-red-500/90 hover:bg-red-600 text-white rounded-[20px] transition">
+          Fermer
+        </button>
+
+      </div>
       </div>
 
       {/* Success feedback */}

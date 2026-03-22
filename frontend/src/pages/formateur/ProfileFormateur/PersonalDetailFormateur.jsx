@@ -1,7 +1,8 @@
 import React from "react";
-import { Pencil } from "lucide-react";
+import { Pencil,ArrowLeft } from "lucide-react";
+
 import { formateurData } from "./formateurData";
-import MainLayout from '../../../components/layout/MainLayout'
+// import MainLayout from '../../../components/layout/MainLayout'  ← removed as discussed
 
 export default function PersonalDetailFormateur() {
   const {
@@ -16,17 +17,21 @@ export default function PersonalDetailFormateur() {
   } = formateurData;
 
   return (
-    <MainLayout>
-    <div className="flex-1 bg-gray-200 p-6 min-h-screen">
-      {/* Header */}
-      <div className="flex items-center gap-2 text-gray-700 mb-6">
-        <span className="text-xl cursor-pointer">←</span>
-        <h2 className="font-semibold">Personnel Detail</h2>
-      </div>
+    // ================================================
+    // BACKGROUND OF THE PAGE – gray background applied here
+    <div className="flex-1 bg-background p-6 min-h-screen">
+      {/* ================================================ */}
 
-      {/* Profile Card */}
-      <div className="bg-gray-300 rounded-xl max-w-3xl mx-auto shadow-lg">
-        <div className="max-h-[75vh] overflow-y-auto p-8">
+      {/* HEADER - fixed height */}
+      <div className="shrink-0 bg-bachground border-b px-6 py-4 flex items-center gap-3">
+        <ArrowLeft className="cursor-pointer text-gray-700" size={24} />
+        <h1 className="font-semibold text-gray-700">Personnel Detail</h1>
+      </div>
+      
+
+      {/* Profile Card – simple version, NO internal scroll */}
+      <div className="bg-white rounded-xl max-w-3xl mx-auto shadow-lg">
+        <div className="p-8">
 
           {/* Avatar */}
           <div className="flex justify-center mb-6">
@@ -62,16 +67,19 @@ export default function PersonalDetailFormateur() {
           </div>
 
           {/* Button */}
-          <div className="mt-10 flex justify-center pb-4">
+          <div className="mt-10 flex justify-center">
             <button className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-10 py-3 rounded-lg shadow-md font-medium transition">
               <Pencil size={18} />
               Modifier le Profil
             </button>
           </div>
+
         </div>
       </div>
+
+    {/* End of background container */}
     </div>
-    </MainLayout>
+    // ================================================
   );
 }
 
@@ -89,6 +97,5 @@ function Input({ label, value }) {
         className="w-full px-4 py-3 rounded-lg bg-white border border-gray-300 text-gray-800 outline-none disabled:opacity-70"
       />
     </div>
-   
   );
 }

@@ -1,6 +1,5 @@
 import { Settings, LogOut } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
-
+import { useLocation, useNavigate, NavLink } from "react-router-dom"; // ← prefer NavLink
 
 export default function Sidebar({ items }) {
   const location = useLocation();
@@ -21,31 +20,35 @@ export default function Sidebar({ items }) {
         <h3 className="font-bold text-lg">ILEIC</h3>
       </div>
 
-      {/* 2. Dynamic Navigation Links */}
+      {/* 2. Navigation Links – using NavLink for automatic isActive */}
       <nav className="flex-1 space-y-2">
-        {items.map((item, index) => {
+        {items.map((item) => {
           const Icon = item.icon;
-          // Check if the current URL contains the item path to keep it "Active"
-          const isActive = location.pathname.includes(item.path);
 
           return (
-            <button
-              key={index}
-              onClick={() => navigate(item.path)}
-              className={`w-full flex items-center gap-4 px-5 py-3 rounded-l-full transition-all duration-200 group
+            <NavLink
+              key={item.path}
+              to={item.path}                    // ← full path from data
+              className={({ isActive }) =>
+                `w-full flex items-center gap-4 px-5 py-3 rounded-l-full transition-all duration-200 group relative
                 ${isActive 
                   ? 'bg-background text-primary font-bold shadow-md' 
                   : 'hover:bg-sidebarHover text-white/80 hover:text-white'
-                }`}
+                }`
+              }
+              end={item.path === "/formateur"}    // optional: only exact match for dashboard
             >
-              <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
-              <span className="text-sm ">{item.label}</span>
-              
-              {/* Optional: The small "cut-out" effect indicator */}
-              {isActive && (
-                <div className="absolute right-0 w-2 h-8 bg-background rounded-l-full" />
+              {({ isActive }) => (
+                <>
+                  <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
+                  <span className="text-sm">{item.label}</span>
+                  
+                  {isActive && (
+                    <div className="absolute right-0 w-2 h-8 bg-background rounded-l-full" />
+                  )}
+                </>
               )}
-            </button>
+            </NavLink>
           );
         })}
       </nav>

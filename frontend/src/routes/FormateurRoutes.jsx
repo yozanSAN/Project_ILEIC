@@ -1,10 +1,18 @@
+import MainLayout from "../components/layout/MainLayout";
 
-import AbsencesFormateur from './../pages/formateur/AbsencesFormateur';
-import ControleFormateur from './../pages/formateur/ControleFormateur';
+import PersonalDetailFormateur from "../pages/formateur/ProfileFormateur/PersonalDetailFormateur";
+import EtatFormateur from "../pages/formateur/EtatFormateur/EtatFormateur";
+import AbsencesFormateur from "../pages/formateur/AbsenceFormateur/AbsencesFormateur";
+import CoursFormateur from "../pages/formateur/CoursFormateur/CoursFormateur";
+import EmploisFormateur from "../pages/formateur/EmploisFormateur/EmploisFormateur";
 
 const formateurRoutes = [
-    { path: "/dashboardff", element: <AbsencesFormateur /> },
-    { path: "/AjouterStagiaireff", element: <ControleFormateur /> },
+  {path: "/formateur",element: <MainLayout role="formateur" />,},
+  {path: "/formateur/personnel-detail",element: <PersonalDetailFormateur />,},
+  {path: "/formateur/etat",element: <EtatFormateur />,},
+  {path: "/formateur/absences",element: <AbsencesFormateur />,},
+  {path: "/formateur/cours",element: <CoursFormateur />,},
+  {path: "/formateur/emplois",element: <EmploisFormateur />,},
 ];
 
 export default formateurRoutes;
