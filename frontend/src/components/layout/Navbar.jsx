@@ -5,7 +5,7 @@ export default function Navbar({ user, pageTitle = "Dashboard" }) {
   const formatRole = (r) => r ? r.charAt(0).toUpperCase() + r.slice(1).toLowerCase() : "—";
 
   return (
-    <header className='flex justify-between items-center bg-white ml-64 px-10 font-bold'>
+    <header className='flex justify-between items-center bg-white px-10 font-bold'>
       <div className='flex justify-between items-center gap-4 '>
         <p>Dashboard</p>
         <p className='font-bold'>&gt;</p>

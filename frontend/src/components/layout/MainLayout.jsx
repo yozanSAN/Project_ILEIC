@@ -18,9 +18,6 @@ export default function MainLayout({ children }) {
 
         {/* 4. THE CENTRAL AREA: This is where the magic happens */}
         <main className="flex-1 overflow-y-auto p-4 md:p-8">
-          
-          {/* 5. CONTENT LIMITER: Keeps your tables/forms from stretching too wide 
-              mx-auto centers it. max-w-7xl keeps it readable on big screens. */}
           <div className="w-full px-6">
             {children}
           </div>

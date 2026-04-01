@@ -1,5 +1,5 @@
 import { Settings, LogOut } from "lucide-react";
-import { useLocation, useNavigate, NavLink } from "react-router-dom"; // ← prefer NavLink
+import { useLocation, useNavigate, NavLink } from "react-router-dom"; 
 
 export default function Sidebar({ items }) {
   const location = useLocation();

@@ -6,6 +6,7 @@ import Cours from "../pages/secretary/Cours.jsx";
 import Paiements from "../pages/secretary/paiements.jsx";
 import InscriptionDocuments from "../pages/secretary/InscriptionDocuments.jsx";
 import EmploisDuTemps from "../pages/secretary/EmploisDuTemps.jsx";
+
 const secretaryRoutes = [
     { path: "/secretaire/stagiaire", element: <StagiaireDashboard /> },
     { path: "/secretaire/stagiaire/ajouterStagiaire", element: <AjouterStagiaire /> },
