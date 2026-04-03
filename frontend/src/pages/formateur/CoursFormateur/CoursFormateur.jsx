@@ -9,12 +9,15 @@ import {
   modelesCours,
   sampleCourses,
 } from "./cours-data";
+import MainLayout from "../../../components/layout/MainLayout"
+
 
 export default function CoursFormateur() {
   const [showAddCourse, setShowAddCourse] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
   return (
+    <MainLayout>
     <div className="min-h-screen bg-background p-6 md:p-8">
       {/* HEADER */}
       <div className="flex items-center justify-between mb-8">
@@ -157,6 +160,7 @@ export default function CoursFormateur() {
         ))}
       </div>
     </div>
+    </MainLayout>
   );
 }
 

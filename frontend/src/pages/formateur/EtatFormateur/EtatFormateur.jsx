@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { ArrowLeft, CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react";
+import MainLayout from "../../../components/layout/MainLayout"
 
 export default function EtatFormateur() {
-  // Form state
   const [formData, setFormData] = useState({
     dateSeance: "",
     horaire: "",
@@ -51,17 +51,16 @@ export default function EtatFormateur() {
   };
 
   return (
+    <MainLayout>
     <div className="min-h-screen flex flex-col bg-bachground ">
-      {/* HEADER - fixed height */}
+      {/* HEADER */}
       <div className="shrink-0 bg-bachground border-b px-6 py-4 flex items-center gap-3">
         <ArrowLeft className="cursor-pointer text-gray-700" size={24} />
         <h1 className="font-semibold text-gray-700">Etat</h1>
       </div>
 
-      {/* MAIN CONTENT AREA - takes remaining height, allows internal scroll */}
       <div className="flex-1  px-6 py-6">
         <div className="h-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 overflow-hidden">
-          {/* LEFT COLUMN - scrolls with parent if needed */}
           <div className="lg:col-span-2 space-y-6 pr-2">
             {/* INFORMATIONS */}
             <div className="bg-white rounded-xl p-6 shadow-sm">
@@ -190,7 +189,7 @@ export default function EtatFormateur() {
             </div>
           </div>
 
-          {/* RIGHT COLUMN - independent scroll */}
+          
           <div className="space-y-6  pr-2">
             {/* VOLUMES UF */}
             <div className="bg-white rounded-xl p-6 shadow-sm">
@@ -288,7 +287,7 @@ export default function EtatFormateur() {
         </div>
       </div>
 
-      {/* FIXED BOTTOM BAR */}
+      {/* BOTTOM BAR */}
       <div className="mt-auto backdrop-blur-md bg-white/70 border-t px-6 py-4 flex flex-wrap gap-4 justify-between items-center shadow-lg rounded-[20px]">
 
       {/* VALIDATE BUTTON */}
@@ -302,7 +301,7 @@ export default function EtatFormateur() {
 
       <div className="flex gap-3 flex-wrap">
 
-        {/* CLEAR BUTTON */}
+        {/* vider BUTTON */}
         <button
           onClick={handleVider}
           className="px-5 py-3 bg-white/60 border border-gray-300 hover:bg-gray-100 rounded-[20px] transition"
@@ -310,7 +309,7 @@ export default function EtatFormateur() {
           Vider
         </button>
 
-        {/* MY STATES BUTTON */}
+        {/* STATES BUTTON */}
         <button className="px-5 py-3 bg-white/60 border border-gray-300 hover:bg-gray-100 rounded-[20px] transition">
           Mes États
         </button>
@@ -330,6 +329,7 @@ export default function EtatFormateur() {
         </div>
       )}
     </div>
+    </MainLayout>
   );
 }
 

@@ -8,6 +8,7 @@ import {
   Pencil,
   FileText,
 } from "lucide-react";
+import MainLayout from "../../../components/layout/MainLayout"
 
 
 export default function AbsencesFormateur() {
@@ -30,8 +31,9 @@ export default function AbsencesFormateur() {
   const absentCount = filteredAbsences.filter(a => a.status === "non").length;
 
   return (
+    <MainLayout>
     <div className="min-h-screen bg-background px-6 py-6">
-      {/* HEADER - fixed height */}
+      {/* HEADER */}
       <div className="shrink-0 bg-bachground border-b px-6 py-4 flex items-center gap-3">
         <ArrowLeft className="cursor-pointer text-gray-700" size={24} />
         <h1 className="font-semibold text-gray-700">Absence</h1>
@@ -72,7 +74,7 @@ export default function AbsencesFormateur() {
             })}
           </button>
 
-          {/* DATE PICKER UNDER BUTTON */}
+          {/* DATE PICKER */}
           {showDatePicker && (
             <input
               type="date"
@@ -128,5 +130,6 @@ export default function AbsencesFormateur() {
         )}
       </div>
     </div>
+    </MainLayout>
   );
 }

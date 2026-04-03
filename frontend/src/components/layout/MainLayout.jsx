@@ -1,29 +1,45 @@
-import Sidebar from "./Sidebar"
-import Navbar from "./Navbar"
-import { secretaryItems } from "../../data/secretary/secretary_sidebar_items"
-import user from '../../data/secretary/user'
+import Sidebar from "./Sidebar";
+import Navbar from "./Navbar";
+import { useLocation } from "react-router-dom";
+
+// items
+import { secretaryItems } from "../../data/secretary/secretary_sidebar_items";
+import { formateurItems } from "../../data/formateur/formateur-sidebar-items";
+
+// users
+import secretaryUser from "../../data/secretary/user";
+import formateurUser from "../../data/formateur/formateur";
 
 export default function MainLayout({ children }) {
+  const location = useLocation();
+// chof hna izid amine mazal dakchi dyalo items lmohim dir bhal haka hta f condition li ltaht ou importation
+  const isFormateur = location.pathname.startsWith("/formateur");
+  const isSecretary = location.pathname.startsWith("/secretaire");
+
+  let sidebarItems;
+  let currentUser;
+
+  if (isFormateur) {
+    sidebarItems = formateurItems;
+    currentUser = formateurUser;
+  } else if (isSecretary) {
+    sidebarItems = secretaryItems;
+    currentUser = secretaryUser;
+  } 
+
   return (
     <div className="flex h-screen w-full bg-background overflow-hidden">
-      
-      {/* 1. SIDEBAR: Stays on the left, fixed width */}
-      <Sidebar items={secretaryItems} />
+      <Sidebar items={sidebarItems} />
 
-      {/* 2. RIGHT WRAPPER: Takes remaining space */}
       <div className="flex flex-col flex-1 min-w-0">
-        
-        {/* 3. NAVBAR: Stays at the top, perfectly aligned with the content below */}
-        <Navbar user={user} />
+        <Navbar user={currentUser} items={sidebarItems} />
 
-        {/* 4. THE CENTRAL AREA: This is where the magic happens */}
         <main className="flex-1 overflow-y-auto p-4 md:p-8">
           <div className="w-full px-6">
             {children}
           </div>
-          
         </main>
       </div>
     </div>
-  )
+  );
 }

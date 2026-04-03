@@ -1,8 +1,8 @@
 import React from "react";
 import { Pencil,ArrowLeft } from "lucide-react";
+import MainLayout from "../../../components/layout/MainLayout"
 
 import { formateurData } from "./formateurData";
-// import MainLayout from '../../../components/layout/MainLayout'  ← removed as discussed
 
 export default function PersonalDetailFormateur() {
   const {
@@ -17,19 +17,16 @@ export default function PersonalDetailFormateur() {
   } = formateurData;
 
   return (
-    // ================================================
-    // BACKGROUND OF THE PAGE – gray background applied here
+    <MainLayout>
     <div className="flex-1 bg-background p-6 min-h-screen">
-      {/* ================================================ */}
-
-      {/* HEADER - fixed height */}
+      {/* HEADER */}
       <div className="shrink-0 bg-bachground border-b px-6 py-4 flex items-center gap-3">
         <ArrowLeft className="cursor-pointer text-gray-700" size={24} />
         <h1 className="font-semibold text-gray-700">Personnel Detail</h1>
       </div>
       
 
-      {/* Profile Card – simple version, NO internal scroll */}
+      {/* Profile Card */}
       <div className="bg-white rounded-xl max-w-3xl mx-auto shadow-lg">
         <div className="p-8">
 
@@ -77,9 +74,9 @@ export default function PersonalDetailFormateur() {
         </div>
       </div>
 
-    {/* End of background container */}
+    
     </div>
-    // ================================================
+    </MainLayout>
   );
 }
 

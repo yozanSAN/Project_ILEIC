@@ -1,5 +1,3 @@
-import MainLayout from "../components/layout/MainLayout";
-
 import PersonalDetailFormateur from "../pages/formateur/ProfileFormateur/PersonalDetailFormateur";
 import EtatFormateur from "../pages/formateur/EtatFormateur/EtatFormateur";
 import AbsencesFormateur from "../pages/formateur/AbsenceFormateur/AbsencesFormateur";

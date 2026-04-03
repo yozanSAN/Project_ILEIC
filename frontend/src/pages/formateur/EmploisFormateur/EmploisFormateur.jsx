@@ -1,9 +1,11 @@
 // src/pages/formateur/EmploisFormateur/EmploisFormateur.jsx
 import { Calendar, Download } from "lucide-react";
 import { emplois, horaires, emploiFile } from "./EmploisFormateurdata";
+import MainLayout from "../../../components/layout/MainLayout"
 
 export default function EmploisFormateur() {
   return (
+    <MainLayout>
     <div className="min-h-screen bg-gray-50 p-6 md:p-8">
 
       {/* HEADER */}
@@ -79,5 +81,6 @@ export default function EmploisFormateur() {
       </div>
 
     </div>
+    </MainLayout>
   );
 }
