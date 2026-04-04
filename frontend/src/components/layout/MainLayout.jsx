@@ -5,19 +5,21 @@ import { useLocation } from "react-router-dom";
 // items
 import { secretaryItems } from "../../data/secretary/secretary_sidebar_items";
 import { formateurItems } from "../../data/formateur/formateur-sidebar-items";
+import { stagiaireItems } from "../../data/stagiaire/stagiaire-sidebar-items";
 
 // users
 import secretaryUser from "../../data/secretary/user";
 import formateurUser from "../../data/formateur/formateur";
+import stagiaireUser from "../../data/stagiaire/user";
 
 export default function MainLayout({ children }) {
   const location = useLocation();
-// chof hna izid amine mazal dakchi dyalo items lmohim dir bhal haka hta f condition li ltaht ou importation
   const isFormateur = location.pathname.startsWith("/formateur");
   const isSecretary = location.pathname.startsWith("/secretaire");
-
+  const isStagiaire = location.pathname.startsWith("/stagiaire")
   let sidebarItems;
   let currentUser;
+
 
   if (isFormateur) {
     sidebarItems = formateurItems;
@@ -25,10 +27,15 @@ export default function MainLayout({ children }) {
   } else if (isSecretary) {
     sidebarItems = secretaryItems;
     currentUser = secretaryUser;
-  } 
+  } else if (isStagiaire){
+    sidebarItems = stagiaireItems
+    currentUser = stagiaireUser
+  }
 
   return (
     <div className="flex h-screen w-full bg-background overflow-hidden">
+
+      {/* SIDEBAR */}
       <Sidebar items={sidebarItems} />
 
       <div className="flex flex-col flex-1 min-w-0">

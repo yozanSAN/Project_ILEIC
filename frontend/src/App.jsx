@@ -1,25 +1,35 @@
 import { Routes, Route } from "react-router-dom";
-import formateurRoutes from "./routes/FormateurRoutes"; 
+import formateurRoutes from "./routes/FormateurRoutes";
 import etudaintsRoutes from "./routes/EtudiantRoutes";
 import secretaryRoutes from "./routes/SecretaryRoutes";
 
 
-const allRoutes = [...secretaryRoutes, ...formateurRoutes ,...etudaintsRoutes];
+const allRoutes = [...secretaryRoutes, ...formateurRoutes, ...etudaintsRoutes];
+
+function renderRoutes(routes) {
+  return routes.map((route) => {
+    if (route.children) {
+      return (
+        <Route key={route.path} path={route.path} element={route.element}>
+          {renderRoutes(route.children)}
+        </Route>
+      );
+    }
+    return <Route key={route.path} path={route.path} element={route.element} />;
+  });
+}
 
 function App() {
   return (
     <div>
       <Routes>
 
-        {allRoutes.map(({ path, element }) => (
-          <Route key={path} path={path} element={element} />
-        ))}
+        {renderRoutes(allRoutes)}
 
         {/* Default route
         <Route path="/" element={<Login />} /> */}
 
-        {/* Dashboard routes */}
-        {/* <Route path="/dashboard" element={<StagiaireDashboard />} /> */}
+        
 
            
 

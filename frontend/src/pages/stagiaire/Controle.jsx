@@ -11,6 +11,7 @@ import {
     ArrowUpRight,
     Filter
 } from "lucide-react";
+import MainLayout from "../../components/layout/MainLayout"
 
 /**
  * Controle Page - Displays upcoming exams and past results.
@@ -94,6 +95,7 @@ const Controle = () => {
         : examResults.filter(r => r.status === activeFilter);
 
     return (
+        <MainLayout>
         <div className="max-w-6xl mx-auto w-full space-y-10 animate-in fade-in duration-700">
 
             {/* Search and Metrics Header */}
@@ -184,8 +186,8 @@ const Controle = () => {
                                 key={filter}
                                 onClick={() => setActiveFilter(filter)}
                                 className={`px-5 py-2 text-xs font-bold rounded-lg transition-all ${activeFilter === filter
-                                        ? "bg-slate-900 text-white shadow-md shadow-slate-200"
-                                        : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                                    ? "bg-slate-900 text-white shadow-md shadow-slate-200"
+                                    : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
                                     }`}
                             >
                                 {filter}
@@ -200,8 +202,8 @@ const Controle = () => {
                             <div className="flex-1 space-y-4">
                                 <div className="flex items-center gap-3">
                                     <span className={`px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider border ${result.status === "Validé"
-                                            ? "bg-emerald-50 text-emerald-600 border-emerald-100"
-                                            : "bg-orange-50 text-orange-600 border-orange-100"
+                                        ? "bg-emerald-50 text-emerald-600 border-emerald-100"
+                                        : "bg-orange-50 text-orange-600 border-orange-100"
                                         }`}>
                                         {result.status}
                                     </span>
@@ -228,11 +230,7 @@ const Controle = () => {
                                     <div className="text-2xl font-black text-slate-900 leading-none mb-1">{result.note}</div>
                                     <div className="text-sm font-bold text-slate-400">/ 20</div>
                                 </div>
-                                <button className="flex items-center gap-2 px-5 py-3 text-blue-600 font-bold text-sm bg-blue-50/50 hover:bg-blue-50 rounded-xl transition-all group">
-                                    <Eye size={18} />
-                                    Voir la copie
-                                    <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 -translate-y-1 transition-all" />
-                                </button>
+
                             </div>
                         </div>
                     ))}
@@ -246,6 +244,7 @@ const Controle = () => {
                 </p>
             </footer>
         </div>
+        </MainLayout>
     );
 };
 

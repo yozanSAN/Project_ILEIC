@@ -1,7 +1,9 @@
 import { GraduationCap, MapPin, Monitor, Calendar, Mail, Phone, IdCard, Cake, Home } from "lucide-react";
+import MainLayout from "../../components/layout/MainLayout"
 
 const Profil = () => {
     return (
+        <MainLayout>
         <div className="max-w-5xl mx-auto w-full animate-in fade-in duration-500 slide-in-from-bottom-4">
             <div className="mb-8 pl-1">
                 <h1 className="text-3xl font-bold text-slate-900 mb-2 tracking-tight">Profil de l'étudiant</h1>
@@ -59,6 +61,7 @@ const Profil = () => {
                 </div>
             </div>
         </div>
+        </MainLayout>
     );
 };
 

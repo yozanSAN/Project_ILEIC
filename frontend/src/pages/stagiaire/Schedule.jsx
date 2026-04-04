@@ -12,6 +12,7 @@ import {
     Clock,
     Loader2
 } from "lucide-react";
+import MainLayout from "../../components/layout/MainLayout"
 
 /**
  * A simpler and more professional redesign for the student schedule.
@@ -96,6 +97,7 @@ const Schedule = () => {
     const getCourse = (day, slot) => courses.find(c => c.day === day && c.slot === slot);
 
     return (
+        <MainLayout>
         <div className="max-w-7xl mx-auto w-full space-y-8 animate-in fade-in duration-700 p-2 sm:p-0">
 
             {/* Header Section */}
@@ -234,6 +236,7 @@ const Schedule = () => {
                 </div>
             </div>
         </div>
+        </MainLayout>
     );
 };
 

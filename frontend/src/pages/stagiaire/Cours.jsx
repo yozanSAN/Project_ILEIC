@@ -14,6 +14,7 @@ import {
     ChevronRight,
     Check
 } from "lucide-react";
+import MainLayout from "../../components/layout/MainLayout"
 
 const Cours = () => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -158,6 +159,7 @@ const Cours = () => {
     });
 
     return (
+        <MainLayout>
         <div className="max-w-6xl mx-auto w-full animate-in fade-in duration-500 slide-in-from-bottom-4 flex flex-col min-h-[calc(100vh-120px)]">
             {/* Header section with active search */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pl-1">
@@ -312,6 +314,7 @@ const Cours = () => {
                 </div>
             )}
         </div>
+        </MainLayout>
     );
 };
 

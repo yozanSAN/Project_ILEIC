@@ -13,6 +13,7 @@ import {
     Code,
     Loader2
 } from "lucide-react";
+import MainLayout from "../../components/layout/MainLayout"
 
 const Notes = () => {
     const printRef = useRef(null);
@@ -117,6 +118,7 @@ const Notes = () => {
     ];
 
     return (
+        <MainLayout>
         <div className="max-w-5xl mx-auto w-full animate-in fade-in duration-500 slide-in-from-bottom-4">
             {/* Header section */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pl-1">
@@ -272,6 +274,7 @@ const Notes = () => {
                 {/* End Content to Export */}
             </div>
         </div>
+        </MainLayout>
     );
 };
 

@@ -5,7 +5,6 @@ import CoursFormateur from "../pages/formateur/CoursFormateur/CoursFormateur";
 import EmploisFormateur from "../pages/formateur/EmploisFormateur/EmploisFormateur";
 
 const formateurRoutes = [
-  // {path: "/formateur",element: <MainLayout role="formateur" />,},
   {path: "/formateur/personnel-detail",element: <PersonalDetailFormateur />,},
   {path: "/formateur/etat",element: <EtatFormateur />,},
   {path: "/formateur/absences",element: <AbsencesFormateur />,},
