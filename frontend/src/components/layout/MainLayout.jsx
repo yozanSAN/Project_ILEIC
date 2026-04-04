@@ -8,6 +8,9 @@ import secretary from "../../data/secretary/user";
 import { formateurItems } from "../../data/formateur/formateur-sidebar-items";
 import formateur from "../../data/formateur/formateur";
 
+import { stagiaireItems } from "../../data/stagiaire/stagiaire-sidebar-items";
+import stagiaire from "../../data/stagiaire/user";
+
 export default function MainLayout({ role }) {
 
   let sidebarItems = [];
@@ -24,6 +27,11 @@ export default function MainLayout({ role }) {
       user = secretary;
       break;
 
+    case "stagiaire":
+      sidebarItems = stagiaireItems;
+      user = stagiaire;
+      break;
+
     default:
       sidebarItems = [];
       user = null;
@@ -31,7 +39,7 @@ export default function MainLayout({ role }) {
 
   return (
     <div className="flex h-screen w-full bg-background overflow-hidden">
-      
+
       {/* SIDEBAR */}
       <Sidebar items={sidebarItems} />
 
