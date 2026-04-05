@@ -6,17 +6,20 @@ import { useLocation } from "react-router-dom";
 import { secretaryItems } from "../../data/secretary/secretary_sidebar_items";
 import { formateurItems } from "../../data/formateur/formateur-sidebar-items";
 import { stagiaireItems } from "../../data/stagiaire/stagiaire-sidebar-items";
+import { adminItems } from "../../data/admin/admin-sidebar-items";
 
 // users
 import secretaryUser from "../../data/secretary/user";
 import formateurUser from "../../data/formateur/formateur";
 import stagiaireUser from "../../data/stagiaire/user";
+import adminUser from "../../data/admin/admin-user";
 
 export default function MainLayout({ children }) {
   const location = useLocation();
   const isFormateur = location.pathname.startsWith("/formateur");
   const isSecretary = location.pathname.startsWith("/secretaire");
   const isStagiaire = location.pathname.startsWith("/stagiaire")
+  const isAdmin     = location.pathname.startsWith("/admin");
   let sidebarItems;
   let currentUser;
 
@@ -30,6 +33,9 @@ export default function MainLayout({ children }) {
   } else if (isStagiaire){
     sidebarItems = stagiaireItems
     currentUser = stagiaireUser
+  } else if (isAdmin){
+    sidebarItems = adminItems;
+    currentUser = adminUser;
   }
 
   return (

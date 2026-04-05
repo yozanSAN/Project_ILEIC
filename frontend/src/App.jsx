@@ -2,9 +2,10 @@ import { Routes, Route } from "react-router-dom";
 import formateurRoutes from "./routes/FormateurRoutes";
 import etudaintsRoutes from "./routes/EtudiantRoutes";
 import secretaryRoutes from "./routes/SecretaryRoutes";
+import adminRoutes from "./routes/AdminRoutes";
 
 
-const allRoutes = [...secretaryRoutes, ...formateurRoutes, ...etudaintsRoutes];
+const allRoutes = [...adminRoutes, ...secretaryRoutes, ...formateurRoutes, ...etudaintsRoutes];
 
 function renderRoutes(routes) {
   return routes.map((route) => {
