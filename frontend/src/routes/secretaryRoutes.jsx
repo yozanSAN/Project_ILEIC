@@ -8,6 +8,7 @@ import InscriptionDocuments from "../pages/secretary/InscriptionDocuments.jsx";
 import EmploisDuTemps from "../pages/secretary/EmploisDuTemps.jsx";
 
 const secretaryRoutes = [
+    { path: "/secretaire", element: <StagiaireDashboard /> },
     { path: "/secretaire/stagiaire", element: <StagiaireDashboard /> },
     { path: "/secretaire/stagiaire/ajouterStagiaire", element: <AjouterStagiaire /> },
     { path: "/secretaire/notes", element: <Notes /> },
