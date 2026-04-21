@@ -68,7 +68,7 @@ npm run dev
 |------------|-----------------------------------------------|
 | Frontend   | React, Vite, Tailwind CSS, Lucide-React       |
 | Backend    | Spring Boot, Spring Data JPA, Maven           |
-| Database   | *(Add your database here, e.g. MySQL/MongoDB)*|
+| Database   | Postgresql
 
 ---
 
