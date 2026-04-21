@@ -3,7 +3,7 @@ import formateurRoutes from "./routes/FormateurRoutes";
 import etudaintsRoutes from "./routes/EtudiantRoutes";
 import secretaryRoutes from "./routes/SecretaryRoutes";
 import adminRoutes from "./routes/AdminRoutes";
-
+import Login from "./pages/auth/Login-page"; 
 
 const allRoutes = [...adminRoutes, ...secretaryRoutes, ...formateurRoutes, ...etudaintsRoutes];
 
@@ -27,8 +27,8 @@ function App() {
 
         {renderRoutes(allRoutes)}
 
-        {/* Default route
-        <Route path="/" element={<Login />} /> */}
+       
+        <Route path="/" element={<Login />} /> 
 
         
 
