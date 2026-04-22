@@ -25,6 +25,7 @@ export default function PersonalDetailFormateur() {
         <h1 className="font-semibold text-gray-700">Personnel Detail</h1>
       </div>
       
+      
 
       {/* Profile Card */}
       <div className="bg-white rounded-xl max-w-3xl mx-auto shadow-lg">

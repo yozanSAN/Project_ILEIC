@@ -1,43 +1,79 @@
-# 🚀 School Management Project - Frontend
+# 🚀 School Management System — Full Stack
 
-## Getting Started
+A full-stack web application for managing school operations, built with React on the frontend and Spring Boot on the backend.
 
-1. **Pull the latest code:** `git pull origin main`
-2. **switch to branch main:** `git checkout main`
-3. **Install dependencies:** `npm install`
-4. **Run the app:** `npm run dev`
+---
 
-## Tech Stack
-- **Framework:** React + Vite
-- **Styling:** Tailwind CSS (Pure)
-- **Icons:** Lucide-React
+## 📁 Project Structure
 
-## Layout Instructions
-All dashboard pages should be wrapped in the `MainLayout` component.
-## 🏗️ Project Architecture: MainLayout
+```
+/
+├── frontend/     # React + Vite + Tailwind CSS
+└── backend/      # Spring Boot + Java + Maven
+```
 
-To keep the UI consistent, all pages (Dashboard, Students, Payments, etc.) must use the `MainLayout`. This component automatically includes the **Sidebar** and **Navbar**.
+---
 
-### How to use it:
-When you create a new page, simply wrap your content inside the `<MainLayout>` component. The content you place inside will be rendered in the main scrollable area.
+## 💻 Getting Started
 
-**Example (`src/pages/Students.jsx`):**
-```jsx
-import MainLayout from '../components/layout/MainLayout';
+### General Setup
 
-const sstagiars = () => {
-  return (
-    <MainLayout>
-      {/* Anything you put here is passed as "children" 
-         and will appear in the middle of the screen.
-      */}
-      <h1 className="text-2xl font-bold">Gestion des Stagiaires</h1>
-      <p>Bienvenue sur la page de gestion des étudiants.</p>
-      
-      {/* dir le composantes le 3ndk wst main layout , matalan : stagiaireTable  wla emplois des temps*/}
-      <stagiaireTable />
-    </MainLayout>
-  );
-};
+```bash
+# Clone the repository
+git clone <repo-url>
 
-export default StudentsPage;
+# Pull the latest code
+git pull origin main
+```
+
+---
+
+### Frontend Setup (React)
+
+```bash
+# Navigate to the frontend directory
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+```
+
+> 🌐 Runs at: `http://localhost:5173`
+
+---
+
+### Backend Setup (Spring Boot)
+
+1. Open the `/backend` folder in **IntelliJ IDEA**
+2. Make sure **JDK 17** (or your specific version) is installed
+3. Load Maven dependencies: right-click `pom.xml` → **Add as Maven Project**
+4. Run the application:
+   - Use the **Run** button in IntelliJ, **or**
+   - Run the following command in the terminal:
+
+```bash
+./mvnw spring-boot:run
+```
+
+> 🌐 Runs at: `http://localhost:8080`
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer      | Technology                                    |
+|------------|-----------------------------------------------|
+| Frontend   | React, Vite, Tailwind CSS, Lucide-React       |
+| Backend    | Spring Boot, Spring Data JPA, Maven           |
+| Database   | Postgresql
+
+---
+
+## 🤝 Team Workflow
+
+- **Always** run `git pull` before starting work to avoid merge conflicts
+- Write clear, descriptive commit messages (e.g., `feat: added student controller`)
+- Make sure the backend **builds locally** before pushing any changes
