@@ -1,19 +1,21 @@
 package com.ProjetILEIC.ILIEC.entity;
+
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import lombok.*;
 
 @Entity
-@Table(name = "absence")
+@Table(name = "payments")
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Absence {
+public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,19 +26,27 @@ public class Absence {
     private Stagiaire stagiaire;
 
     @ManyToOne
-    @JoinColumn(name = "cour_id", nullable = false)
-    private Cours cours;
-
-    @ManyToOne
     @JoinColumn(name = "recorded_by", nullable = false)
     private User recordedBy;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private Integer month;
+
+    @Column(nullable = false)
+    private Integer year;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal amount;
+
+    @Column(name = "payment_date")
+    private LocalDate paymentDate;
+
+    @Column(name = "payment_method", length = 50)
+    private String paymentMethod;
 
     @Column(length = 50)
     private String status;
 
-    @Column(length = 255)
-    private String remarks;
+    @Column(length = 100)
+    private String reference;
 }
