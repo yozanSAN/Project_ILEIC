@@ -2,6 +2,7 @@ import PersonalDetailFormateur from "../pages/formateur/ProfileFormateur/Persona
 import EtatFormateur from "../pages/formateur/EtatFormateur/EtatFormateur";
 import AbsencesFormateur from "../pages/formateur/AbsenceFormateur/AbsencesFormateur";
 import CoursFormateur from "../pages/formateur/CoursFormateur/CoursFormateur";
+import ControleFormateur from "../pages/formateur/ControleFormateur/ControleFormateur";
 import EmploisFormateur from "../pages/formateur/EmploisFormateur/EmploisFormateur";
 
 const formateurRoutes = [
@@ -10,6 +11,7 @@ const formateurRoutes = [
   {path: "/formateur/etat",element: <EtatFormateur />,},
   {path: "/formateur/absences",element: <AbsencesFormateur />,},
   {path: "/formateur/cours",element: <CoursFormateur />,},
+  {path: "/formateur/controle",element: <ControleFormateur />,},
   {path: "/formateur/emplois",element: <EmploisFormateur />,},
 ];
 
