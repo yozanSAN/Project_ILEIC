@@ -1,4 +1,4 @@
 package com.ProjetILEIC.ILIEC.repository;
 
-public interface NoteRepository {
+public interface CentreRepository {
 }

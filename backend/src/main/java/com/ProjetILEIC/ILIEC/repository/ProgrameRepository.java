@@ -1,4 +1,4 @@
 package com.ProjetILEIC.ILIEC.repository;
 
-public class FormateurRepository {
+public interface ProgrameRepository {
 }

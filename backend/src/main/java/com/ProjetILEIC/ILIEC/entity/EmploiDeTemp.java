@@ -13,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class EmploiDeTempt {
+public class EmploiDeTemp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

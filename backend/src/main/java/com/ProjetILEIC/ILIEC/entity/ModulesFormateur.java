@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class TeacherSubject {
+public class ModulesFormateur {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
