@@ -1,4 +1,4 @@
 package com.ProjetILEIC.ILIEC.service;
 
-public class UtilisateurService {
+public class UserService {
 }
