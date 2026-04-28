@@ -6,6 +6,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "users")
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class User {
     private String email;
 
     @Column(name = "password_hash", nullable = false)
-    private String passwordHash; // Good job naming this "hash" and not just "password"!
+    private String passwordHash;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
