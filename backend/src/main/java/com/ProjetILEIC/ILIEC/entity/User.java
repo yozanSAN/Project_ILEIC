@@ -1,5 +1,6 @@
 package com.ProjetILEIC.ILIEC.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.time.*;
 import lombok.*;
@@ -12,6 +13,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+    public enum Role {
+        ADMIN,
+        SECRETAIRE,
+        FORMATION,
+        STAGIAIRE
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +33,9 @@ public class User {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES) //  Handles Case-insensitivety
+    @Column(name = "role", nullable = false)
     private Role role;
 
     @Column(name = "is_active")
