@@ -39,7 +39,7 @@ public class AuthController {
             // 3. Generate the token string
             String token = jwtUtil.generateToken(userDetails.getUsername());
 
-             // 4. Return the raw token back as plain text
+             // 4. Return the raw token back as plain text with user emial
             return "Token: " + token + " | Email: " + userDetails.getUsername();
         } catch (Exception e) {
             return "Authentication failed: Invalid email or school code." + e + e.getMessage();
