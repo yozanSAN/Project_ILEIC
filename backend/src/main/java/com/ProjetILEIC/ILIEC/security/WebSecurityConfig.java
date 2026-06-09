@@ -52,7 +52,7 @@ public class WebSecurityConfig {
 
                 // 4. Define route access rules
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**","/welcome").permitAll() // Let anyone access signin/signup endpoints
+                        .requestMatchers("/api/auth/**","/welcome","/api/students").permitAll() // Let anyone access signin/signup endpoints
                         .anyRequest().authenticated()               // Everything else requires a valid token
                 );
 
