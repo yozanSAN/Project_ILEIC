@@ -1,6 +1,6 @@
 package com.ProjetILEIC.ILIEC.controller;
 
-import com.ProjetILEIC.ILIEC.entity.User;
+import com.ProjetILEIC.ILIEC.dto.UserDTO;
 import com.ProjetILEIC.ILIEC.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ public class UserController {
     }
     @GetMapping("/api/students")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
-    public List<User> getAllStudents() {
+    public List<UserDTO> getAllStudents() {
         return userService.getAllUsers();
     }
 }
