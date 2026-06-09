@@ -77,7 +77,7 @@ Before you begin, ensure you have the following installed:
 - **Git** — Version control
 - **Node.js** (v16+) and **npm** — For frontend development
 - **JDK 17+** — For backend development
-- **PostgreSQL** (v12+) — Database
+- **NeonDB (Cloud database)** (v12+) — Database
 - **IntelliJ IDEA** or **VS Code** — Recommended IDEs
 
 ### General Setup
