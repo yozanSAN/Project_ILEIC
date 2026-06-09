@@ -95,28 +95,10 @@ git pull origin main
 
 ### 🗄️ Database Setup
 
-1. **Install PostgreSQL** (if not already installed)
-   - [Download PostgreSQL](https://www.postgresql.org/download/)
+1. **-> Create account in NeonDB to get access to the database ** (Create account if not already)
+   - [https://neon.com/]
 
-2. **Create the database:**
-
-```bash
-# Connect to PostgreSQL
-psql -U postgres
-
-# Create database
-CREATE DATABASE ileic_school;
-
-# Create a dedicated user (recommended)
-CREATE USER ileic_user WITH PASSWORD 'your_secure_password';
-ALTER ROLE ileic_user SET client_encoding TO 'utf8';
-ALTER ROLE ileic_user SET default_transaction_isolation TO 'read committed';
-ALTER ROLE ileic_user SET default_transaction_deferrable TO on;
-GRANT ALL PRIVILEGES ON DATABASE ileic_school TO ileic_user;
-
-# Exit psql
-\q
-```
+2. **You will resive a contibution invite :**
 
 3. **Database schema** will be auto-created on first backend startup (via Spring Data JPA/Hibernate)
 
@@ -145,9 +127,10 @@ server.port=8080
 server.servlet.context-path=/api
 
 # Database Configuration
-spring.datasource.url=jdbc:postgresql://localhost:5432/ileic_school
-spring.datasource.username=ileic_user
-spring.datasource.password=your_secure_password
+[Database private info will be shared privitly]
+spring.datasource.url=${SPRING_DATASOURCE_URL}
+spring.datasource.username=${SPRING_DATASOURCE_USERNAME}
+spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}
 spring.datasource.driver-class-name=org.postgresql.Driver
 
 # JPA/Hibernate Configuration
