@@ -491,7 +491,7 @@ With the condition:
 
 - **Issues & Bugs:** [Create an issue](https://github.com/yozanSAN/Project_ILEIC/issues)
 - **Discussions:** [GitHub Discussions](https://github.com/yozanSAN/Project_ILEIC/discussions)
-- **Email:** (Add your contact email if desired)
+- **Email:** ayoubpro183@gmail.com
 
 ---
 
