@@ -5,19 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import com.ProjetILEIC.ILIEC.entity.User;
-
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class SecretaryDTO {
+
     private Long id;
+
+    // From the embedded User — no passwordHash
+    private Long userId;
     private String fullName;
     private String email;
-    private User.Role role;
-    private Boolean isActive;
-    private LocalDateTime createdAt;
+
+    private Long centreId;
+    private String centreName;
 }

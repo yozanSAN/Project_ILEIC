@@ -1,6 +1,5 @@
 package com.ProjetILEIC.ILIEC.service;
 
-import com.ProjetILEIC.ILIEC.dto.UserDTO;
 import com.ProjetILEIC.ILIEC.entity.User;
 import com.ProjetILEIC.ILIEC.repository.UserRepository;
 import org.springframework.stereotype.Service;
