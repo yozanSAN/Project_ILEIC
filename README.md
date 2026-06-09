@@ -18,13 +18,7 @@ A comprehensive full-stack web application designed to streamline school operati
 
 ## 📸 Screenshots
 
-> 💡 **Tip:** Add screenshots or GIFs of key features here:
-> - Dashboard overview
-> - Student management interface
-> - Grade entry form
-> - Reports section
-
-*Screenshots coming soon!*
+**Screenshots coming soon!**
 
 ---
 
@@ -77,7 +71,7 @@ Before you begin, ensure you have the following installed:
 - **Git** — Version control
 - **Node.js** (v16+) and **npm** — For frontend development
 - **JDK 17+** — For backend development
-- **PostgreSQL** (v12+) — Database
+- **NeonDB (Cloud database)** (v12+) — Database
 - **IntelliJ IDEA** or **VS Code** — Recommended IDEs
 
 ### General Setup
