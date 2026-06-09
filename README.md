@@ -18,13 +18,7 @@ A comprehensive full-stack web application designed to streamline school operati
 
 ## 📸 Screenshots
 
-> 💡 **Tip:** Add screenshots or GIFs of key features here:
-> - Dashboard overview
-> - Student management interface
-> - Grade entry form
-> - Reports section
-
-*Screenshots coming soon!*
+**Screenshots coming soon!**
 
 ---
 
