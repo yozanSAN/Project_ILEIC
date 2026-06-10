@@ -15,7 +15,7 @@ public class UserDTO {
     private String fullName;
     private String email;
     private User.Role role;
+    private Boolean isActive;
+    private LocalDateTime createdAt;
 
-    public UserDTO(Long id, String fullName, String email, User.Role role, Boolean isActive, LocalDateTime createdAt) {
-    }
 }

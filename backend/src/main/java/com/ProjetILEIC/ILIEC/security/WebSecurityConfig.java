@@ -1,11 +1,15 @@
 package com.ProjetILEIC.ILIEC.security;
 
 import com.ProjetILEIC.ILIEC.service.CustomUserDetailsService;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +20,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import java.util.List;
 
 @Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
@@ -27,9 +33,13 @@ public class WebSecurityConfig {
         this.authEntryPointJwt = authEntryPointJwt;
         this.jwtUtil = jwtUtil;
     }
+
     @Bean
-    public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter(jwtUtil, customUserDetailsService);
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(customUserDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
     @Bean
     public AuthenticationManager authenticationManager(
@@ -42,7 +52,13 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public FilterRegistrationBean<AuthTokenFilter> registration(AuthTokenFilter filter) {
+        FilterRegistrationBean<AuthTokenFilter> registration = new FilterRegistrationBean<>(filter);
+        registration.setEnabled(false); //THIS disables the duplicate global execution!
+        return registration;
+    }
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http ,AuthTokenFilter authTokenFilter) throws Exception {
         http
                 // 1. Enable and configure CORS inside security
                 .cors(cors -> cors.configurationSource(request -> {
@@ -64,12 +80,15 @@ public class WebSecurityConfig {
 
                 // 4. Define route access rules
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**","/welcome","/api/students").permitAll() // Let anyone access signin/signup endpoints
+                        .requestMatchers("/api/auth/**","/welcome").permitAll() // Let anyone access signin/signup endpoints
                         .anyRequest().authenticated()               // Everything else requires a valid token
                 );
 
+        // Link the explicit authentication provider configuration
+        http.authenticationProvider(authenticationProvider());
+
         // 5. Add your custom JWT token verification filter before Spring's default username/password checker
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
