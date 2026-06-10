@@ -33,7 +33,7 @@ public class Controle {
     @Column(length = 50)
     private String type;
 
-    @Column(name = "controle_id")
+    @Column(name = "exam_date")
     private LocalDate examDate;
 
     @Column(precision = 5, scale = 2)

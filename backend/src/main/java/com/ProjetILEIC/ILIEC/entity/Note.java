@@ -19,7 +19,7 @@ public class Note {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "stagiaire", nullable = false)
+    @JoinColumn(name = "stagiaire_id", nullable = false)
     private Stagiaire stagiaire;
 
     @ManyToOne
