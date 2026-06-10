@@ -3,12 +3,7 @@ package com.ProjetILEIC.ILIEC.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.time.*;
-import java.util.Collection;
-import java.util.List;
-
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "users")

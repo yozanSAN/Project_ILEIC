@@ -26,12 +26,10 @@ public class WebSecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final AuthEntryPointJwt authEntryPointJwt;
-    private final JwtUtil jwtUtil;
 
-    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, AuthEntryPointJwt authEntryPointJwt, JwtUtil jwtUtil) {
+    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, AuthEntryPointJwt authEntryPointJwt) {
         this.customUserDetailsService = customUserDetailsService;
         this.authEntryPointJwt = authEntryPointJwt;
-        this.jwtUtil = jwtUtil;
     }
 
     @Bean
