@@ -3,7 +3,7 @@ package com.ProjetILEIC.ILIEC.service;
 import com.ProjetILEIC.ILIEC.dto.SecretaryDTO;
 import com.ProjetILEIC.ILIEC.entity.Centre;
 import com.ProjetILEIC.ILIEC.entity.User;
-import com.ProjetILEIC.ILIEC.entity.secretary;
+import com.ProjetILEIC.ILIEC.entity.Secretary;
 import com.ProjetILEIC.ILIEC.exception.DuplicateResourceException;
 import com.ProjetILEIC.ILIEC.exception.ResourceNotFoundException;
 import com.ProjetILEIC.ILIEC.repository.CentreRepository;
@@ -76,7 +76,7 @@ public class SecretaryService {
         }
 
         // Step 4 — build and save
-        secretary newSecretary = new secretary();
+        Secretary newSecretary = new Secretary();
         newSecretary.setUser(user);
         newSecretary.setCentre(centre);
 
@@ -94,14 +94,14 @@ public class SecretaryService {
 
     // --- HELPERS ---
 
-    private secretary findOrThrow(Long id) {
+    private Secretary findOrThrow(Long id) {
         return secretaryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Secretary not found with id: " + id));
     }
 
     // --- DTO CONVERSION ---
 
-    public SecretaryDTO toDTO(secretary s) {
+    public SecretaryDTO toDTO(Secretary s) {
         return new SecretaryDTO(
                 s.getId(),
                 s.getUser().getId(),

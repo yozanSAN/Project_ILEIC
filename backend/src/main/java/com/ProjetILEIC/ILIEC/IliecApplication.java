@@ -1,6 +1,5 @@
 package com.ProjetILEIC.ILIEC;
 
-import com.ProjetILEIC.ILIEC.dto.UserDTO;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication

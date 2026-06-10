@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class secretary {
+public class Secretary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
