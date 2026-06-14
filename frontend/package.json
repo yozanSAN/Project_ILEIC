@@ -13,6 +13,7 @@
     "@heroicons/react": "^2.2.0",
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
+    "axois": "^0.0.1-security",
     "framer-motion": "^10.18.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
