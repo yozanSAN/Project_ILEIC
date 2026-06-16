@@ -70,7 +70,7 @@ public class StagiaireService {
     //GET BY CENTER AND FILIERE
     @Transactional(readOnly = true)
     public List<StagiaireDTO> getByCentreAndFiliere(Long centreId, Long filiereId) {
-        return stagiaireRepository.findByFiliere_IdAndCentre_Id(centreId , centreId)
+        return stagiaireRepository.findByFiliere_IdAndCentre_Id(centreId , filiereId)
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
