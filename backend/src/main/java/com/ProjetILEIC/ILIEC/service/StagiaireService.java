@@ -1,6 +1,7 @@
 package com.ProjetILEIC.ILIEC.service;
 
 import com.ProjetILEIC.ILIEC.dto.StagiaireDTO;
+import com.ProjetILEIC.ILIEC.dto.StagiaireRequestDTO;
 import com.ProjetILEIC.ILIEC.entity.Centre;
 import com.ProjetILEIC.ILIEC.entity.Filiere;
 import com.ProjetILEIC.ILIEC.entity.Stagiaire;
@@ -76,38 +77,35 @@ public class StagiaireService {
                 .collect(Collectors.toList());
     }
 
-    // --- CREATE ---
-
-    public StagiaireDTO createStagiaire(Stagiaire stagiaire, Long userId, Long centreId, Long filiereId) {
-
-        // Step 1 — check registration number is unique
-        if (stagiaireRepository.existsByRegistrationNumber(stagiaire.getRegistrationNumber())) {
-            throw new DuplicateResourceException(
-                    "Registration number already exists: " + stagiaire.getRegistrationNumber());
+    // Create
+    public StagiaireRequestDTO createStagiaire(StagiaireRequestDTO dto) {
+        if (stagiaireRepository.existsByRegistrationNumber(dto.getRegistrationNumber())) {
+            throw new DuplicateResourceException("Registration number already exists: " + dto.getRegistrationNumber());
         }
 
-        // Step 2 — fetch and validate dependencies
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + dto.getUserId()));
+        Centre centre = centreRepository.findById(dto.getCentreId())
+                .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + dto.getCentreId()));
+        Filiere filiere = filiereRepository.findById(dto.getFiliereId())
+                .orElseThrow(() -> new ResourceNotFoundException("Filiere not found with id: " + dto.getFiliereId()));
 
-        Centre centre = centreRepository.findById(centreId)
-                .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + centreId));
-
-        Filiere filiere = filiereRepository.findById(filiereId)
-                .orElseThrow(() -> new ResourceNotFoundException("Filiere not found with id: " + filiereId));
-
-        // Step 3 — business rule: filiere must belong to the centre
-        if (!filiere.getCentre().getId().equals(centreId)) {
-            throw new IllegalArgumentException(
-                    "Filiere " + filiereId + " does not belong to centre " + centreId);
-        }
-
-        // Step 4 — attach and save
+        Stagiaire stagiaire = new Stagiaire();
+        // Map fields
+        stagiaire.setRegistrationNumber(dto.getRegistrationNumber());
+        stagiaire.setBirthDate(dto.getBirthDate());
+        stagiaire.setCin(dto.getCin());
+        stagiaire.setPhone(dto.getPhone());
+        stagiaire.setAddress(dto.getAddress());
+        stagiaire.setEnrollmentDate(dto.getEnrollmentDate());
+        stagiaire.setStatus(dto.getStatus());
         stagiaire.setUser(user);
         stagiaire.setCentre(centre);
         stagiaire.setFiliere(filiere);
 
-        return toDTO(stagiaireRepository.save(stagiaire));
+        Stagiaire savedStagiaire = stagiaireRepository.save(stagiaire);
+
+        return toRequestDTO(savedStagiaire);
     }
 
     // --- UPDATE ---
@@ -161,6 +159,19 @@ public class StagiaireService {
                 s.getStatus()
         );
     }
-
-
+    // --- NEW DTO CONVERSION FOR POST RESPONSES ---
+    private StagiaireRequestDTO toRequestDTO(Stagiaire s) {
+        return new StagiaireRequestDTO(
+                s.getRegistrationNumber(),
+                s.getBirthDate(),
+                s.getCin(),
+                s.getPhone(),
+                s.getAddress(),
+                s.getEnrollmentDate(),
+                s.getStatus(),
+                s.getUser().getId(),
+                s.getCentre().getId(),
+                s.getFiliere().getId()
+        );
+    }
 }

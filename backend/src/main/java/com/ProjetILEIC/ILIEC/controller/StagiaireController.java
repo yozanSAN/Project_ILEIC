@@ -1,7 +1,9 @@
 package com.ProjetILEIC.ILIEC.controller;
 
 import com.ProjetILEIC.ILIEC.dto.StagiaireDTO;
+import com.ProjetILEIC.ILIEC.dto.StagiaireRequestDTO;
 import com.ProjetILEIC.ILIEC.service.StagiaireService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +52,12 @@ public class StagiaireController {
     }
 
     //-----------------------------CREATE----------
-
-
+    //Create new stgiaire (only the SECRETAIRES are authorized to perform this action)
+    @PostMapping
+    @PreAuthorize("hasAuthority('SECRETAIRE')")
+    public ResponseEntity<StagiaireRequestDTO> createStagiaire(@RequestBody StagiaireRequestDTO request) {
+        StagiaireRequestDTO savedStagiaire = stagiaireService.createStagiaire(request);
+        return new ResponseEntity<>(savedStagiaire, HttpStatus.CREATED);
+    }
 
 }
