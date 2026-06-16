@@ -67,6 +67,15 @@ public class StagiaireService {
                 .collect(Collectors.toList());
     }
 
+    //GET BY CENTER AND FILIERE
+    @Transactional(readOnly = true)
+    public List<StagiaireDTO> getByCentreAndFiliere(Long centreId, Long filiereId) {
+        return stagiaireRepository.findByFiliere_IdAndCentre_Id(centreId , centreId)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
     // --- CREATE ---
 
     public StagiaireDTO createStagiaire(Stagiaire stagiaire, Long userId, Long centreId, Long filiereId) {
@@ -152,4 +161,6 @@ public class StagiaireService {
                 s.getStatus()
         );
     }
+
+
 }
