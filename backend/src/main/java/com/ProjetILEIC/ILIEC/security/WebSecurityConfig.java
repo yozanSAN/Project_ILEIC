@@ -81,7 +81,9 @@ public class WebSecurityConfig {
 
                 // 4. Define route access rules
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**","/welcome").permitAll() // Let anyone access signin/signup endpoints
+                        .requestMatchers("/api/auth/**","/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html").permitAll() // Let anyone access signin/signup endpoints and swagger UI
                         .anyRequest().authenticated()               // Everything else requires a valid token
                 );
 
