@@ -51,13 +51,29 @@ public class StagiaireController {
         return ResponseEntity.ok(stagiaireService.getStagiaireById(id));
     }
 
-    //-----------------------------CREATE----------
-    //Create new stgiaire (only the SECRETAIRES are authorized to perform this action)
+    //CREATE
+    // new stgiaire (only the SECRETAIRES are authorized to perform this action)
     @PostMapping
     @PreAuthorize("hasAuthority('SECRETAIRE')")
     public ResponseEntity<StagiaireRequestDTO> createStagiaire(@RequestBody StagiaireRequestDTO request) {
         StagiaireRequestDTO savedStagiaire = stagiaireService.createStagiaire(request);
         return new ResponseEntity<>(savedStagiaire, HttpStatus.CREATED);
+    }
+
+    //UPDATE
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('SECRETAIRE')")
+    public ResponseEntity<StagiaireDTO> updateStagiaire(@PathVariable Long id, @RequestBody StagiaireRequestDTO request) {
+        StagiaireDTO updated = stagiaireService.updateStagiaireFromDTO(id, request);
+        return ResponseEntity.ok(updated);
+    }
+
+    //DELETE
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('SECRETAIRE')")
+    public ResponseEntity<Void> deleteStagiaire(@PathVariable Long id) {
+        stagiaireService.deleteStagiaire(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
