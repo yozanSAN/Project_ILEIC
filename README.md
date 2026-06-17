@@ -61,6 +61,20 @@ A comprehensive full-stack web application designed to streamline school operati
 | APIs       | RESTful API with Spring Web                  |
 
 ---
+---
+
+## 🔌 API Documentation & Testing (Swagger)
+
+This project utilizes **Springdoc OpenAPI (Swagger)** to automatically generate dynamic, interactive documentation for all REST endpoints. This allows the frontend team to view DTO schemas, inspect endpoints, and execute live API requests directly from the browser.
+
+### How to Access the UI Locally:
+1. Ensure the Spring Boot backend application is running.
+2. Open your browser and navigate to:
+   👉 **[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)**
+
+### Notes for Frontend Integration:
+* **Authentication:** For guarded endpoints (e.g., creating stagiaires, recording notes), use the `Authorize` padlocks at the top right of the Swagger interface to append your JWT Bearer token (`Bearer <your_token>`).
+* **Live Schemas:** Scroll down to the **Schemas** section at the bottom of the page to inspect exact JSON blueprints for payloads like `StagiaireRequestDTO`, `NoteDTO`, etc.
 
 ## 💻 Getting Started
 
