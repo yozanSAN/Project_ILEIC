@@ -110,17 +110,34 @@ public class StagiaireService {
 
     // --- UPDATE ---
 
-    public StagiaireDTO updateStagiaire(Long id, Stagiaire updated) {
-        Stagiaire existing = findOrThrow(id);
+    public StagiaireDTO updateStagiaireFromDTO(Long id, StagiaireRequestDTO dto) {
+        Stagiaire existing = stagiaireRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Stagiaire not found with id: " + id));
 
-        existing.setBirthDate(updated.getBirthDate());
-        existing.setCin(updated.getCin());
-        existing.setPhone(updated.getPhone());
-        existing.setAddress(updated.getAddress());
-        existing.setStatus(updated.getStatus());
+        // Update fields from DTO
+        existing.setBirthDate(dto.getBirthDate());
+        existing.setCin(dto.getCin());
+        existing.setPhone(dto.getPhone());
+        existing.setAddress(dto.getAddress());
+        existing.setStatus(dto.getStatus());
+        existing.setRegistrationNumber(dto.getRegistrationNumber());
+
+        // Optionally update relations if they changed
+        if (!existing.getCentre().getId().equals(dto.getCentreId())) {
+            Centre centre = centreRepository.findById(dto.getCentreId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Centre not found: " + dto.getCentreId()));
+            existing.setCentre(centre);
+        }
+
+        if (!existing.getFiliere().getId().equals(dto.getFiliereId())) {
+            Filiere filiere = filiereRepository.findById(dto.getFiliereId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Filiere not found: " + dto.getFiliereId()));
+            existing.setFiliere(filiere);
+        }
 
         return toDTO(stagiaireRepository.save(existing));
     }
+
 
     // --- DELETE ---
 
