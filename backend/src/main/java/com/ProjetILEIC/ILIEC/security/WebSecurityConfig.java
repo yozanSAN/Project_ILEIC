@@ -1,6 +1,7 @@
 package com.ProjetILEIC.ILIEC.security;
 
 import com.ProjetILEIC.ILIEC.service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,8 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
+    @Value("${app.frontend.url}")
+    private String frontendUrl;
 
     private final CustomUserDetailsService customUserDetailsService;
     private final AuthEntryPointJwt authEntryPointJwt;
@@ -61,7 +64,7 @@ public class WebSecurityConfig {
                 // 1. Enable and configure CORS inside security
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:5173"));
+                    config.setAllowedOrigins(List.of(frontendUrl));
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
                     config.setAllowCredentials(true);
