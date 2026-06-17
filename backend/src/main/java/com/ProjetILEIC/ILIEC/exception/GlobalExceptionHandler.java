@@ -28,12 +28,44 @@ public class GlobalExceptionHandler {
         );
     }
 
+    //Handles cases where a resource already exists (e.g., duplicate email or registration number).
+    //Returns HTTP 409 Conflict.
+
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<Map<String, Object>> handleDuplicateResource(DuplicateResourceException ex) {
+        return new ResponseEntity<>(
+                Map.of(
+                        "status", HttpStatus.CONFLICT.value(),
+                        "error", "Conflict",
+                        "message", ex.getMessage(),
+                        "timestamp", LocalDateTime.now()
+                ),
+                HttpStatus.CONFLICT
+        );
+    }
+
+     //Handles invalid arguments passed to service methods (e.g., grades out of range).
+     //Returns HTTP 400 Bad Request.
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
+        return new ResponseEntity<>(
+                Map.of(
+                        "status", HttpStatus.BAD_REQUEST.value(),
+                        "error", "Bad Request",
+                        "message", ex.getMessage(),
+                        "timestamp", LocalDateTime.now()
+                ),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneral(Exception ex) {
-        // Log the real ugly error internally so you can debug it in your IDE console
+        // Log the real ugly error internally so you can debug it in the IDE console
         log.error("Internal server error caught: ", ex);
 
-        //Send a completely safe, generic message back to the frontend/client
+        //Send a completely safe, generic message back to the frontend
         return new ResponseEntity<>(
                 Map.of(
                         "status", HttpStatus.INTERNAL_SERVER_ERROR.value(),
