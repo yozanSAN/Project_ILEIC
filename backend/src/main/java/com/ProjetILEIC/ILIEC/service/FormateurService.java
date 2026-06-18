@@ -93,7 +93,6 @@ public class FormateurService {
     }
 
     // --- UPDATE ---
-
     public FormateurDTO updateFormateur(Long id, Formateur updated) {
         Formateur existing = findOrThrow(id);
 
