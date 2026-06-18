@@ -35,6 +35,7 @@ public class FormateurController {
         return ResponseEntity.ok(formateurService.getFormateurById(id));
     }
 
+    //CREATE a new FORMATEUR
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<FormateurDTO> createFormateur(@RequestBody FormateurRequestDTO dto) {
