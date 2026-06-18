@@ -1,6 +1,7 @@
 package com.ProjetILEIC.ILIEC.service;
 
 import com.ProjetILEIC.ILIEC.dto.FormateurDTO;
+import com.ProjetILEIC.ILIEC.dto.FormateurRequestDTO;
 import com.ProjetILEIC.ILIEC.entity.Centre;
 import com.ProjetILEIC.ILIEC.entity.Formateur;
 import com.ProjetILEIC.ILIEC.entity.User;
@@ -83,6 +84,13 @@ public class FormateurService {
 
         return toDTO(formateurRepository.save(formateur));
     }
+    // DTO-based create: calls existing createFormateur(Formateur, Long, List<Long>) for all validation
+    public FormateurDTO createFormateur(FormateurRequestDTO dto) {
+        Formateur formateur = new Formateur();
+        formateur.setSpeciality(dto.getSpeciality());
+        formateur.setHireDate(dto.getHireDate());
+        return createFormateur(formateur, dto.getUserId(), dto.getCentreIds());
+    }
 
     // --- UPDATE ---
 
@@ -93,6 +101,13 @@ public class FormateurService {
         existing.setHireDate(updated.getHireDate());
 
         return toDTO(formateurRepository.save(existing));
+    }
+    // DTO-based update: calls existing updateFormateur(Long, Formateur)
+    public FormateurDTO updateFormateur(Long id, FormateurRequestDTO dto) {
+        Formateur formateur = new Formateur();
+        formateur.setSpeciality(dto.getSpeciality());
+        formateur.setHireDate(dto.getHireDate());
+        return updateFormateur(id, formateur);
     }
 
     // Assign an additional centre to a formateur
