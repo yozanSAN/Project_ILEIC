@@ -1,5 +1,6 @@
 package com.ProjetILEIC.ILIEC.service;
 
+import com.ProjetILEIC.ILIEC.dto.NoteDTO;
 import com.ProjetILEIC.ILIEC.entity.Controle;
 import com.ProjetILEIC.ILIEC.entity.Note;
 import com.ProjetILEIC.ILIEC.entity.Stagiaire;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,9 +40,23 @@ public class NoteService {
 
     // --- READ ---
 
-    @Transactional(readOnly = true)
-    public List<Note> getNotesByStagiaire(Long stagiaireId) {
-        return noteRepository.findByStagiaire_Id(stagiaireId);
+    // Update list methods and add toDTO
+    public List<NoteDTO> getNotesByStagiaire(Long stagiaireId) {
+        return noteRepository.findByStagiaire_Id(stagiaireId)
+                .stream().map(this::toDTO).collect(Collectors.toList());
+    }
+    public NoteDTO toDTO(Note n) {
+        return new NoteDTO(
+                n.getId(),
+                n.getStagiaire().getId(),
+                n.getStagiaire().getUser().getFullName(),
+                n.getControle().getId(),
+                n.getControle().getTitle(),
+                n.getRecordedBy().getId(),
+                n.getRecordedBy().getFullName(),
+                n.getGradeValue(),
+                n.getRemarks()
+        );
     }
 
     @Transactional(readOnly = true)

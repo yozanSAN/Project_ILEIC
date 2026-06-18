@@ -1,5 +1,6 @@
 package com.ProjetILEIC.ILIEC.service;
 
+import com.ProjetILEIC.ILIEC.dto.PaymentDTO;
 import com.ProjetILEIC.ILIEC.entity.Payment;
 import com.ProjetILEIC.ILIEC.entity.Stagiaire;
 import com.ProjetILEIC.ILIEC.entity.User;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,10 +33,29 @@ public class PaymentService {
 
     // --- READ ---
 
-    @Transactional(readOnly = true)
-    public List<Payment> getPaymentsByStagiaire(Long stagiaireId) {
-        return paymentRepository.findByStagiaire_Id(stagiaireId);
+    // Update list methods and add toDTO
+    public List<PaymentDTO> getPaymentsByStagiaire(Long stagiaireId) {
+        return paymentRepository.findByStagiaire_Id(stagiaireId)
+                .stream().map(this::toDTO).collect(Collectors.toList());
     }
+
+    public PaymentDTO toDTO(Payment p) {
+        return new PaymentDTO(
+                p.getId(),
+                p.getStagiaire().getId(),
+                p.getStagiaire().getUser().getFullName(),
+                p.getMonth(),
+                p.getYear(),
+                p.getAmount(),
+                p.getPaymentDate(),
+                p.getPaymentMethod(),
+                p.getStatus(),
+                p.getReference(),
+                p.getRecordedBy().getId(),
+                p.getRecordedBy().getFullName()
+        );
+    }
+
 
     @Transactional(readOnly = true)
     public List<Payment> getPaymentsByYear(Long stagiaireId, Integer year) {

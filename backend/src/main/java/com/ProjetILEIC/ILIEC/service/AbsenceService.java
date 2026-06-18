@@ -1,5 +1,6 @@
 package com.ProjetILEIC.ILIEC.service;
 
+import com.ProjetILEIC.ILIEC.dto.AbsenceDTO;
 import com.ProjetILEIC.ILIEC.entity.Absence;
 import com.ProjetILEIC.ILIEC.entity.Cours;
 import com.ProjetILEIC.ILIEC.entity.Stagiaire;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -39,9 +41,25 @@ public class AbsenceService {
 
     // --- READ ---
 
-    @Transactional(readOnly = true)
-    public List<Absence> getAbsencesByStagiaire(Long stagiaireId) {
-        return absenceRepository.findByStagiaire_Id(stagiaireId);
+    // Update list methods and add toDTO
+    public List<AbsenceDTO> getAbsencesByStagiaire(Long stagiaireId) {
+        return absenceRepository.findByStagiaire_Id(stagiaireId)
+                .stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
+    public AbsenceDTO toDTO(Absence a) {
+        return new AbsenceDTO(
+                a.getId(),
+                a.getStagiaire().getId(),
+                a.getStagiaire().getUser().getFullName(),
+                a.getCours().getId(),
+                a.getCours().getName(),
+                a.getRecordedBy().getId(),
+                a.getRecordedBy().getFullName(),
+                a.getDate(),
+                a.getStatus(),
+                a.getRemarks()
+        );
     }
 
     @Transactional(readOnly = true)
