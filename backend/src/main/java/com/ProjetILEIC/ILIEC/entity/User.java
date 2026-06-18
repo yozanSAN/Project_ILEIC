@@ -34,6 +34,7 @@ public class User {
     private String email;
 
     @Column(name = "password_hash", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore // This prevents the field from ever being serialized to JSON
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
