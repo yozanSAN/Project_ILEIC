@@ -1,5 +1,7 @@
 package com.ProjetILEIC.ILIEC.service;
 
+import com.ProjetILEIC.ILIEC.dto.CoursDTO;
+import com.ProjetILEIC.ILIEC.dto.CoursRequestDTO;
 import com.ProjetILEIC.ILIEC.entity.Cours;
 import com.ProjetILEIC.ILIEC.entity.Filiere;
 import com.ProjetILEIC.ILIEC.exception.DuplicateResourceException;
@@ -48,6 +50,31 @@ public class CoursService {
 
         cours.setFiliere(filiere);
         return coursRepository.save(cours);
+    }
+    // DTO-based create: maps DTO → entity, reuses existing createCours(Cours, Long) for validation
+    public CoursDTO createCours(CoursRequestDTO dto) {
+        Cours cours = new Cours();
+        cours.setName(dto.getName());
+        cours.setCode(dto.getCode());
+        cours.setYearLevel(dto.getYearLevel());
+        cours.setSemester(dto.getSemester());
+        cours.setHoursTotal(dto.getHoursTotal());
+        return toDTO(createCours(cours, dto.getFiliereId()));
+    }
+
+    public CoursDTO toDTO(Cours c) {
+        return new CoursDTO(
+                c.getId(),
+                c.getCode(),
+                c.getName(),
+                c.getFiliere().getId(),
+                c.getFiliere().getName(),
+                c.getFiliere().getCentre().getId(),
+                c.getFiliere().getCentre().getName(),
+                c.getYearLevel(),
+                c.getSemester(),
+                c.getHoursTotal()
+        );
     }
 
     public void deleteCours(Long id) {
