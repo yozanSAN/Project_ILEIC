@@ -40,6 +40,7 @@ public class CoursController {
         return ResponseEntity.ok(coursService.toDTO(coursService.getCoursById(id)));
     }
 
+    //Create new COURS
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE', 'FORMATEUR')")
     public ResponseEntity<CoursDTO> createCours(@RequestBody CoursRequestDTO dto) {
