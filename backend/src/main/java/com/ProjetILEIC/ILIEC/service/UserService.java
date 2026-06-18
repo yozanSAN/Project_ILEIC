@@ -1,5 +1,6 @@
 package com.ProjetILEIC.ILIEC.service;
 
+import com.ProjetILEIC.ILIEC.dto.CreateUserRequestDTO;
 import com.ProjetILEIC.ILIEC.dto.UserDTO;
 import com.ProjetILEIC.ILIEC.entity.User;
 import com.ProjetILEIC.ILIEC.exception.DuplicateResourceException;
@@ -81,6 +82,24 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
+
+    // handle the DTO and convert it into a User entity
+    public UserDTO createUserFromDTO(CreateUserRequestDTO dto) {
+        if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
+            throw new DuplicateResourceException("Email already in use: " + dto.getEmail());
+        }
+
+        User user = new User();
+        user.setFullName(dto.getFullName());
+        user.setEmail(dto.getEmail());
+        // Hash the raw password from DTO
+        user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
+        user.setRole(dto.getRole());
+        user.setIsActive(dto.getIsActive() != null ? dto.getIsActive() : true);
+
+        return toDTO(userRepository.save(user));
+    }
+
 
     // --- DTO CONVERSION ---
 
