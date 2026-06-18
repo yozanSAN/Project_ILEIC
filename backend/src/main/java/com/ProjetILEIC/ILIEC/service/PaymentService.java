@@ -34,11 +34,73 @@ public class PaymentService {
 
     // --- READ ---
 
-    // Update list methods and add toDTO
+    @Transactional(readOnly = true)  // fix 1: was missing
     public List<PaymentDTO> getPaymentsByStagiaire(Long stagiaireId) {
         return paymentRepository.findByStagiaire_Id(stagiaireId)
-                .stream().map(this::toDTO).collect(Collectors.toList());
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public List<PaymentDTO> getPaymentsByYear(Long stagiaireId, Integer year) {
+        return paymentRepository.findByStagiaire_IdAndYear(stagiaireId, year)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isPaidForMonth(Long stagiaireId, Integer month, Integer year) {
+        return paymentRepository.existsByStagiaire_IdAndMonthAndYear(
+                stagiaireId, month, year);
+    }
+
+    // --- CREATE ---
+
+    public PaymentDTO recordPayment(PaymentRequestDTO dto) {  // fix 2: single DTO param
+        if (paymentRepository.existsByStagiaire_IdAndMonthAndYear(
+                dto.getStagiaireId(), dto.getMonth(), dto.getYear())) {
+            throw new DuplicateResourceException(
+                    "Payment already recorded for month " + dto.getMonth()
+                            + "/" + dto.getYear()
+                            + " for stagiaire " + dto.getStagiaireId());
+        }
+
+        Stagiaire stagiaire = stagiaireRepository.findById(dto.getStagiaireId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Stagiaire not found: " + dto.getStagiaireId()));
+
+        User recordedBy = userRepository.findById(dto.getRecordedById())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "User not found: " + dto.getRecordedById()));
+
+        Payment payment = new Payment();
+        payment.setStagiaire(stagiaire);
+        payment.setRecordedBy(recordedBy);
+        payment.setMonth(dto.getMonth());
+        payment.setYear(dto.getYear());
+        payment.setAmount(dto.getAmount());
+        payment.setPaymentDate(dto.getPaymentDate());   // fix 2: was missing
+        payment.setPaymentMethod(dto.getPaymentMethod());
+        payment.setStatus(dto.getStatus());              // fix 2: was missing
+        payment.setReference(dto.getReference());
+
+        return toDTO(paymentRepository.save(payment));
+    }
+
+    // --- UPDATE ---
+
+    public PaymentDTO updatePaymentStatus(Long id, String status) {
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Payment not found with id: " + id));
+
+        payment.setStatus(status);
+        return toDTO(paymentRepository.save(payment));
+    }
+
+    // --- DTO CONVERSION ---
 
     public PaymentDTO toDTO(Payment p) {
         return new PaymentDTO(
@@ -55,70 +117,5 @@ public class PaymentService {
                 p.getRecordedBy().getId(),
                 p.getRecordedBy().getFullName()
         );
-    }
-
-    @Transactional(readOnly = true)
-    public List<PaymentDTO> getPaymentsByYear(Long stagiaireId, Integer year) {
-        return paymentRepository.findByStagiaire_IdAndYear(stagiaireId, year)
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    public boolean isPaidForMonth(Long stagiaireId, Integer month, Integer year) {
-        return paymentRepository.existsByStagiaire_IdAndMonthAndYear(stagiaireId, month, year);
-    }
-
-    // --- CREATE ---
-    public PaymentDTO recordPayment(PaymentRequestDTO requestDTO, Long stagiaireId, Long recordedById) {
-
-        // 1. Business rule check (read directly from RequestDTO)
-        if (paymentRepository.existsByStagiaire_IdAndMonthAndYear(
-                stagiaireId, requestDTO.getMonth(), requestDTO.getYear())) {
-            throw new DuplicateResourceException("Payment already recorded...");
-        }
-
-        // 2. Convert incoming RequestDTO to database Entity
-        Payment payment = new Payment();
-        payment.setAmount(requestDTO.getAmount());
-        payment.setMonth(requestDTO.getMonth());
-        payment.setYear(requestDTO.getYear());
-        payment.setPaymentMethod(requestDTO.getPaymentMethod());
-        payment.setReference(requestDTO.getReference());
-
-        // 3. Fetch relationships
-        Stagiaire stagiaire = stagiaireRepository.findById(stagiaireId).orElseThrow(
-                () -> new ResourceNotFoundException("Stagiaire not found"));
-        User recordedBy = userRepository.findById(recordedById).orElseThrow(
-                () -> new ResourceNotFoundException("user not found"));
-
-        payment.setStagiaire(stagiaire);
-        payment.setRecordedBy(recordedBy);
-
-        // 4. Save to database
-        Payment savedPayment = paymentRepository.save(payment);
-
-        // 5. Convert saved Entity to the final outgoing PaymentDTO
-        return toDTO(savedPayment);
-    }
-
-    // --- UPDATE (mark as paid / change status) ---
-    public PaymentDTO updatePaymentStatus(Long id, String status) {
-        Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Payment not found with id: " + id));
-
-        payment.setStatus(status);
-        Payment updatedPayment = paymentRepository.save(payment);
-        return toDTO(updatedPayment); // 💡 Map to DTO before returning
-    }
-    private Payment toEntity(PaymentDTO dto) {
-        Payment payment = new Payment();
-        payment.setId(dto.getId());
-        payment.setAmount(dto.getAmount());
-        payment.setMonth(dto.getMonth());
-        payment.setYear(dto.getYear());
-        payment.setPaymentDate(dto.getPaymentDate());
-        return payment;
     }
 }
