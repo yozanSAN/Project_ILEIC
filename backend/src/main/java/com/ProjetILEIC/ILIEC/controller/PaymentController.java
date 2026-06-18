@@ -29,16 +29,16 @@ public class PaymentController {
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<PaymentDTO> recordPayment(
-            @RequestBody PaymentRequestDTO requestDTO,
-            @RequestParam Long stagiaireId,
-            @RequestParam Long recordedById) {
-        PaymentDTO response = paymentService.recordPayment(requestDTO,stagiaireId ,recordedById);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+            @RequestBody PaymentRequestDTO requestDTO) {
+        return new ResponseEntity<>(paymentService.recordPayment(requestDTO),
+                HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}/status")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
-    public ResponseEntity<PaymentDTO> updateStatus(@PathVariable Long id, @RequestParam String status) {
+    public ResponseEntity<PaymentDTO> updateStatus(
+            @PathVariable Long id,
+            @RequestParam String status) {
         return ResponseEntity.ok(paymentService.updatePaymentStatus(id, status));
     }
 }
