@@ -1,6 +1,7 @@
 package com.ProjetILEIC.ILIEC.service;
 
 import com.ProjetILEIC.ILIEC.dto.PaymentDTO;
+import com.ProjetILEIC.ILIEC.dto.PaymentRequestDTO;
 import com.ProjetILEIC.ILIEC.entity.Payment;
 import com.ProjetILEIC.ILIEC.entity.Stagiaire;
 import com.ProjetILEIC.ILIEC.entity.User;
@@ -56,10 +57,12 @@ public class PaymentService {
         );
     }
 
-
     @Transactional(readOnly = true)
-    public List<Payment> getPaymentsByYear(Long stagiaireId, Integer year) {
-        return paymentRepository.findByStagiaire_IdAndYear(stagiaireId, year);
+    public List<PaymentDTO> getPaymentsByYear(Long stagiaireId, Integer year) {
+        return paymentRepository.findByStagiaire_IdAndYear(stagiaireId, year)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -68,38 +71,54 @@ public class PaymentService {
     }
 
     // --- CREATE ---
+    public PaymentDTO recordPayment(PaymentRequestDTO requestDTO, Long stagiaireId, Long recordedById) {
 
-    public Payment recordPayment(Payment payment, Long stagiaireId, Long recordedById) {
-
-        // Step 1 — business rule: can't record the same month twice
+        // 1. Business rule check (read directly from RequestDTO)
         if (paymentRepository.existsByStagiaire_IdAndMonthAndYear(
-                stagiaireId, payment.getMonth(), payment.getYear())) {
-            throw new DuplicateResourceException(
-                    "Payment already recorded for month " + payment.getMonth()
-                    + "/" + payment.getYear() + " for stagiaire " + stagiaireId);
+                stagiaireId, requestDTO.getMonth(), requestDTO.getYear())) {
+            throw new DuplicateResourceException("Payment already recorded...");
         }
 
-        // Step 2 — fetch dependencies
-        Stagiaire stagiaire = stagiaireRepository.findById(stagiaireId)
-                .orElseThrow(() -> new ResourceNotFoundException("Stagiaire not found: " + stagiaireId));
+        // 2. Convert incoming RequestDTO to database Entity
+        Payment payment = new Payment();
+        payment.setAmount(requestDTO.getAmount());
+        payment.setMonth(requestDTO.getMonth());
+        payment.setYear(requestDTO.getYear());
+        payment.setPaymentMethod(requestDTO.getPaymentMethod());
+        payment.setReference(requestDTO.getReference());
 
-        User recordedBy = userRepository.findById(recordedById)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + recordedById));
+        // 3. Fetch relationships
+        Stagiaire stagiaire = stagiaireRepository.findById(stagiaireId).orElseThrow(
+                () -> new ResourceNotFoundException("Stagiaire not found"));
+        User recordedBy = userRepository.findById(recordedById).orElseThrow(
+                () -> new ResourceNotFoundException("user not found"));
 
-        // Step 3 — attach and save
         payment.setStagiaire(stagiaire);
         payment.setRecordedBy(recordedBy);
 
-        return paymentRepository.save(payment);
+        // 4. Save to database
+        Payment savedPayment = paymentRepository.save(payment);
+
+        // 5. Convert saved Entity to the final outgoing PaymentDTO
+        return toDTO(savedPayment);
     }
 
     // --- UPDATE (mark as paid / change status) ---
-
-    public Payment updatePaymentStatus(Long id, String status) {
+    public PaymentDTO updatePaymentStatus(Long id, String status) {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment not found with id: " + id));
 
         payment.setStatus(status);
-        return paymentRepository.save(payment);
+        Payment updatedPayment = paymentRepository.save(payment);
+        return toDTO(updatedPayment); // 💡 Map to DTO before returning
+    }
+    private Payment toEntity(PaymentDTO dto) {
+        Payment payment = new Payment();
+        payment.setId(dto.getId());
+        payment.setAmount(dto.getAmount());
+        payment.setMonth(dto.getMonth());
+        payment.setYear(dto.getYear());
+        payment.setPaymentDate(dto.getPaymentDate());
+        return payment;
     }
 }
