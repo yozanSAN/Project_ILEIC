@@ -1,6 +1,7 @@
 package com.ProjetILEIC.ILIEC.service;
 
 import com.ProjetILEIC.ILIEC.dto.SecretaryDTO;
+import com.ProjetILEIC.ILIEC.dto.SecretaryRequestDTO;
 import com.ProjetILEIC.ILIEC.entity.Centre;
 import com.ProjetILEIC.ILIEC.entity.User;
 import com.ProjetILEIC.ILIEC.entity.Secretary;
@@ -56,8 +57,9 @@ public class SecretaryService {
 
     // --- CREATE ---
 
-    public SecretaryDTO createSecretary(Long userId, Long centreId) {
-
+    public SecretaryDTO createSecretary(SecretaryRequestDTO requestDTO) {
+        Long userId = requestDTO.getUserId();
+        Long centreId = requestDTO.getCentreId();
         // Step 1 — check this user isn't already a secretary
         if (secretaryRepository.findByUser_Id(userId).isPresent()) {
             throw new DuplicateResourceException("User " + userId + " is already a secretary");
@@ -83,8 +85,22 @@ public class SecretaryService {
         return toDTO(secretaryRepository.save(newSecretary));
     }
 
-    // --- DELETE ---
+    //---UPDATE
+    public SecretaryDTO updateSecretary(Long id, SecretaryRequestDTO requestDTO) {
+        Secretary existing = findOrThrow(id);
 
+        // Fetch the new centre assignment
+        Centre newCentre = centreRepository.findById(requestDTO.getCentreId())
+                .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + requestDTO.getCentreId()));
+
+        // Note: Generally, you don't swap the underlying User account on a profile record,
+        // but if you do need to update the centre assignment, we handle it here:
+        existing.setCentre(newCentre);
+
+        return toDTO(secretaryRepository.save(existing));
+    }
+
+    // --- DELETE ---
     public void deleteSecretary(Long id) {
         if (!secretaryRepository.existsById(id)) {
             throw new ResourceNotFoundException("Secretary not found with id: " + id);
@@ -93,14 +109,12 @@ public class SecretaryService {
     }
 
     // --- HELPERS ---
-
     private Secretary findOrThrow(Long id) {
         return secretaryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Secretary not found with id: " + id));
     }
 
     // --- DTO CONVERSION ---
-
     public SecretaryDTO toDTO(Secretary s) {
         return new SecretaryDTO(
                 s.getId(),

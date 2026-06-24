@@ -5,13 +5,8 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SecretaryDTO {
+public class SecretaryRequestDTO {
 
-    private Long id;
     private Long userId;
-    private String fullName;
-    private String email;
-
     private Long centreId;
-    private String centreName;
 }
