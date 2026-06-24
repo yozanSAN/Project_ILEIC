@@ -11,12 +11,18 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class AbsenceDTO {
     private Long id;
+    // Stagiaire Details
     private Long stagiaireId;
     private String stagiaireFullName;
+
+    // Cours Details
     private Long coursId;
-    private String coursTitle;
+    private String coursName;
+
+    // Recorder Details
     private Long recordedById;
     private String recordedByFullName;
+
     private LocalDate date;
     private String status;
     private String remarks;
