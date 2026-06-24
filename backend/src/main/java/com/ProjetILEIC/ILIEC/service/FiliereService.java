@@ -41,7 +41,7 @@ public class FiliereService {
     }
 
     @Transactional(readOnly = true)
-    public List<FiliereDTO> getByCentre(Long centreId) {
+    public List<FiliereDTO> getFiliereByCentre(Long centreId) {
         return filiereRepository.findByCentre_Id(centreId).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
