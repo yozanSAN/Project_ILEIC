@@ -66,6 +66,4 @@ public class FiliereController {
         return ResponseEntity.noContent().build();
     }
 
-
-
 }
