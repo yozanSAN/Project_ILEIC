@@ -18,6 +18,7 @@ public class FiliereController {
     public FiliereController(FiliereService filiereService) {
         this.filiereService = filiereService;
     }
+
     // GET ALL ACADIMEC FILIERES
     @GetMapping
     public ResponseEntity<List<FiliereDTO>> getAllFilieres(){
@@ -29,4 +30,11 @@ public class FiliereController {
     public ResponseEntity<FiliereDTO> getFilieById(@PathVariable Long id){
         return ResponseEntity.ok(filiereService.getFiliereById(id));
     }
+
+    //RETRIEVE ALL FILIERES THAT BELONGS TO A SPECIFIC CRENTRE
+    @GetMapping("/centre/{centreId}")
+    public ResponseEntity<List<FiliereDTO>> getFiliereByCentre(@PathVariable Long centreId){
+            return ResponseEntity.ok(filiereService.getFiliereByCentre(centreId));
+    }
+
 }
