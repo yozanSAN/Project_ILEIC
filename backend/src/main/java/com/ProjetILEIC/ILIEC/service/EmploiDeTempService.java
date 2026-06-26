@@ -54,7 +54,6 @@ public class EmploiDeTempService {
     }
 
     // --- CREATE ---
-
     public EmploiDeTempDTO createScheduleSlot(EmploiDeTempRequestDTO requestDTO) {
         Centre centre = centreRepository.findById(requestDTO.getCentreId())
                 .orElseThrow(() -> new ResourceNotFoundException("Centre not found: " + requestDTO.getCentreId()));
@@ -68,12 +67,50 @@ public class EmploiDeTempService {
         Formateur formateur = formateurRepository.findById(requestDTO.getFormateurId())
                 .orElseThrow(() -> new ResourceNotFoundException("Formateur not found: " + requestDTO.getFormateurId()));
 
-        // OFPPT rule check: Enforce that the scheduled course matches the selected major/filiere
+        // Enforce that the scheduled course matches the selected filiere
         if (!cours.getFiliere().getId().equals(filiere.getId())) {
             throw new IllegalArgumentException("The selected course does not belong to this filiere");
         }
 
         EmploiDeTemp slot = new EmploiDeTemp();
+        slot.setCentre(centre);
+        slot.setFiliere(filiere);
+        slot.setCours(cours);
+        slot.setFormateur(formateur);
+        slot.setDayOfWeek(requestDTO.getDayOfWeek().toUpperCase());
+        slot.setStartTime(requestDTO.getStartTime());
+        slot.setEndTime(requestDTO.getEndTime());
+        slot.setRoom(requestDTO.getRoom());
+
+        return toDTO(emploiDeTempRepository.save(slot));
+    }
+
+    // ---UPDATE ---
+    // --- UPDATE ---
+
+    public EmploiDeTempDTO updateScheduleSlot(Long id, EmploiDeTempRequestDTO requestDTO) {
+        EmploiDeTemp slot = emploiDeTempRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Schedule slot not found with id: " + id));
+
+        // Fetch updated dependencies
+        Centre centre = centreRepository.findById(requestDTO.getCentreId())
+                .orElseThrow(() -> new ResourceNotFoundException("Centre not found: " + requestDTO.getCentreId()));
+
+        Filiere filiere = filiereRepository.findById(requestDTO.getFiliereId())
+                .orElseThrow(() -> new ResourceNotFoundException("Filiere not found: " + requestDTO.getFiliereId()));
+
+        Cours cours = coursRepository.findById(requestDTO.getCoursId())
+                .orElseThrow(() -> new ResourceNotFoundException("Cours not found: " + requestDTO.getCoursId()));
+
+        Formateur formateur = formateurRepository.findById(requestDTO.getFormateurId())
+                .orElseThrow(() -> new ResourceNotFoundException("Formateur not found: " + requestDTO.getFormateurId()));
+
+        // OFPPT rule check: Enforce that the updated course matches the updated major
+        if (!cours.getFiliere().getId().equals(filiere.getId())) {
+            throw new IllegalArgumentException("The selected course does not belong to this filiere");
+        }
+
+        // Apply new values
         slot.setCentre(centre);
         slot.setFiliere(filiere);
         slot.setCours(cours);
