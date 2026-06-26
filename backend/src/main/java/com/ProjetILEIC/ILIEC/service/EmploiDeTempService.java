@@ -124,7 +124,6 @@ public class EmploiDeTempService {
     }
 
     // --- DELETE ---
-
     public void deleteScheduleSlot(Long id) {
         if (!emploiDeTempRepository.existsById(id)) {
             throw new ResourceNotFoundException("Schedule slot not found with id: " + id);
