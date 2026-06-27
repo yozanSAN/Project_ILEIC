@@ -23,27 +23,30 @@ public class CenterController {
 
     //GET ALL CENTRES
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<List<CentreDTO>> getAllCentres() {
         return ResponseEntity.ok(centreService.getAllCentres());
     }
 
     //GET CENTRE BY ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<CentreDTO> getCentreById(@PathVariable Long id) {
         return ResponseEntity.ok(centreService.getCentreById(id));
     }
 
     //CREATE NEW CENTRE
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<CentreDTO> createCentre(@RequestBody CentreRequestDTO requestDTO) {
         CentreDTO created = centreService.createCentre(requestDTO);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
     //UPDATE INOFORMATIONS ABOUT A SPECIFIC CENTRE
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<CentreDTO> updateCentre(
             @PathVariable Long id,
             @Valid @RequestBody CentreRequestDTO requestDTO) {
@@ -51,8 +54,8 @@ public class CenterController {
     }
 
     //DELETE A SPECIFIC CENTRE
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Void> deleteCentre(@PathVariable Long id) {
         centreService.deleteCentre(id);
         return ResponseEntity.noContent().build();

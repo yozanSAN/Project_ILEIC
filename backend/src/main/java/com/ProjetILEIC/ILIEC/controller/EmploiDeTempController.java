@@ -23,18 +23,21 @@ public class EmploiDeTempController {
 
     // GET : retrieve the weekly schedule for a specific filiere
     @GetMapping("/filiere/{filiereId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE', 'FORMATEUR', 'STAGIAIRE')")
     public ResponseEntity<List<EmploiDeTempDTO>> getByFiliere(@PathVariable Long filiereId) {
         return ResponseEntity.ok(emploiDeTempService.getTimetableByFiliere(filiereId));
     }
 
     // GET : retrieve the schedule for a specific centre
     @GetMapping("/centre/{centreId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE', 'FORMATEUR', 'STAGIAIRE')")
     public ResponseEntity<List<EmploiDeTempDTO>> getByCentre(@PathVariable Long centreId) {
         return ResponseEntity.ok(emploiDeTempService.getTimetableByCentre(centreId));
     }
 
     // GET : retrieve the assigned schedule for a specific teacher(formateur)
     @GetMapping("/formateur/{formateurId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE', 'FORMATEUR', 'STAGIAIRE')")
     public ResponseEntity<List<EmploiDeTempDTO>> getByFormateur(@PathVariable Long formateurId) {
         return ResponseEntity.ok(emploiDeTempService.getTimetableByFormateur(formateurId));
     }

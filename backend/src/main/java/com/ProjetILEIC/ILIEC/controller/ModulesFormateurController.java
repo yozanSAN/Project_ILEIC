@@ -6,6 +6,7 @@ import com.ProjetILEIC.ILIEC.service.ModulesFormateurService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,18 +23,21 @@ public class ModulesFormateurController {
 
     // GET : retrieve all course modules assigned to a specific teacher
     @GetMapping("/formateur/{formateurId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<List<ModulesFormateurDTO>> getByFormateur(@PathVariable Long formateurId) {
         return ResponseEntity.ok(service.getAssignmentsByFormateur(formateurId));
     }
 
     // GET : retrieve all teachers assigned to teach a specific course module
     @GetMapping("/cours/{coursId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<List<ModulesFormateurDTO>> getByCours(@PathVariable Long coursId) {
         return ResponseEntity.ok(service.getAssignmentsByCours(coursId));
     }
 
     // POST : assign a course module to a teacher
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<ModulesFormateurDTO> assignModule(@Valid @RequestBody ModulesFormateurRequestDTO requestDTO) {
         ModulesFormateurDTO created = service.assignModule(requestDTO);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
@@ -41,6 +45,7 @@ public class ModulesFormateurController {
 
     // PUT : update a specific teacher module assignment parameters
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<ModulesFormateurDTO> updateAssignment(
             @PathVariable Long id,
             @Valid @RequestBody ModulesFormateurRequestDTO requestDTO) {
@@ -49,6 +54,7 @@ public class ModulesFormateurController {
 
     // DELETE : unassign a module from a teacher
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<Void> removeAssignment(@PathVariable Long id) {
         service.removeAssignment(id);
         return ResponseEntity.noContent().build();

@@ -22,18 +22,21 @@ public class FiliereController {
     //-------------------GET-----------------------
     // GET ALL ACADIMEC FILIERES
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE', 'FORMATEUR', 'STAGIAIRE')")
     public ResponseEntity<List<FiliereDTO>> getAllFilieres(){
         return ResponseEntity.ok(filiereService.getAllFilieres());
     }
 
     //RETRIEVE DETAILED INFORMATIONS FOR A SINGLE SPECIFIC FILIERE
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE', 'FORMATEUR', 'STAGIAIRE')")
     public ResponseEntity<FiliereDTO> getFilieById(@PathVariable Long id){
         return ResponseEntity.ok(filiereService.getFiliereById(id));
     }
 
     //RETRIEVE ALL FILIERES THAT BELONGS TO A SPECIFIC CRENTRE
     @GetMapping("/centre/{centreId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE', 'FORMATEUR', 'STAGIAIRE')")
     public ResponseEntity<List<FiliereDTO>> getFiliereByCentre(@PathVariable Long centreId){
             return ResponseEntity.ok(filiereService.getFiliereByCentre(centreId));
     }
