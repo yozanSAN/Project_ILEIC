@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -26,31 +27,29 @@ public class CoursService {
     }
 
     @Transactional(readOnly = true)
-    public List<Cours> getAllCours() {
-        return coursRepository.findAll();
+    public List<CoursDTO> getAllCours() {
+        return coursRepository.findAll()
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<Cours> getByFiliere(Long filiereId) {
-        return coursRepository.findByFiliere_Id(filiereId);
+    public List<CoursDTO> getByFiliere(Long filiereId) {
+        return coursRepository.findByFiliere_Id(filiereId)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public Cours getCoursById(Long id) {
+    public CoursDTO getCoursById(Long id) {
         return coursRepository.findById(id)
+                .map(this::toDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Cours not found with id: " + id));
     }
 
-    public Cours createCours(Cours cours, Long filiereId) {
-        if (coursRepository.existsByCode(cours.getCode())) {
-            throw new DuplicateResourceException("Cours code already exists: " + cours.getCode());
-        }
-        Filiere filiere = filiereRepository.findById(filiereId)
-                .orElseThrow(() -> new ResourceNotFoundException("Filiere not found with id: " + filiereId));
 
-        cours.setFiliere(filiere);
-        return coursRepository.save(cours);
-    }
     // DTO-based create: maps DTO → entity, reuses existing createCours(Cours, Long) for validation
     public CoursDTO createCours(CoursRequestDTO dto) {
         Cours cours = new Cours();
@@ -59,7 +58,19 @@ public class CoursService {
         cours.setYearLevel(dto.getYearLevel());
         cours.setSemester(dto.getSemester());
         cours.setHoursTotal(dto.getHoursTotal());
-        return toDTO(createCours(cours, dto.getFiliereId()));
+        Cours savedCours = saveAndValidateEntity(cours, dto.getFiliereId());
+        return toDTO(savedCours);
+    }
+    // PRIVATE HELPER: Kept private to protect raw entity mapping rules from escaping the service
+    private Cours saveAndValidateEntity(Cours cours, Long filiereId) {
+        if (coursRepository.existsByCode(cours.getCode())) {
+            throw new DuplicateResourceException("Cours code already exists: " + cours.getCode());
+        }
+        Filiere filiere = filiereRepository.findById(filiereId)
+                .orElseThrow(() -> new ResourceNotFoundException("Filiere not found with id: " + filiereId));
+
+        cours.setFiliere(filiere);
+        return coursRepository.save(cours);
     }
 
     public CoursDTO toDTO(Cours c) {

@@ -75,7 +75,7 @@ public class FormateurService {
 
         // Step 3 — business rule: user must have FORMATION role
         if (user.getRole() != User.Role.FORMATEUR) {
-            throw new IllegalArgumentException("User must have FORMATION role to be a formateur");
+            throw new IllegalArgumentException("User must have FORMATEUR role to be a formateur");
         }
 
         // Step 4 — attach and save

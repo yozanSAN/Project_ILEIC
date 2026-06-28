@@ -11,7 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/cours")
@@ -23,25 +22,18 @@ public class CoursController {
     // GET : retrieve all courses, or filter them by a specific major/filiere using an optional query parameter
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE', 'FORMATEUR', 'STAGIAIRE')")
-    public ResponseEntity<List<CoursDTO>> getAllCours(
-            @RequestParam(required = false) Long filiereId) {
-
-        List<CoursDTO> result = (filiereId != null
-                ? coursService.getByFiliere(filiereId)
-                : coursService.getAllCours())
-                .stream()
-                .map(coursService::toDTO)
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(result);
+    public ResponseEntity<List<CoursDTO>> getAllCours(@RequestParam(required = false) Long filiereId) {
+        if (filiereId != null) {
+            return ResponseEntity.ok(coursService.getByFiliere(filiereId));
+        }
+        return ResponseEntity.ok(coursService.getAllCours());
     }
 
     // GET : look up full details of a specific course module by its ID
-
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE', 'FORMATEUR', 'STAGIAIRE')")
     public ResponseEntity<CoursDTO> getCoursById(@PathVariable Long id) {
-        return ResponseEntity.ok(coursService.toDTO(coursService.getCoursById(id)));
+        return ResponseEntity.ok(coursService.getCoursById(id));
     }
 
     // POST : insert a brand new official course module into the academic syllabus catalog
