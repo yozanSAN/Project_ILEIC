@@ -3,6 +3,7 @@ package com.ProjetILEIC.ILIEC.controller;
 import com.ProjetILEIC.ILIEC.dto.SecretaryDTO;
 import com.ProjetILEIC.ILIEC.dto.SecretaryRequestDTO;
 import com.ProjetILEIC.ILIEC.service.SecretaryService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,7 +49,7 @@ public class SecretaireController {
     //Create a new secretary
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<SecretaryDTO> createSecretary(@RequestBody SecretaryRequestDTO requestDTO) {
+    public ResponseEntity<SecretaryDTO> createSecretary(@Valid @RequestBody SecretaryRequestDTO requestDTO) {
         SecretaryDTO created = secretaryService.createSecretary(requestDTO);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
@@ -59,7 +60,7 @@ public class SecretaireController {
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<SecretaryDTO> updateSecretary(
             @PathVariable Long id,
-            @RequestBody SecretaryRequestDTO requestDTO) {
+            @Valid @RequestBody SecretaryRequestDTO requestDTO) {
         return ResponseEntity.ok(secretaryService.updateSecretary(id, requestDTO));
     }
 

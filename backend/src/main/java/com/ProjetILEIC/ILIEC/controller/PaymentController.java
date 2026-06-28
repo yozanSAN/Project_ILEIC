@@ -3,6 +3,7 @@ package com.ProjetILEIC.ILIEC.controller;
 import com.ProjetILEIC.ILIEC.dto.PaymentDTO;
 import com.ProjetILEIC.ILIEC.dto.PaymentRequestDTO;
 import com.ProjetILEIC.ILIEC.service.PaymentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class PaymentController {
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<PaymentDTO> recordPayment(
-            @RequestBody PaymentRequestDTO requestDTO) {
+            @Valid @RequestBody PaymentRequestDTO requestDTO) {
         return new ResponseEntity<>(paymentService.recordPayment(requestDTO),
                 HttpStatus.CREATED);
     }

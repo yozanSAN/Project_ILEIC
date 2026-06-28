@@ -29,13 +29,14 @@ public class UserController {
     }
 
 
-    // endpoint to list users.
+    // endpoint to list all users.
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
+    // get a user b ID
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {

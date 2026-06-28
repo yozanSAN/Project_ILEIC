@@ -3,6 +3,7 @@ package com.ProjetILEIC.ILIEC.controller;
 import com.ProjetILEIC.ILIEC.dto.CoursDTO;
 import com.ProjetILEIC.ILIEC.dto.CoursRequestDTO;
 import com.ProjetILEIC.ILIEC.service.CoursService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class CoursController {
     // POST : insert a brand new official course module into the academic syllabus catalog
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
-    public ResponseEntity<CoursDTO> createCours(@RequestBody CoursRequestDTO dto) {
+    public ResponseEntity<CoursDTO> createCours(@Valid @RequestBody CoursRequestDTO dto) {
         return new ResponseEntity<>(coursService.createCours(dto), HttpStatus.CREATED);
     }
 

@@ -3,6 +3,7 @@ package com.ProjetILEIC.ILIEC.controller;
 import com.ProjetILEIC.ILIEC.dto.ControleDTO;
 import com.ProjetILEIC.ILIEC.dto.ControleRequestDTO;
 import com.ProjetILEIC.ILIEC.service.ControleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class ControleController {
     // Create a new controle/exam
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE', 'FORMATEUR')")
-    public ResponseEntity<ControleDTO> createControle(@RequestBody ControleRequestDTO dto) {
+    public ResponseEntity<ControleDTO> createControle(@Valid @RequestBody ControleRequestDTO dto) {
         return new ResponseEntity<>(controleService.createControle(dto), HttpStatus.CREATED);
     }
 
@@ -48,7 +49,7 @@ public class ControleController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE', 'FORMATEUR')")
     public ResponseEntity<ControleDTO> updateControle(
             @PathVariable Long id,
-            @RequestBody ControleRequestDTO dto) {
+            @Valid @RequestBody ControleRequestDTO dto) {
         return ResponseEntity.ok(controleService.updateControle(id, dto));
     }
 

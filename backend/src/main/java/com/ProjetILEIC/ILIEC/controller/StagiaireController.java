@@ -3,6 +3,7 @@ package com.ProjetILEIC.ILIEC.controller;
 import com.ProjetILEIC.ILIEC.dto.StagiaireDTO;
 import com.ProjetILEIC.ILIEC.dto.StagiaireRequestDTO;
 import com.ProjetILEIC.ILIEC.service.StagiaireService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -55,7 +56,7 @@ public class StagiaireController {
     // new stgiaire (only the SECRETAIRES are authorized to perform this action)
     @PostMapping
     @PreAuthorize("hasAuthority('SECRETAIRE')")
-    public ResponseEntity<StagiaireRequestDTO> createStagiaire(@RequestBody StagiaireRequestDTO request) {
+    public ResponseEntity<StagiaireRequestDTO> createStagiaire(@Valid @RequestBody StagiaireRequestDTO request) {
         StagiaireRequestDTO savedStagiaire = stagiaireService.createStagiaire(request);
         return new ResponseEntity<>(savedStagiaire, HttpStatus.CREATED);
     }
@@ -63,7 +64,7 @@ public class StagiaireController {
     //UPDATE
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('SECRETAIRE')")
-    public ResponseEntity<StagiaireDTO> updateStagiaire(@PathVariable Long id, @RequestBody StagiaireRequestDTO request) {
+    public ResponseEntity<StagiaireDTO> updateStagiaire(@PathVariable Long id, @Valid @RequestBody StagiaireRequestDTO request) {
         StagiaireDTO updated = stagiaireService.updateStagiaireFromDTO(id, request);
         return ResponseEntity.ok(updated);
     }

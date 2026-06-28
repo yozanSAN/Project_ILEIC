@@ -3,6 +3,7 @@ package com.ProjetILEIC.ILIEC.controller;
 import com.ProjetILEIC.ILIEC.dto.FormateurDTO;
 import com.ProjetILEIC.ILIEC.dto.FormateurRequestDTO;
 import com.ProjetILEIC.ILIEC.service.FormateurService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class FormateurController {
     //CREATE a new FORMATEUR
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
-    public ResponseEntity<FormateurDTO> createFormateur(@RequestBody FormateurRequestDTO dto) {
+    public ResponseEntity<FormateurDTO> createFormateur(@Valid @RequestBody FormateurRequestDTO dto) {
         return new ResponseEntity<>(formateurService.createFormateur(dto), HttpStatus.CREATED);
     }
 
@@ -46,7 +47,7 @@ public class FormateurController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<FormateurDTO> updateFormateur(
             @PathVariable Long id,
-            @RequestBody FormateurRequestDTO dto) {
+            @Valid @RequestBody FormateurRequestDTO dto) {
         return ResponseEntity.ok(formateurService.updateFormateur(id, dto));
     }
 

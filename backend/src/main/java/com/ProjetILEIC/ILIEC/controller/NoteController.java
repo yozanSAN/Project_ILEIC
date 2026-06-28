@@ -3,6 +3,7 @@ package com.ProjetILEIC.ILIEC.controller;
 import com.ProjetILEIC.ILIEC.dto.NoteDTO;
 import com.ProjetILEIC.ILIEC.dto.NoteRequestDTO;
 import com.ProjetILEIC.ILIEC.service.NoteService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class NoteController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE', 'FORMATEUR')")
-    public ResponseEntity<NoteDTO> createNote(@RequestBody NoteRequestDTO dto) {
+    public ResponseEntity<NoteDTO> createNote(@Valid @RequestBody NoteRequestDTO dto) {
         return new ResponseEntity<>(noteService.createNote(dto), HttpStatus.CREATED);
     }
 
@@ -50,7 +51,7 @@ public class NoteController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE', 'FORMATEUR')")
     public ResponseEntity<NoteDTO> updateNote(
             @PathVariable Long id,
-            @RequestBody NoteRequestDTO dto) {
+            @Valid @RequestBody NoteRequestDTO dto) {
         return ResponseEntity.ok(noteService.updateNote(id, dto));
     }
 }

@@ -3,6 +3,7 @@ package com.ProjetILEIC.ILIEC.controller;
 import com.ProjetILEIC.ILIEC.dto.FiliereDTO;
 import com.ProjetILEIC.ILIEC.dto.FiliereRequestDTO;
 import com.ProjetILEIC.ILIEC.service.FiliereService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,7 +46,7 @@ public class FiliereController {
     // Creates a new filiere record.
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
-    public ResponseEntity<FiliereDTO>createFiliere(@RequestBody FiliereRequestDTO requestDTO){
+    public ResponseEntity<FiliereDTO>createFiliere(@Valid @RequestBody FiliereRequestDTO requestDTO){
         FiliereDTO created = filiereService.createFiliere(requestDTO);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
@@ -56,7 +57,7 @@ public class FiliereController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<FiliereDTO> updateFiliere(
             @PathVariable Long id,
-            @RequestBody FiliereRequestDTO requestDTO) {
+            @Valid @RequestBody FiliereRequestDTO requestDTO) {
         return ResponseEntity.ok(filiereService.updateFiliere(id, requestDTO));
     }
 
