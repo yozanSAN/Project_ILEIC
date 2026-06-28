@@ -56,8 +56,8 @@ public class StagiaireController {
     // new stgiaire (only the SECRETAIRES are authorized to perform this action)
     @PostMapping
     @PreAuthorize("hasAuthority('SECRETAIRE')")
-    public ResponseEntity<StagiaireRequestDTO> createStagiaire(@Valid @RequestBody StagiaireRequestDTO request) {
-        StagiaireRequestDTO savedStagiaire = stagiaireService.createStagiaire(request);
+    public ResponseEntity<StagiaireDTO> createStagiaire(@Valid @RequestBody StagiaireRequestDTO request) {
+        StagiaireDTO savedStagiaire = stagiaireService.createStagiaire(request);
         return new ResponseEntity<>(savedStagiaire, HttpStatus.CREATED);
     }
 

@@ -78,7 +78,7 @@ public class StagiaireService {
     }
 
     // Create
-    public StagiaireRequestDTO createStagiaire(StagiaireRequestDTO dto) {
+    public StagiaireDTO createStagiaire(StagiaireRequestDTO dto) {
         if (stagiaireRepository.existsByRegistrationNumber(dto.getRegistrationNumber())) {
             throw new DuplicateResourceException("Registration number already exists: " + dto.getRegistrationNumber());
         }
@@ -105,7 +105,7 @@ public class StagiaireService {
 
         Stagiaire savedStagiaire = stagiaireRepository.save(stagiaire);
 
-        return toRequestDTO(savedStagiaire);
+        return toDTO(savedStagiaire);
     }
 
     // --- UPDATE ---
