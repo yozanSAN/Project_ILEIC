@@ -1,8 +1,9 @@
 package com.ProjetILEIC.ILIEC.controller;
 
-import com.ProjetILEIC.ILIEC.dto.CreateUserRequestDTO;
 import com.ProjetILEIC.ILIEC.dto.UserDTO;
+import com.ProjetILEIC.ILIEC.dto.UserRequestDTO;
 import com.ProjetILEIC.ILIEC.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +19,6 @@ public class UserController {
 
     private final UserService userService;
 
-
-     //Create a new user account.
-     //Gated to ADMIN and SECRETAIRE roles.
-    @PostMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
-    public ResponseEntity<UserDTO> createUser(@RequestBody CreateUserRequestDTO requestDTO) {
-        UserDTO createdUser = userService.createUserFromDTO(requestDTO);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-    }
-
-
     // endpoint to list all users.
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
@@ -41,5 +31,19 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    //Create a new user account.
+    //Gated to ADMIN and SECRETAIRE roles.
+    @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserRequestDTO request) {
+        return new ResponseEntity<>(userService.createUser(request), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequestDTO request) {
+        return ResponseEntity.ok(userService.updateUser(id, request));
     }
 }
