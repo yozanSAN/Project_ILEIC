@@ -38,7 +38,7 @@ public class CenterController {
     //CREATE NEW CENTRE
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<CentreDTO> createCentre(@RequestBody CentreRequestDTO requestDTO) {
+    public ResponseEntity<CentreDTO> createCentre(@Valid @RequestBody CentreRequestDTO requestDTO) {
         CentreDTO created = centreService.createCentre(requestDTO);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
