@@ -42,6 +42,9 @@ public class User {
     @Column(name = "role", nullable = false)
     private Role role;
 
+    @Column(name = "phone", length = 20)
+    private String phone;
+
     @Column(name = "is_active")
     private Boolean isActive = true;
 

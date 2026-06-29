@@ -27,5 +27,9 @@ public class UserRequestDTO {
     @NotNull(message = "User role is required")
     private User.Role role;
 
+    @NotBlank(message = "Phone number is required")
+    @Size(max = 20, message = "Phone number must not exceed 20 characters")
+    private String phone;
+
     private Boolean isActive = true; // Defaults to true if missing
 }

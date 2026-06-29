@@ -49,6 +49,7 @@ public class UserService {
         user.setFullName(dto.getFullName());
         user.setEmail(dto.getEmail());
         user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
+        user.setPhone(dto.getPhone());
         user.setRole(dto.getRole());
         user.setIsActive(dto.getIsActive() != null ? dto.getIsActive() : true);
 
@@ -83,7 +84,6 @@ public class UserService {
     }
 
     // --- DELETE ---
-
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
             throw new ResourceNotFoundException("User not found with id: " + id);
@@ -92,7 +92,6 @@ public class UserService {
     }
 
     // --- DTO CONVERSION ---
-
     public UserDTO toDTO(User user) {
         if (user == null) return null;
         return new UserDTO(
@@ -100,6 +99,7 @@ public class UserService {
                 user.getFullName(),
                 user.getEmail(),
                 user.getRole(),
+                user.getPhone(),
                 user.getIsActive(),
                 user.getCreatedAt()
         );
