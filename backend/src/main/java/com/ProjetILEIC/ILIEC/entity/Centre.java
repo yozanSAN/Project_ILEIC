@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "centre")
 
@@ -29,4 +31,10 @@ public class Centre {
 
     @Column(length = 150)
     private String email;
+
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
+
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 }

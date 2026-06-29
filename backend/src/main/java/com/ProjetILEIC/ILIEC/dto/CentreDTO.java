@@ -11,4 +11,5 @@ public class CentreDTO {
     private String address;
     private String phone;
     private String email;
+    private Boolean isActive;
 }

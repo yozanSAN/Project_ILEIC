@@ -41,6 +41,7 @@ public class CentreService {
         centre.setAddress(requestDTO.getAddress());
         centre.setPhone(requestDTO.getPhone());
         centre.setEmail(requestDTO.getEmail());
+        centre.setIsActive(requestDTO.getIsActive());
 
         Centre savedCentre = centreRepository.save(centre);
         return convertToDTO(savedCentre);
@@ -55,16 +56,17 @@ public class CentreService {
         existing.setAddress(requestDTO.getAddress());
         existing.setPhone(requestDTO.getPhone());
         existing.setEmail(requestDTO.getEmail());
+        existing.setIsActive(requestDTO.getIsActive());
 
         Centre updatedCentre = centreRepository.save(existing);
         return convertToDTO(updatedCentre);
     }
 
     public void deleteCentre(Long id) {
-        if (!centreRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Centre not found with id: " + id);
-        }
-        centreRepository.deleteById(id);
+        Centre centre = centreRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + id));
+        centre.setIsActive(false);
+        centreRepository.save(centre);
     }
 
     // Helper method to cleanly convert Entity -> Outgoing DTO
@@ -75,6 +77,7 @@ public class CentreService {
         dto.setAddress(centre.getAddress());
         dto.setPhone(centre.getPhone());
         dto.setEmail(centre.getEmail());
+        dto.setIsActive(centre.getIsActive());
         return dto;
     }
 }
