@@ -40,9 +40,6 @@ public class Stagiaire {
     @Column(length = 50)
     private String cin;
 
-    @Column(length = 30)
-    private String phone;
-
     @Column(length = 255)
     private String address;
 

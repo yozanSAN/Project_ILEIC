@@ -9,6 +9,7 @@ import jakarta.validation.constraints.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class StagiaireRequestDTO {
     @NotBlank(message = "Registration number is required")
     @Size(max = 50, message = "Registration number must not exceed 50 characters")
@@ -21,10 +22,6 @@ public class StagiaireRequestDTO {
     @NotBlank(message = "CIN is required")
     @Size(max = 20, message = "CIN must not exceed 20 characters")
     private String cin;
-
-    @NotBlank(message = "Phone number is required")
-    @Size(max = 20, message = "Phone number must not exceed 20 characters")
-    private String phone;
 
     @NotBlank(message = "Address is required")
     @Size(max = 255, message = "Address must not exceed 255 characters")

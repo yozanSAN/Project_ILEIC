@@ -12,6 +12,7 @@ import com.ProjetILEIC.ILIEC.repository.CentreRepository;
 import com.ProjetILEIC.ILIEC.repository.FiliereRepository;
 import com.ProjetILEIC.ILIEC.repository.StagiaireRepository;
 import com.ProjetILEIC.ILIEC.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+
 public class StagiaireService {
 
     private final StagiaireRepository stagiaireRepository;
@@ -95,7 +97,6 @@ public class StagiaireService {
         stagiaire.setRegistrationNumber(dto.getRegistrationNumber());
         stagiaire.setBirthDate(dto.getBirthDate());
         stagiaire.setCin(dto.getCin());
-        stagiaire.setPhone(dto.getPhone());
         stagiaire.setAddress(dto.getAddress());
         stagiaire.setEnrollmentDate(dto.getEnrollmentDate());
         stagiaire.setStatus(dto.getStatus());
@@ -117,7 +118,6 @@ public class StagiaireService {
         // Update fields from DTO
         existing.setBirthDate(dto.getBirthDate());
         existing.setCin(dto.getCin());
-        existing.setPhone(dto.getPhone());
         existing.setAddress(dto.getAddress());
         existing.setStatus(dto.getStatus());
         existing.setRegistrationNumber(dto.getRegistrationNumber());
@@ -163,6 +163,7 @@ public class StagiaireService {
                 s.getUser().getId(),
                 s.getUser().getFullName(),
                 s.getUser().getEmail(),
+                s.getUser().getPhone(),
                 s.getCentre().getId(),
                 s.getCentre().getName(),
                 s.getFiliere().getId(),
@@ -170,7 +171,6 @@ public class StagiaireService {
                 s.getRegistrationNumber(),
                 s.getBirthDate(),
                 s.getCin(),
-                s.getPhone(),
                 s.getAddress(),
                 s.getEnrollmentDate(),
                 s.getStatus()
@@ -182,7 +182,6 @@ public class StagiaireService {
                 s.getRegistrationNumber(),
                 s.getBirthDate(),
                 s.getCin(),
-                s.getPhone(),
                 s.getAddress(),
                 s.getEnrollmentDate(),
                 s.getStatus(),
