@@ -155,6 +155,7 @@ public class FormateurService {
                 f.getUser().getId(),
                 f.getUser().getFullName(),
                 f.getUser().getEmail(),
+                f.getUser().getPhone(),
                 f.getSpeciality(),
                 f.getHireDate(),
                 centreNames

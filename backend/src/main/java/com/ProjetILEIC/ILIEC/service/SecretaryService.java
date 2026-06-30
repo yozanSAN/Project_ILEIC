@@ -121,6 +121,7 @@ public class SecretaryService {
                 s.getUser().getId(),
                 s.getUser().getFullName(),
                 s.getUser().getEmail(),
+                s.getUser().getPhone(),
                 s.getCentre().getId(),
                 s.getCentre().getName()
         );
