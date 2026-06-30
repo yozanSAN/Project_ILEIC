@@ -35,6 +35,12 @@ public class Centre {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
+    @Setter(lombok.AccessLevel.NONE)
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }
