@@ -34,16 +34,31 @@ public class UserController {
     }
 
     //Create a new user account.
-    //Gated to ADMIN and SECRETAIRE roles.
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN',SECRETAIRE)")
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserRequestDTO request) {
         return new ResponseEntity<>(userService.createUser(request), HttpStatus.CREATED);
     }
 
+    //UPDATE A USER
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN','SECRETAIRE')")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequestDTO request) {
         return ResponseEntity.ok(userService.updateUser(id, request));
     }
+
+    //DEACTIVATE A USER
+    @PatchMapping("/{id}/deactivate")
+    public ResponseEntity<Void> deactivateUser(@PathVariable Long id) {
+        userService.deactivateUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    //ACTIVATE A USER
+    @PatchMapping("/{id}/activate")
+    public ResponseEntity<Void> activateUser(@PathVariable Long id) {
+        userService.activateUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
