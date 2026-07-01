@@ -7,6 +7,8 @@ import com.ProjetILEIC.ILIEC.entity.Formateur;
 import com.ProjetILEIC.ILIEC.entity.User;
 import com.ProjetILEIC.ILIEC.exception.DuplicateResourceException;
 import com.ProjetILEIC.ILIEC.exception.ResourceNotFoundException;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 import com.ProjetILEIC.ILIEC.repository.CentreRepository;
 import com.ProjetILEIC.ILIEC.repository.FormateurRepository;
 import com.ProjetILEIC.ILIEC.repository.UserRepository;
@@ -116,35 +118,47 @@ public class FormateurService {
         Centre centre = centreRepository.findById(centreId)
                 .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + centreId));
 
-        // Business rule: don't add the same centre twice
         boolean alreadyAssigned = formateur.getCentres().stream()
                 .anyMatch(c -> c.getId().equals(centreId));
         if (alreadyAssigned) {
             throw new DuplicateResourceException("Formateur already assigned to centre: " + centreId);
         }
-
         formateur.getCentres().add(centre);
         return toDTO(formateurRepository.save(formateur));
     }
 
-    // --- DELETE ---
+    // --- SOFT DELETE ---
+    public void deactivateFormateur(Long id) {
+        Formateur formateur = formateurRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Formateur not found with id: " + id));
 
-    public void deleteFormateur(Long id) {
-        if (!formateurRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Formateur not found with id: " + id);
-        }
-        formateurRepository.deleteById(id);
+        // Toggle the status flag to soft-delete
+        formateur.getUser().setIsActive(false);
+        formateurRepository.save(formateur);
+    }
+
+    @Transactional
+    public void removeFormateurFromCentre(Long formateurId, Long centreId) {
+        Formateur formateur = formateurRepository.findById(formateurId)
+                .orElseThrow(() -> new ResourceNotFoundException("Formateur not found with id: " + formateurId));
+
+        //find the target centre inside the formateur list of centres
+        Centre centreToRemove = formateur.getCentres().stream()
+                .filter(c -> c.getId().equals(centreId))
+                        .findFirst()
+                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Formateur is not assigned to this centre"));
+        // Break the association
+        formateur.getCentres().remove(centreToRemove);
+        formateurRepository.save(formateur);
     }
 
     // --- HELPERS ---
-
     private Formateur findOrThrow(Long id) {
         return formateurRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Formateur not found with id: " + id));
     }
 
     // --- DTO CONVERSION ---
-
     public FormateurDTO toDTO(Formateur f) {
         List<String> centreNames = f.getCentres().stream()
                 .map(Centre::getName)

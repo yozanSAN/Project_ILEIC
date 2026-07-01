@@ -51,6 +51,7 @@ public class FormateurController {
         return ResponseEntity.ok(formateurService.updateFormateur(id, dto));
     }
 
+    //CREATE NEW FORMATEUR
     @PostMapping("/{id}/centres/{centreId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<FormateurDTO> assignCentre(
@@ -59,10 +60,23 @@ public class FormateurController {
         return ResponseEntity.ok(formateurService.assignCentre(id, centreId));
     }
 
+    //SOFT DELETE
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deleteFormateur(@PathVariable Long id) {
-        formateurService.deleteFormateur(id);
+    @PreAuthorize("hasAuthority('ADMIN','SECRETAIRE')")
+    public ResponseEntity<Void> deactivateFormateur(@PathVariable Long id) {
+        formateurService.deactivateFormateur(id);
         return ResponseEntity.noContent().build();
     }
+
+    //REMOVE A FORMATEUR FORM A CENTRE
+    @DeleteMapping("/{id}/centres/{centreId}")
+    @PreAuthorize("hasAuthority('ADMIN','SECRETAIRE)")
+    public ResponseEntity<Void> removeFormateurFromCentre(
+            @PathVariable("id") Long id,
+            @PathVariable("centreId") Long centreId) {
+
+        formateurService.removeFormateurFromCentre(id, centreId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
