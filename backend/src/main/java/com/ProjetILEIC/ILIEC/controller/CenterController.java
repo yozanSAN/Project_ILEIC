@@ -44,7 +44,6 @@ public class CenterController {
     }
 
     //UPDATE INOFORMATIONS ABOUT A SPECIFIC CENTRE
-
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<CentreDTO> updateCentre(
@@ -53,11 +52,19 @@ public class CenterController {
         return ResponseEntity.ok(centreService.updateCentre(id, requestDTO));
     }
 
-    //DELETE A SPECIFIC CENTRE
-    @DeleteMapping("/{id}")
+    //DEACTIVATE A SPECIFIC CENTRE
+    @PatchMapping("/{id}/deactivate")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<Void> deleteCentre(@PathVariable Long id) {
-        centreService.deleteCentre(id);
+    public ResponseEntity<Void> deactivateCentre(@PathVariable Long id) {
+        centreService.deactivateCentre(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    //ACTIVATE A SPECIFIC CENTRE
+    @PatchMapping("/{id}/activate")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<Void> activateCentre(@PathVariable Long id) {
+        centreService.activateCentre(id);
         return ResponseEntity.noContent().build();
     }
 }

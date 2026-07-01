@@ -62,10 +62,19 @@ public class CentreService {
         return convertToDTO(updatedCentre);
     }
 
-    public void deleteCentre(Long id) {
+    public void deactivateCentre(Long id) {
         Centre centre = centreRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + id));
+
         centre.setIsActive(false);
+        centreRepository.save(centre);
+    }
+
+    public void activateCentre(Long id) {
+        Centre centre = centreRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + id));
+
+        centre.setIsActive(true);
         centreRepository.save(centre);
     }
 
