@@ -19,7 +19,7 @@ public class UserController {
 
     private final UserService userService;
 
-    // endpoint to list all users.
+    // to list all users.
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
@@ -42,13 +42,14 @@ public class UserController {
 
     //UPDATE A USER
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN','SECRETAIRE')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequestDTO request) {
         return ResponseEntity.ok(userService.updateUser(id, request));
     }
 
     //DEACTIVATE A USER
     @PatchMapping("/{id}/deactivate")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> deactivateUser(@PathVariable Long id) {
         userService.deactivateUser(id);
         return ResponseEntity.noContent().build();
@@ -56,6 +57,7 @@ public class UserController {
 
     //ACTIVATE A USER
     @PatchMapping("/{id}/activate")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> activateUser(@PathVariable Long id) {
         userService.activateUser(id);
         return ResponseEntity.noContent().build();
