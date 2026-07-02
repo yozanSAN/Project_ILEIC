@@ -74,7 +74,6 @@ public class FormateurController {
     public ResponseEntity<Void> removeFormateurFromCentre(
             @PathVariable("id") Long id,
             @PathVariable("centreId") Long centreId) {
-
         formateurService.removeFormateurFromCentre(id, centreId);
         return ResponseEntity.noContent().build();
     }
