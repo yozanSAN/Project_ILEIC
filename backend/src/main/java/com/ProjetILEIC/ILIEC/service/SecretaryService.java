@@ -60,24 +60,29 @@ public class SecretaryService {
     public SecretaryDTO createSecretary(SecretaryRequestDTO requestDTO) {
         Long userId = requestDTO.getUserId();
         Long centreId = requestDTO.getCentreId();
-        // Step 1 — check this user isn't already a secretary
+        //  1 — check this user isn't already a secretary
         if (secretaryRepository.findByUser_Id(userId).isPresent()) {
             throw new DuplicateResourceException("User " + userId + " is already a secretary");
         }
 
-        // Step 2 — fetch dependencies
+        // 2 — check if the centre already has a secretary
+        if (secretaryRepository.findByCentre_Id(centreId).size() > 0) {
+            throw new DuplicateResourceException("Centre " + centreId + " already has a secretary assigned");
+        }
+
+        //  3 — fetch dependencies
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
 
         Centre centre = centreRepository.findById(centreId)
                 .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + centreId));
 
-        // Step 3 — business rule: user must have SECRETAIRE role
+        // 4 — business rule: user must have SECRETAIRE role
         if (user.getRole() != User.Role.SECRETAIRE) {
             throw new IllegalArgumentException("User must have SECRETAIRE role to be a secretary");
         }
 
-        // Step 4 — build and save
+        //  5 — build and save
         Secretary newSecretary = new Secretary();
         newSecretary.setUser(user);
         newSecretary.setCentre(centre);
@@ -87,8 +92,13 @@ public class SecretaryService {
 
     //---UPDATE
     public SecretaryDTO updateSecretary(Long id, SecretaryRequestDTO requestDTO) {
+        Long centreId = requestDTO.getCentreId();
         Secretary existing = findOrThrow(id);
 
+        // 2 — check if the centre already has a secretary
+        if (secretaryRepository.findByCentre_Id(centreId).size() > 0) {
+            throw new DuplicateResourceException("Centre " + centreId + " already has a secretary assigned");
+        }
         // Fetch the new centre assignment
         Centre newCentre = centreRepository.findById(requestDTO.getCentreId())
                 .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + requestDTO.getCentreId()));
