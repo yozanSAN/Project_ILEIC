@@ -62,7 +62,7 @@ public class FormateurController {
 
     //SOFT DELETE
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN','SECRETAIRE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<Void> deactivateFormateur(@PathVariable Long id) {
         formateurService.deactivateFormateur(id);
         return ResponseEntity.noContent().build();
@@ -70,12 +70,11 @@ public class FormateurController {
 
     //REMOVE A FORMATEUR FORM A CENTRE
     @DeleteMapping("/{id}/centres/{centreId}")
-    @PreAuthorize("hasAuthority('ADMIN','SECRETAIRE)")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<Void> removeFormateurFromCentre(
             @PathVariable("id") Long id,
             @PathVariable("centreId") Long centreId) {
         formateurService.removeFormateurFromCentre(id, centreId);
         return ResponseEntity.noContent().build();
     }
-
 }

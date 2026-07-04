@@ -35,7 +35,7 @@ public class UserController {
 
     //Create a new user account.
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN',SECRETAIRE)")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserRequestDTO request) {
         return new ResponseEntity<>(userService.createUser(request), HttpStatus.CREATED);
     }
