@@ -18,7 +18,6 @@ public class AdminDashboardService {
     private final AbsenceRepository absenceRepository;
     private final PaymentRepository paymentRepository;
 
-
      //Fetches and aggregates general system statistics for the admin dashboard.
     public AdminDashboardDTO getDashboardSummary() {
         return AdminDashboardDTO.builder()
