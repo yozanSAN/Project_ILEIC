@@ -12,4 +12,6 @@ public interface CentreRepository extends JpaRepository<Centre, Long> {
     Optional<Centre> findByName(String name);
 
     Optional<Centre> findByEmail(String email);
+
+    long countByIsActiveTrue();
 }
