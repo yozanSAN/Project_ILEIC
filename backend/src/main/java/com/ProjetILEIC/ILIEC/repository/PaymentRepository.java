@@ -19,4 +19,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     List<Payment> findByStatus(String status);
 
     boolean existsByStagiaire_IdAndMonthAndYear(Long stagiaireId, Integer month, Integer year);
+
+    List<Payment> findByMonthAndYear(int month, int year);
 }

@@ -95,9 +95,11 @@ public class SecretaryService {
         Long centreId = requestDTO.getCentreId();
         Secretary existing = findOrThrow(id);
 
-        // 2 — check if the centre already has a secretary
-        if (secretaryRepository.findByCentre_Id(centreId).size() > 0) {
-            throw new DuplicateResourceException("Centre " + centreId + " already has a secretary assigned");
+        // Only check for a conflict if the centre assignment is actually changing
+        if (!existing.getCentre().getId().equals(centreId)) {
+            if (secretaryRepository.findByCentre_Id(centreId).size() > 0) {
+                throw new DuplicateResourceException("Centre " + centreId + " already has a secretary assigned");
+            }
         }
         // Fetch the new centre assignment
         Centre newCentre = centreRepository.findById(requestDTO.getCentreId())
