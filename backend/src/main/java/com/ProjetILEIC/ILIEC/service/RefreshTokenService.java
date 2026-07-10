@@ -72,9 +72,7 @@ public class RefreshTokenService {
         return token;
     }
 
-    /**
-     * Evicts a token from the persistent store to force an instant user logout.
-     */
+     //Evicts a token from the persistent store to force an instant user logout.
     @Transactional
     public void deleteByToken(String token) {
         refreshTokenRepository.deleteByToken(token);
