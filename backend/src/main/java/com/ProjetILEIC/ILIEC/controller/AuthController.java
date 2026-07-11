@@ -32,12 +32,10 @@ public class AuthController {
     private final JwtUtil jwtUtil;
     private final RefreshTokenService refreshTokenService;
 
-    /**
-     * ENDPOINT: /api/auth/login
-     * Purpose: Authenticates credentials and starts a dual-token user session.
-     * Actions: Checks password, creates a short-lived access token, and generates
-     *          a long-lived refresh token saved in the database.
-     */
+     //ENDPOINT: /api/auth/login
+     //Purpose: Authenticates credentials and starts a dual-token user session.
+    //Actions: Checks password, creates a short-lived access token, and generates
+     //a long-lived refresh token saved in the database.
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDTO requestDTO) {
         try {
