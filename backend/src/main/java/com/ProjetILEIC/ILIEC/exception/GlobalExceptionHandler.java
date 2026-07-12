@@ -4,10 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
@@ -60,6 +62,25 @@ public class GlobalExceptionHandler {
         );
     }
 
+    // exception handler for validation errors
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
+        Map<String, String> fieldErrors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(err ->
+                fieldErrors.put(err.getField(), err.getDefaultMessage()));
+
+        return new ResponseEntity<>(
+                Map.of(
+                        "status", HttpStatus.BAD_REQUEST.value(),
+                        "error", "Validation Failed",
+                        "fieldErrors", fieldErrors,
+                        "timestamp", LocalDateTime.now()
+                ),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    // generic exception handler
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneral(Exception ex) {
         // Log the real ugly error internally so you can debug it in the IDE console
@@ -76,4 +97,5 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
+
 }
