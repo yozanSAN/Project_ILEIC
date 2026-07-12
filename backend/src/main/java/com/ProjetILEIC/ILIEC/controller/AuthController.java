@@ -6,6 +6,7 @@ import com.ProjetILEIC.ILIEC.dto.auth.TokenDTO;
 import com.ProjetILEIC.ILIEC.dto.auth.TokenRequestDTO;
 import com.ProjetILEIC.ILIEC.entity.RefreshToken;
 import com.ProjetILEIC.ILIEC.entity.User;
+import com.ProjetILEIC.ILIEC.exception.InvalidTokenException;
 import com.ProjetILEIC.ILIEC.repository.UserRepository;
 import com.ProjetILEIC.ILIEC.security.JwtUtil;
 import com.ProjetILEIC.ILIEC.service.RefreshTokenService;
@@ -66,6 +67,10 @@ public class AuthController {
                     user.getRole()
             ));
         } catch (Exception e) {
+            // Re-throw exceptions explicitly managed by our global advisor, such as account deactivation
+            if (e instanceof org.springframework.security.authentication.DisabledException) {
+                throw e;
+            }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("Authentication failed: invalid email or password");
         }
@@ -96,7 +101,7 @@ public class AuthController {
 
                     return ResponseEntity.ok(response);
                 })
-                .orElseThrow(() -> new RuntimeException("Refresh token is not present in the database."));
+                .orElseThrow(() -> new InvalidTokenException("Refresh token is not present in the database."));
     }
 
     /**

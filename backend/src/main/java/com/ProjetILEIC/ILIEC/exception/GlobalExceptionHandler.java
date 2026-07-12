@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -74,6 +75,33 @@ public class GlobalExceptionHandler {
                         "status", HttpStatus.BAD_REQUEST.value(),
                         "error", "Validation Failed",
                         "fieldErrors", fieldErrors,
+                        "timestamp", LocalDateTime.now()
+                ),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+    // Handles cases where a deactivated account attempts to login or refresh tokens
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<Map<String, Object>> handleDisabledAccount(DisabledException ex) {
+        return new ResponseEntity<>(
+                Map.of(
+                        "status", HttpStatus.FORBIDDEN.value(),
+                        "error", "Forbidden",
+                        "message", ex.getMessage(),
+                        "timestamp", LocalDateTime.now()
+                ),
+                HttpStatus.FORBIDDEN
+        );
+    }
+
+    // Handles expired or missing refresh token strings gracefully
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidToken(InvalidTokenException ex) {
+        return new ResponseEntity<>(
+                Map.of(
+                        "status", HttpStatus.BAD_REQUEST.value(),
+                        "error", "Bad Request",
+                        "message", ex.getMessage(),
                         "timestamp", LocalDateTime.now()
                 ),
                 HttpStatus.BAD_REQUEST

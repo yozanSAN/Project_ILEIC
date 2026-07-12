@@ -2,6 +2,7 @@ package com.ProjetILEIC.ILIEC.service;
 
 import com.ProjetILEIC.ILIEC.entity.RefreshToken;
 import com.ProjetILEIC.ILIEC.entity.User;
+import com.ProjetILEIC.ILIEC.exception.InvalidTokenException;
 import com.ProjetILEIC.ILIEC.repository.RefreshTokenRepository;
 import com.ProjetILEIC.ILIEC.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class RefreshTokenService {
     @Transactional
     public RefreshToken createRefreshToken(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+                .orElseThrow(() -> new DisabledException("User not found with ID: " + userId));
 
         // Security requirement: Instantly reject deactivated users attempting a login/refresh session
         if (!user.getIsActive()) {
@@ -66,9 +67,8 @@ public class RefreshTokenService {
         // Standard timing expiration validation
         if (token.getExpiresAt().isBefore(Instant.now())) {
             refreshTokenRepository.delete(token);
-            throw new RuntimeException("Refresh token has expired. Please sign in again.");
+            throw new InvalidTokenException("Refresh token was expired. Please sign in again");
         }
-
         return token;
     }
 
