@@ -52,6 +52,7 @@ public class EmploiDeTempController {
 
     // PUT : update an existing emploi de temp slot full configuration
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETAIRE')")
     public ResponseEntity<EmploiDeTempDTO> updateSlot(
             @PathVariable Long id,
             @Valid @RequestBody EmploiDeTempRequestDTO requestDTO) {
