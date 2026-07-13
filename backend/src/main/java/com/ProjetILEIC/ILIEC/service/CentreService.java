@@ -5,6 +5,7 @@ import com.ProjetILEIC.ILIEC.dto.CentreRequestDTO;
 import com.ProjetILEIC.ILIEC.entity.Centre;
 import com.ProjetILEIC.ILIEC.exception.ResourceNotFoundException;
 import com.ProjetILEIC.ILIEC.repository.CentreRepository;
+import com.ProjetILEIC.ILIEC.repository.StagiaireRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +17,11 @@ import java.util.stream.Collectors;
 public class CentreService {
 
     private final CentreRepository centreRepository;
+    private final StagiaireRepository stagiaireRepository;
 
-    public CentreService(CentreRepository centreRepository) {
+    public CentreService(CentreRepository centreRepository, StagiaireRepository stagiaireRepository) {
         this.centreRepository = centreRepository;
+        this.stagiaireRepository = stagiaireRepository;
     }
 
     @Transactional(readOnly = true)
@@ -41,7 +44,8 @@ public class CentreService {
         centre.setAddress(requestDTO.getAddress());
         centre.setPhone(requestDTO.getPhone());
         centre.setEmail(requestDTO.getEmail());
-        centre.setIsActive(requestDTO.getIsActive());
+
+        centre.setIsActive(true);
 
         Centre savedCentre = centreRepository.save(centre);
         return convertToDTO(savedCentre);
@@ -56,7 +60,6 @@ public class CentreService {
         existing.setAddress(requestDTO.getAddress());
         existing.setPhone(requestDTO.getPhone());
         existing.setEmail(requestDTO.getEmail());
-        existing.setIsActive(requestDTO.getIsActive());
 
         Centre updatedCentre = centreRepository.save(existing);
         return convertToDTO(updatedCentre);
@@ -66,6 +69,11 @@ public class CentreService {
         Centre centre = centreRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + id));
 
+        // 🛡️ Guard Rule: Reject deactivation if there are active stagiaires/guards tied to this center
+        boolean hasActiveStagiaires = stagiaireRepository.existsByCentre_IdAndIsActiveTrue(id);
+        if (hasActiveStagiaires) {
+            throw new IllegalArgumentException("Cannot deactivate center: Active stagiaires are currently assigned to it.");
+        }
         centre.setIsActive(false);
         centreRepository.save(centre);
     }

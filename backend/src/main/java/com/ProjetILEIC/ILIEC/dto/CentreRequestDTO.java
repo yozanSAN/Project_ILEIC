@@ -27,7 +27,4 @@ public class CentreRequestDTO {
     @Email(message = "Please provide a valid email format")
     @Size(max = 100, message = "Email must not exceed 100 characters")
     private String email;
-
-    @NotNull(message = "isActive is required")
-    private Boolean isActive = true;
 }
