@@ -55,10 +55,20 @@ public class FiliereService {
     }
 
     public FiliereDTO createFiliere(FiliereRequestDTO requestDTO) {
+
         Centre centre = centreRepository.findById(requestDTO.getCentreId())
                 .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + requestDTO.getCentreId()));
         Program program = programeRepository.findById(requestDTO.getProgramId())
                 .orElseThrow(() -> new ResourceNotFoundException("Program not found with id: " + requestDTO.getProgramId()));
+
+        // Security Check: Prevent active linkages to inactive or soft-deleted parents
+        if (!centre.getIsActive()) {
+            throw new IllegalArgumentException("Cannot create a Filiere under an inactive Centre.");
+        }
+        // program.isDeleted() is visible because we modified the entity in the previous step
+        if (program.isDeleted()) {
+            throw new IllegalArgumentException("Cannot create a Filiere assigned to a deleted Program.");
+        }
 
         Filiere filiere = new Filiere();
         filiere.setName(requestDTO.getName());
@@ -78,6 +88,14 @@ public class FiliereService {
         Program program = programeRepository.findById(requestDTO.getProgramId())
                 .orElseThrow(() -> new ResourceNotFoundException("Program not found with id: " + requestDTO.getProgramId()));
 
+        // Security Check: Enforce structural relational validation rules
+        if (!centre.getIsActive()) {
+            throw new IllegalArgumentException("Cannot update a Filiere to link with an inactive Centre.");
+        }
+        if (program.isDeleted()) {
+            throw new IllegalArgumentException("Cannot update a Filiere to link with a deleted Program.");
+        }
+
         existing.setName(requestDTO.getName());
         existing.setCentre(centre);
         existing.setProgram(program);
@@ -87,10 +105,11 @@ public class FiliereService {
     }
 
     public void deleteFiliere(Long id) {
-        if (!filiereRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Filiere not found with id: " + id);
-        }
-        filiereRepository.deleteById(id);
+        Filiere filiere = filiereRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Filiere not found with id: " + id));
+
+        // Passing the actual entity to delete ensures clean Hibernate intercept tracking
+        filiereRepository.delete(filiere);
     }
 
     // Helper method handling clean relational nesting Entity -> DTO mapping
@@ -106,6 +125,7 @@ public class FiliereService {
             cDto.setAddress(filiere.getCentre().getAddress());
             cDto.setPhone(filiere.getCentre().getPhone());
             cDto.setEmail(filiere.getCentre().getEmail());
+            cDto.setIsActive(filiere.getCentre().getIsActive());
             dto.setCentre(cDto);
         }
 
