@@ -58,10 +58,9 @@ public class ProgramService {
     }
 
     public void deleteProgram(Long id) {
-        if (!programeRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Program not found with id: " + id);
-        }
-        programeRepository.deleteById(id);
+        Program program = programeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Program not found with id: " + id));
+        programeRepository.delete(program);
     }
 
     // Helper method to convert Entity -> Outgoing DTO
