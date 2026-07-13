@@ -71,8 +71,16 @@ public class FormateurService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
 
         List<Centre> centres = centreIds.stream()
-                .map(cid -> centreRepository.findById(cid)
-                        .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + cid)))
+                .map(cid -> {
+                    Centre centre = centreRepository.findById(cid)
+                            .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + cid));
+
+                    // Security Guard: Prevent assignments to an inactive center
+                    if (!centre.getIsActive()) {
+                        throw new IllegalArgumentException("Cannot assign trainer to an inactive center with ID: " + cid);
+                    }
+                    return centre;
+                })
                 .collect(Collectors.toList());
 
         // Step 3 — business rule: user must have FORMATION role
@@ -118,11 +126,17 @@ public class FormateurService {
         Centre centre = centreRepository.findById(centreId)
                 .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + centreId));
 
+        //Security Guard: Prevent fresh assignment onto an inactive location
+        if (!centre.getIsActive()) {
+            throw new IllegalArgumentException("Cannot map instructors to an inactive center location.");
+        }
+
         boolean alreadyAssigned = formateur.getCentres().stream()
                 .anyMatch(c -> c.getId().equals(centreId));
         if (alreadyAssigned) {
             throw new DuplicateResourceException("Formateur already assigned to centre: " + centreId);
         }
+
         formateur.getCentres().add(centre);
         return toDTO(formateurRepository.save(formateur));
     }
@@ -132,7 +146,7 @@ public class FormateurService {
         Formateur formateur = formateurRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Formateur not found with id: " + id));
 
-        // Toggle the status flag to soft-delete
+        // Safely flags the login entity deactivated instead of purging row history
         formateur.getUser().setIsActive(false);
         formateurRepository.save(formateur);
     }
@@ -147,7 +161,11 @@ public class FormateurService {
                 .filter(c -> c.getId().equals(centreId))
                         .findFirst()
                             .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Formateur is not assigned to this centre"));
-        // Break the association
+        // Business Guard Check: Is this instructor the last remaining resource at that center?
+        List<Formateur> activeTrainersAtCentre = formateurRepository.findByCentres_Id(centreId);
+        if (activeTrainersAtCentre.size() <= 1) {
+            throw new IllegalArgumentException("Cannot remove instructor: A training center must have at least one assigned instructor.");
+        }
         formateur.getCentres().remove(centreToRemove);
         formateurRepository.save(formateur);
     }
