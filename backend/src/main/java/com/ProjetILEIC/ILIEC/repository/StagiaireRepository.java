@@ -24,5 +24,5 @@ public interface StagiaireRepository extends JpaRepository<Stagiaire, Long> {
 
     Optional<Stagiaire> findByUser_Id(Long userId);
 
-    boolean existsByCentre_IdAndIsActiveTrue(Long centreId);
+    boolean existsByCentre_IdAndUser_IsActiveTrue(Long centreId);
 }

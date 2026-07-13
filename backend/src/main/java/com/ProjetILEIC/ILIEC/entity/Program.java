@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -34,5 +35,6 @@ public class Program {
     private BigDecimal monthlyFee;
 
     @Column(nullable = false)
+    @ColumnDefault("false")
     private boolean deleted = false;
 }

@@ -70,7 +70,7 @@ public class CentreService {
                 .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + id));
 
         // 🛡️ Guard Rule: Reject deactivation if there are active stagiaires/guards tied to this center
-        boolean hasActiveStagiaires = stagiaireRepository.existsByCentre_IdAndIsActiveTrue(id);
+        boolean hasActiveStagiaires = stagiaireRepository.existsByCentre_IdAndUser_IsActiveTrue(id);
         if (hasActiveStagiaires) {
             throw new IllegalArgumentException("Cannot deactivate center: Active stagiaires are currently assigned to it.");
         }
