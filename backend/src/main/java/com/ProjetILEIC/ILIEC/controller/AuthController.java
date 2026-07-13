@@ -38,7 +38,7 @@ public class AuthController {
     //Actions: Checks password, creates a short-lived access token, and generates
      //a long-lived refresh token saved in the database.
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDTO requestDTO) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestDTO requestDTO) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
