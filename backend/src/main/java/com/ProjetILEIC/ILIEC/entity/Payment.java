@@ -6,9 +6,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "payments")
+@Audited
 
 @Getter
 @Setter

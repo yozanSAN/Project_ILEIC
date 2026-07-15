@@ -2,9 +2,11 @@ package com.ProjetILEIC.ILIEC.entity;
 import jakarta.persistence.*;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "secretary")
+@Audited
 
 @Getter
 @Setter

@@ -3,9 +3,11 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "note")
+@Audited
 
 @Getter
 @Setter

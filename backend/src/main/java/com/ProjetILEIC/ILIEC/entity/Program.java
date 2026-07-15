@@ -8,9 +8,11 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "program")
+@Audited
 
 @SQLDelete(sql = "UPDATE program SET deleted = true WHERE id = ?") // Intercepts repository.delete() calls
 @Where(clause = "deleted = false") // Automatically filters out soft-deleted records on fetches

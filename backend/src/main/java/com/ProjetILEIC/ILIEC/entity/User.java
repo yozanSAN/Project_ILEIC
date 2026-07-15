@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.time.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 @Entity
 @Table(name = "users")
+@Audited
 
 @Getter
 @Setter
@@ -35,6 +38,7 @@ public class User {
 
     @Column(name = "password_hash", nullable = false)
     @com.fasterxml.jackson.annotation.JsonIgnore // This prevents the field from ever being serialized to JSON
+    @NotAudited
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)

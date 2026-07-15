@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import java.time.LocalTime;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "emploiDeTemp")
+@Audited
 
 @Getter
 @Setter

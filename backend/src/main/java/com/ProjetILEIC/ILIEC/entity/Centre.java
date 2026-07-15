@@ -3,11 +3,13 @@ package com.ProjetILEIC.ILIEC.entity;
 import jakarta.persistence.*;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "centre")
+@Audited
 
 @Getter
 @Setter

@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "formateur")
+@Audited
 
 @Getter
 @Setter
