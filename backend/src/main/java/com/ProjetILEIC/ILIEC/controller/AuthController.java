@@ -67,6 +67,10 @@ public class AuthController {
                     user.getRole()
             ));
         } catch (Exception e) {
+            e.printStackTrace();
+            // Add this import at the top if needed
+// @Autowired private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+
             // Re-throw exceptions explicitly managed by our global advisor, such as account deactivation
             if (e instanceof org.springframework.security.authentication.DisabledException) {
                 throw e;
