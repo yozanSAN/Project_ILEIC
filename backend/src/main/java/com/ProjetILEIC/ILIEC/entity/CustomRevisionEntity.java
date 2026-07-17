@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "audit_revision")
-@RevisionEntity(AuditRevisionListener.class) // Links this entity to our listener below
+@RevisionEntity(AuditRevisionListener.class) // Links this entity to the listener below
 @Getter
 @Setter
 public class CustomRevisionEntity {
