@@ -1,6 +1,7 @@
 package com.ProjetILEIC.ILIEC.security;
 
 import com.ProjetILEIC.ILIEC.service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,11 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
+    @Value("${app.frontend.url}")
+    private String frontendUrl;
+
+    @Value("${springdoc.swagger-ui.enabled:false}")
+    private boolean isSwaggerEnabled;
 
     private final CustomUserDetailsService customUserDetailsService;
     private final AuthEntryPointJwt authEntryPointJwt;
@@ -61,8 +67,8 @@ public class WebSecurityConfig {
                 // 1. Enable and configure CORS inside security
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:5173"));
-                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    config.setAllowedOrigins(List.of(frontendUrl));
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH" , "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
                     config.setAllowCredentials(true);
                     return config;
@@ -76,16 +82,28 @@ public class WebSecurityConfig {
                 // 3. Set session creation policy to stateless (no HTTP sessions)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // 4. Define route access rules
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**","/welcome").permitAll() // Let anyone access signin/signup endpoints
-                        .anyRequest().authenticated()               // Everything else requires a valid token
-                );
+                // 5. Define route access rules
+                .authorizeHttpRequests(auth -> {
+                    // Open authentication paths to everyone
+                    auth.requestMatchers("/api/auth/**").permitAll();
+
+                    // Conditionally open Swagger ONLY if enabled in the active profile properties
+                    if (isSwaggerEnabled) {
+                        auth.requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll();
+                    }
+
+                    // Lock down everything else
+                    auth.anyRequest().authenticated();
+                });
 
         // Link the explicit authentication provider configuration
         http.authenticationProvider(authenticationProvider());
 
-        // 5. Add your custom JWT token verification filter before Spring's default username/password checker
+        // 6. Add your custom JWT token verification filter before Spring's default username/password checker
         http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

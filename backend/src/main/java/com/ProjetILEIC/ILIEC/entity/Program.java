@@ -5,9 +5,15 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "program")
+
+@SQLDelete(sql = "UPDATE program SET deleted = true WHERE id = ?") // Intercepts repository.delete() calls
+@Where(clause = "deleted = false") // Automatically filters out soft-deleted records on fetches
 
 @Getter
 @Setter
@@ -27,4 +33,8 @@ public class Program {
 
     @Column(name = "monthly_fee", nullable = false, precision = 10, scale = 2)
     private BigDecimal monthlyFee;
+
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private boolean deleted = false;
 }

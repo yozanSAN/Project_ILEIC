@@ -1,5 +1,7 @@
 package com.ProjetILEIC.ILIEC.service;
 
+import com.ProjetILEIC.ILIEC.dto.PaymentDTO;
+import com.ProjetILEIC.ILIEC.dto.PaymentRequestDTO;
 import com.ProjetILEIC.ILIEC.entity.Payment;
 import com.ProjetILEIC.ILIEC.entity.Stagiaire;
 import com.ProjetILEIC.ILIEC.entity.User;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,54 +34,88 @@ public class PaymentService {
 
     // --- READ ---
 
-    @Transactional(readOnly = true)
-    public List<Payment> getPaymentsByStagiaire(Long stagiaireId) {
-        return paymentRepository.findByStagiaire_Id(stagiaireId);
+    @Transactional(readOnly = true)  // fix 1: was missing
+    public List<PaymentDTO> getPaymentsByStagiaire(Long stagiaireId) {
+        return paymentRepository.findByStagiaire_Id(stagiaireId)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<Payment> getPaymentsByYear(Long stagiaireId, Integer year) {
-        return paymentRepository.findByStagiaire_IdAndYear(stagiaireId, year);
+    public List<PaymentDTO> getPaymentsByYear(Long stagiaireId, Integer year) {
+        return paymentRepository.findByStagiaire_IdAndYear(stagiaireId, year)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public boolean isPaidForMonth(Long stagiaireId, Integer month, Integer year) {
-        return paymentRepository.existsByStagiaire_IdAndMonthAndYear(stagiaireId, month, year);
+        return paymentRepository.existsByStagiaire_IdAndMonthAndYear(
+                stagiaireId, month, year);
     }
 
     // --- CREATE ---
 
-    public Payment recordPayment(Payment payment, Long stagiaireId, Long recordedById) {
-
-        // Step 1 — business rule: can't record the same month twice
+    public PaymentDTO recordPayment(PaymentRequestDTO dto) {  // fix 2: single DTO param
         if (paymentRepository.existsByStagiaire_IdAndMonthAndYear(
-                stagiaireId, payment.getMonth(), payment.getYear())) {
+                dto.getStagiaireId(), dto.getMonth(), dto.getYear())) {
             throw new DuplicateResourceException(
-                    "Payment already recorded for month " + payment.getMonth()
-                    + "/" + payment.getYear() + " for stagiaire " + stagiaireId);
+                    "Payment already recorded for month " + dto.getMonth()
+                            + "/" + dto.getYear()
+                            + " for stagiaire " + dto.getStagiaireId());
         }
 
-        // Step 2 — fetch dependencies
-        Stagiaire stagiaire = stagiaireRepository.findById(stagiaireId)
-                .orElseThrow(() -> new ResourceNotFoundException("Stagiaire not found: " + stagiaireId));
+        Stagiaire stagiaire = stagiaireRepository.findById(dto.getStagiaireId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Stagiaire not found: " + dto.getStagiaireId()));
 
-        User recordedBy = userRepository.findById(recordedById)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + recordedById));
+        User recordedBy = userRepository.findById(dto.getRecordedById())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "User not found: " + dto.getRecordedById()));
 
-        // Step 3 — attach and save
+        Payment payment = new Payment();
         payment.setStagiaire(stagiaire);
         payment.setRecordedBy(recordedBy);
+        payment.setMonth(dto.getMonth());
+        payment.setYear(dto.getYear());
+        payment.setAmount(dto.getAmount());
+        payment.setPaymentDate(dto.getPaymentDate());   // fix 2: was missing
+        payment.setPaymentMethod(dto.getPaymentMethod());
+        payment.setStatus(dto.getStatus());              // fix 2: was missing
+        payment.setReference(dto.getReference());
 
-        return paymentRepository.save(payment);
+        return toDTO(paymentRepository.save(payment));
     }
 
-    // --- UPDATE (mark as paid / change status) ---
+    // --- UPDATE ---
 
-    public Payment updatePaymentStatus(Long id, String status) {
+    public PaymentDTO updatePaymentStatus(Long id, String status) {
         Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Payment not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Payment not found with id: " + id));
 
         payment.setStatus(status);
-        return paymentRepository.save(payment);
+        return toDTO(paymentRepository.save(payment));
+    }
+
+    // --- DTO CONVERSION ---
+
+    public PaymentDTO toDTO(Payment p) {
+        return new PaymentDTO(
+                p.getId(),
+                p.getStagiaire().getId(),
+                p.getStagiaire().getUser().getFullName(),
+                p.getMonth(),
+                p.getYear(),
+                p.getAmount(),
+                p.getPaymentDate(),
+                p.getPaymentMethod(),
+                p.getStatus(),
+                p.getReference(),
+                p.getRecordedBy().getId(),
+                p.getRecordedBy().getFullName()
+        );
     }
 }

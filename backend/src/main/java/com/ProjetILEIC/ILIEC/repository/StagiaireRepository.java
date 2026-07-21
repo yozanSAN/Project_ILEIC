@@ -23,4 +23,6 @@ public interface StagiaireRepository extends JpaRepository<Stagiaire, Long> {
     boolean existsByRegistrationNumber(String registrationNumber);
 
     Optional<Stagiaire> findByUser_Id(Long userId);
+
+    boolean existsByCentre_IdAndUser_IsActiveTrue(Long centreId);
 }

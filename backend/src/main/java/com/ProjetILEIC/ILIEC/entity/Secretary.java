@@ -21,6 +21,6 @@ public class Secretary {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "centre_id", nullable = false)
+    @JoinColumn(name = "centre_id", unique = true, nullable = false)
     private Centre centre;
 }

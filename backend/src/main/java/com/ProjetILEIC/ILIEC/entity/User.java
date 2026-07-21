@@ -34,12 +34,16 @@ public class User {
     private String email;
 
     @Column(name = "password_hash", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore // This prevents the field from ever being serialized to JSON
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES) //  Handles Case-insensitivety
     @Column(name = "role", nullable = false)
     private Role role;
+
+    @Column(name = "phone", length = 20)
+    private String phone;
 
     @Column(name = "is_active")
     private Boolean isActive = true;

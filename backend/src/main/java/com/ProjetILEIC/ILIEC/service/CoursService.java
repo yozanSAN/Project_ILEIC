@@ -1,5 +1,7 @@
 package com.ProjetILEIC.ILIEC.service;
 
+import com.ProjetILEIC.ILIEC.dto.CoursDTO;
+import com.ProjetILEIC.ILIEC.dto.CoursRequestDTO;
 import com.ProjetILEIC.ILIEC.entity.Cours;
 import com.ProjetILEIC.ILIEC.entity.Filiere;
 import com.ProjetILEIC.ILIEC.exception.DuplicateResourceException;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,22 +27,42 @@ public class CoursService {
     }
 
     @Transactional(readOnly = true)
-    public List<Cours> getAllCours() {
-        return coursRepository.findAll();
+    public List<CoursDTO> getAllCours() {
+        return coursRepository.findAll()
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<Cours> getByFiliere(Long filiereId) {
-        return coursRepository.findByFiliere_Id(filiereId);
+    public List<CoursDTO> getByFiliere(Long filiereId) {
+        return coursRepository.findByFiliere_Id(filiereId)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public Cours getCoursById(Long id) {
+    public CoursDTO getCoursById(Long id) {
         return coursRepository.findById(id)
+                .map(this::toDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Cours not found with id: " + id));
     }
 
-    public Cours createCours(Cours cours, Long filiereId) {
+
+    // DTO-based create: maps DTO → entity, reuses existing createCours(Cours, Long) for validation
+    public CoursDTO createCours(CoursRequestDTO dto) {
+        Cours cours = new Cours();
+        cours.setName(dto.getName());
+        cours.setCode(dto.getCode());
+        cours.setYearLevel(dto.getYearLevel());
+        cours.setSemester(dto.getSemester());
+        cours.setHoursTotal(dto.getHoursTotal());
+        Cours savedCours = saveAndValidateEntity(cours, dto.getFiliereId());
+        return toDTO(savedCours);
+    }
+    // PRIVATE HELPER: Kept private to protect raw entity mapping rules from escaping the service
+    private Cours saveAndValidateEntity(Cours cours, Long filiereId) {
         if (coursRepository.existsByCode(cours.getCode())) {
             throw new DuplicateResourceException("Cours code already exists: " + cours.getCode());
         }
@@ -48,6 +71,21 @@ public class CoursService {
 
         cours.setFiliere(filiere);
         return coursRepository.save(cours);
+    }
+
+    public CoursDTO toDTO(Cours c) {
+        return new CoursDTO(
+                c.getId(),
+                c.getCode(),
+                c.getName(),
+                c.getFiliere().getId(),
+                c.getFiliere().getName(),
+                c.getFiliere().getCentre().getId(),
+                c.getFiliere().getCentre().getName(),
+                c.getYearLevel(),
+                c.getSemester(),
+                c.getHoursTotal()
+        );
     }
 
     public void deleteCours(Long id) {

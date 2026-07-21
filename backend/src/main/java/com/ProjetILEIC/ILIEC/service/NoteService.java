@@ -1,5 +1,7 @@
 package com.ProjetILEIC.ILIEC.service;
 
+import com.ProjetILEIC.ILIEC.dto.NoteDTO;
+import com.ProjetILEIC.ILIEC.dto.NoteRequestDTO;
 import com.ProjetILEIC.ILIEC.entity.Controle;
 import com.ProjetILEIC.ILIEC.entity.Note;
 import com.ProjetILEIC.ILIEC.entity.Stagiaire;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,14 +41,29 @@ public class NoteService {
 
     // --- READ ---
 
-    @Transactional(readOnly = true)
-    public List<Note> getNotesByStagiaire(Long stagiaireId) {
-        return noteRepository.findByStagiaire_Id(stagiaireId);
+    // Update list methods and add toDTO
+    public List<NoteDTO> getNotesByStagiaire(Long stagiaireId) {
+        return noteRepository.findByStagiaire_Id(stagiaireId)
+                .stream().map(this::toDTO).collect(Collectors.toList());
+    }
+    public NoteDTO toDTO(Note n) {
+        return new NoteDTO(
+                n.getId(),
+                n.getStagiaire().getId(),
+                n.getStagiaire().getUser().getFullName(),
+                n.getControle().getId(),
+                n.getControle().getTitle(),
+                n.getRecordedBy().getId(),
+                n.getRecordedBy().getFullName(),
+                n.getGradeValue(),
+                n.getRemarks()
+        );
     }
 
     @Transactional(readOnly = true)
-    public List<Note> getNotesByControle(Long controleId) {
-        return noteRepository.findByControle_Id(controleId);
+    public List<NoteDTO> getNotesByControle(Long controleId) {
+        return noteRepository.findByControle_Id(controleId)
+                .stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     // Calculate the average grade for a stagiaire across all controles in a cours
@@ -64,52 +82,49 @@ public class NoteService {
 
     // --- CREATE ---
 
-    public Note recordNote(Long stagiaireId, Long controleId, Long recordedById, BigDecimal gradeValue, String remarks) {
-
-        // Step 1 — business rule: grade must be between 0 and 20
-        if (gradeValue.compareTo(BigDecimal.ZERO) < 0 || gradeValue.compareTo(BigDecimal.valueOf(20)) > 0) {
+    public NoteDTO createNote(NoteRequestDTO dto) {
+        if (dto.getGradeValue().compareTo(BigDecimal.ZERO) < 0
+                || dto.getGradeValue().compareTo(BigDecimal.valueOf(20)) > 0) {
             throw new IllegalArgumentException("Grade must be between 0 and 20");
         }
-
-        // Step 2 — check no duplicate grade for this stagiaire + controle
-        if (noteRepository.findByStagiaire_IdAndControle_Id(stagiaireId, controleId).isPresent()) {
+        if (noteRepository.findByStagiaire_IdAndControle_Id(
+                dto.getStagiaireId(), dto.getControleId()).isPresent()) {
             throw new DuplicateResourceException(
-                    "A grade already exists for stagiaire " + stagiaireId + " in controle " + controleId);
+                    "A grade already exists for stagiaire " + dto.getStagiaireId()
+                            + " in controle " + dto.getControleId());
         }
+        Stagiaire stagiaire = stagiaireRepository.findById(dto.getStagiaireId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Stagiaire not found: " + dto.getStagiaireId()));
+        Controle controle = controleRepository.findById(dto.getControleId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Controle not found: " + dto.getControleId()));
+        User recordedBy = userRepository.findById(dto.getRecordedById())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "User not found: " + dto.getRecordedById()));
 
-        // Step 3 — fetch dependencies
-        Stagiaire stagiaire = stagiaireRepository.findById(stagiaireId)
-                .orElseThrow(() -> new ResourceNotFoundException("Stagiaire not found: " + stagiaireId));
-
-        Controle controle = controleRepository.findById(controleId)
-                .orElseThrow(() -> new ResourceNotFoundException("Controle not found: " + controleId));
-
-        User recordedBy = userRepository.findById(recordedById)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + recordedById));
-
-        // Step 4 — build and save
         Note note = new Note();
         note.setStagiaire(stagiaire);
         note.setControle(controle);
         note.setRecordedBy(recordedBy);
-        note.setGradeValue(gradeValue);
-        note.setRemarks(remarks);
+        note.setGradeValue(dto.getGradeValue());
+        note.setRemarks(dto.getRemarks());
 
-        return noteRepository.save(note);
+        return toDTO(noteRepository.save(note));
     }
 
     // --- UPDATE ---
 
-    public Note updateNote(Long id, BigDecimal newGrade, String remarks) {
+    public NoteDTO updateNote(Long id, NoteRequestDTO dto) {
         Note note = noteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Note not found with id: " + id));
-
-        if (newGrade.compareTo(BigDecimal.ZERO) < 0 || newGrade.compareTo(BigDecimal.valueOf(20)) > 0) {
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Note not found with id: " + id));
+        if (dto.getGradeValue().compareTo(BigDecimal.ZERO) < 0
+                || dto.getGradeValue().compareTo(BigDecimal.valueOf(20)) > 0) {
             throw new IllegalArgumentException("Grade must be between 0 and 20");
         }
-
-        note.setGradeValue(newGrade);
-        note.setRemarks(remarks);
-        return noteRepository.save(note);
+        note.setGradeValue(dto.getGradeValue());
+        note.setRemarks(dto.getRemarks());
+        return toDTO(noteRepository.save(note));
     }
 }

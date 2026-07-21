@@ -19,6 +19,7 @@ public class StagiaireDTO {
     private Long userId;
     private String fullName;
     private String email;
+    private String phone;
 
     // Flattened from Centre and Filiere — names, not nested objects
     private Long centreId;
@@ -30,8 +31,8 @@ public class StagiaireDTO {
     private String registrationNumber;
     private LocalDate birthDate;
     private String cin;
-    private String phone;
     private String address;
     private LocalDate enrollmentDate;
     private String status;
+
 }

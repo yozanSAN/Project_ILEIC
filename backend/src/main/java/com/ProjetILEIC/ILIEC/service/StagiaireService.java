@@ -1,6 +1,7 @@
 package com.ProjetILEIC.ILIEC.service;
 
 import com.ProjetILEIC.ILIEC.dto.StagiaireDTO;
+import com.ProjetILEIC.ILIEC.dto.StagiaireRequestDTO;
 import com.ProjetILEIC.ILIEC.entity.Centre;
 import com.ProjetILEIC.ILIEC.entity.Filiere;
 import com.ProjetILEIC.ILIEC.entity.Stagiaire;
@@ -11,6 +12,7 @@ import com.ProjetILEIC.ILIEC.repository.CentreRepository;
 import com.ProjetILEIC.ILIEC.repository.FiliereRepository;
 import com.ProjetILEIC.ILIEC.repository.StagiaireRepository;
 import com.ProjetILEIC.ILIEC.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+
 public class StagiaireService {
 
     private final StagiaireRepository stagiaireRepository;
@@ -67,53 +70,74 @@ public class StagiaireService {
                 .collect(Collectors.toList());
     }
 
-    // --- CREATE ---
+    //GET BY CENTER AND FILIERE
+    @Transactional(readOnly = true)
+    public List<StagiaireDTO> getByCentreAndFiliere(Long centreId, Long filiereId) {
+        return stagiaireRepository.findByFiliere_IdAndCentre_Id(filiereId , centreId)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
 
-    public StagiaireDTO createStagiaire(Stagiaire stagiaire, Long userId, Long centreId, Long filiereId) {
-
-        // Step 1 — check registration number is unique
-        if (stagiaireRepository.existsByRegistrationNumber(stagiaire.getRegistrationNumber())) {
-            throw new DuplicateResourceException(
-                    "Registration number already exists: " + stagiaire.getRegistrationNumber());
+    // Create
+    public StagiaireDTO createStagiaire(StagiaireRequestDTO dto) {
+        if (stagiaireRepository.existsByRegistrationNumber(dto.getRegistrationNumber())) {
+            throw new DuplicateResourceException("Registration number already exists: " + dto.getRegistrationNumber());
         }
 
-        // Step 2 — fetch and validate dependencies
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + dto.getUserId()));
+        Centre centre = centreRepository.findById(dto.getCentreId())
+                .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + dto.getCentreId()));
+        Filiere filiere = filiereRepository.findById(dto.getFiliereId())
+                .orElseThrow(() -> new ResourceNotFoundException("Filiere not found with id: " + dto.getFiliereId()));
 
-        Centre centre = centreRepository.findById(centreId)
-                .orElseThrow(() -> new ResourceNotFoundException("Centre not found with id: " + centreId));
-
-        Filiere filiere = filiereRepository.findById(filiereId)
-                .orElseThrow(() -> new ResourceNotFoundException("Filiere not found with id: " + filiereId));
-
-        // Step 3 — business rule: filiere must belong to the centre
-        if (!filiere.getCentre().getId().equals(centreId)) {
-            throw new IllegalArgumentException(
-                    "Filiere " + filiereId + " does not belong to centre " + centreId);
-        }
-
-        // Step 4 — attach and save
+        Stagiaire stagiaire = new Stagiaire();
+        // Map fields
+        stagiaire.setRegistrationNumber(dto.getRegistrationNumber());
+        stagiaire.setBirthDate(dto.getBirthDate());
+        stagiaire.setCin(dto.getCin());
+        stagiaire.setAddress(dto.getAddress());
+        stagiaire.setEnrollmentDate(dto.getEnrollmentDate());
+        stagiaire.setStatus(dto.getStatus());
         stagiaire.setUser(user);
         stagiaire.setCentre(centre);
         stagiaire.setFiliere(filiere);
 
-        return toDTO(stagiaireRepository.save(stagiaire));
+        Stagiaire savedStagiaire = stagiaireRepository.save(stagiaire);
+
+        return toDTO(savedStagiaire);
     }
 
     // --- UPDATE ---
 
-    public StagiaireDTO updateStagiaire(Long id, Stagiaire updated) {
-        Stagiaire existing = findOrThrow(id);
+    public StagiaireDTO updateStagiaireFromDTO(Long id, StagiaireRequestDTO dto) {
+        Stagiaire existing = stagiaireRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Stagiaire not found with id: " + id));
 
-        existing.setBirthDate(updated.getBirthDate());
-        existing.setCin(updated.getCin());
-        existing.setPhone(updated.getPhone());
-        existing.setAddress(updated.getAddress());
-        existing.setStatus(updated.getStatus());
+        // Update fields from DTO
+        existing.setBirthDate(dto.getBirthDate());
+        existing.setCin(dto.getCin());
+        existing.setAddress(dto.getAddress());
+        existing.setStatus(dto.getStatus());
+        existing.setRegistrationNumber(dto.getRegistrationNumber());
+
+        // Optionally update relations if they changed
+        if (!existing.getCentre().getId().equals(dto.getCentreId())) {
+            Centre centre = centreRepository.findById(dto.getCentreId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Centre not found: " + dto.getCentreId()));
+            existing.setCentre(centre);
+        }
+
+        if (!existing.getFiliere().getId().equals(dto.getFiliereId())) {
+            Filiere filiere = filiereRepository.findById(dto.getFiliereId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Filiere not found: " + dto.getFiliereId()));
+            existing.setFiliere(filiere);
+        }
 
         return toDTO(stagiaireRepository.save(existing));
     }
+
 
     // --- DELETE ---
 
@@ -139,6 +163,7 @@ public class StagiaireService {
                 s.getUser().getId(),
                 s.getUser().getFullName(),
                 s.getUser().getEmail(),
+                s.getUser().getPhone(),
                 s.getCentre().getId(),
                 s.getCentre().getName(),
                 s.getFiliere().getId(),
@@ -146,10 +171,23 @@ public class StagiaireService {
                 s.getRegistrationNumber(),
                 s.getBirthDate(),
                 s.getCin(),
-                s.getPhone(),
                 s.getAddress(),
                 s.getEnrollmentDate(),
                 s.getStatus()
+        );
+    }
+    // --- NEW DTO CONVERSION FOR POST RESPONSES ---
+    private StagiaireRequestDTO toRequestDTO(Stagiaire s) {
+        return new StagiaireRequestDTO(
+                s.getRegistrationNumber(),
+                s.getBirthDate(),
+                s.getCin(),
+                s.getAddress(),
+                s.getEnrollmentDate(),
+                s.getStatus(),
+                s.getUser().getId(),
+                s.getCentre().getId(),
+                s.getFiliere().getId()
         );
     }
 }

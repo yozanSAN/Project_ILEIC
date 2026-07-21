@@ -20,7 +20,7 @@ public class Document {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_id", nullable = false)
+    @JoinColumn(name = "stagiaire_id", nullable = false)
     private Stagiaire stagiaire;
 
     @ManyToOne
