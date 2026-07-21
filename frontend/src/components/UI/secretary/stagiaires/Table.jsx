@@ -35,7 +35,7 @@ export default function Table({stagiaires}) {
             <tbody>
               {stagiaires.map((stagiair, index) => (
                 <tr
-                  key={stagiair.CNE || index}
+                  key={stagiair.id || index}
                   onMouseEnter={() => setHoveredRow(index)}
                   onMouseLeave={() => setHoveredRow(null)}
                   className={`
@@ -46,7 +46,7 @@ export default function Table({stagiaires}) {
                 >
                   {/* Name cell */}
                   <td className="px-6 py-4 font-medium text-text">
-                    {stagiair.name}
+                    {stagiair.fullName}
                   </td>
 
                   {/* Filière */}
@@ -58,18 +58,18 @@ export default function Table({stagiaires}) {
                         color: '#9A0002',
                       }}
                     >
-                      {stagiair.Filiere}
+                      {stagiair.filiereName}
                     </span>
                   </td>
 
                   {/* Année */}
                   <td className="px-6 py-4 text-text font-medium">
-                    {calculateStudentYear(stagiair.AnneeDincription)}
+                    {calculateStudentYear(stagiair.enrollmentDate)}
                   </td>
 
-                  {/* CNE */}
+                  {/* CNE / CIN */}
                   <td className="px-6 py-4 text-muted font-mono text-xs tracking-wide">
-                    {stagiair.CNE}
+                    {stagiair.registrationNumber || stagiair.cin}
                   </td>
                 </tr>
               ))}

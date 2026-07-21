@@ -4,19 +4,34 @@ import etudaintsRoutes from "./routes/EtudiantRoutes";
 import secretaryRoutes from "./routes/SecretaryRoutes";
 import adminRoutes from "./routes/AdminRoutes";
 import Login from "./pages/auth/Login-page"; 
-
+import ProtectedRoute from "./routes/ProtectedRoute";
 const allRoutes = [...adminRoutes, ...secretaryRoutes, ...formateurRoutes, ...etudaintsRoutes];
 
 function renderRoutes(routes) {
   return routes.map((route) => {
-    if (route.children) {
-      return (
-        <Route key={route.path} path={route.path} element={route.element}>
-          {renderRoutes(route.children)}
-        </Route>
-      );
+    let allowedRoles = [];
+
+    if (route.path.startsWith("/admin")) {
+      allowedRoles = ["ADMIN"];
+    } else if (route.path.startsWith("/secretaire")) {
+      allowedRoles = ["SECRETAIRE"];
+    } else if (route.path.startsWith("/formateur")) {
+      allowedRoles = ["FORMATEUR"];
+    } else if (route.path.startsWith("/stagiaire")) {
+      allowedRoles = ["STAGIAIRE"];
     }
-    return <Route key={route.path} path={route.path} element={route.element} />;
+
+    return (
+      <Route
+        key={route.path}
+        path={route.path}
+        element={
+          <ProtectedRoute allowedRoles={allowedRoles}>
+            {route.element}
+          </ProtectedRoute>
+        }
+      />
+    );
   });
 }
 

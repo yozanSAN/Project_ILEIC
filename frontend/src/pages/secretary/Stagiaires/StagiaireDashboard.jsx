@@ -1,20 +1,37 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import MainLayout from '../../../components/layout/MainLayout'
 import Table from '../../../components/UI/secretary/stagiaires/Table'
 import Filter from '../../../components/UI/secretary/stagiaires/Filter'
-import stagiaires from '../../../data/secretary/stagiaires'
+import { getAllStagiaires } from '../../../services/stagiaireService'
 import { calculateStudentYear } from '../../../utils/CalculerAnnee'
+
 export default function StagiaireDashboard() {
 
   const [selectedFiliere, setSelectedFiliere] = useState("")
   const [selectedAnnee, setSelectedAnnee] = useState("")
-
   const [search, setSearch] = useState("")
 
+  const [stagiaires, setStagiaires] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchStagiaires = async () => {
+      try {
+        const data = await getAllStagiaires();
+        setStagiaires(data);
+      } catch (error) {
+        console.error("Error fetching stagiaires:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStagiaires();
+  }, []);
+
   const filteredStagiaires = stagiaires
-    .filter(s => s.name.toLowerCase().includes(search.toLowerCase()))
-    .filter(s => selectedFiliere ? s.Filiere === selectedFiliere : true)
-    .filter(s => selectedAnnee ? calculateStudentYear(s.AnneeDincription) === selectedAnnee : true)
+    .filter(s => (s.fullName || "").toLowerCase().includes(search.toLowerCase()))
+    .filter(s => selectedFiliere ? s.filiereName === selectedFiliere : true)
+    .filter(s => selectedAnnee ? calculateStudentYear(s.enrollmentDate) === selectedAnnee : true)
 
   return (
     <div >
@@ -27,8 +44,12 @@ export default function StagiaireDashboard() {
           <Filter search={search} setSearch={setSearch} selectedFiliere={selectedFiliere} setSelectedFiliere={setSelectedFiliere}
             selectedAnnee={selectedAnnee} setSelectedAnnee={setSelectedAnnee}
           />
-
-          <Table stagiaires={filteredStagiaires} />
+          
+          {loading ? (
+             <div className="flex justify-center p-10">Chargement...</div>
+          ) : (
+            <Table stagiaires={filteredStagiaires} />
+          )}
         </div>
       </MainLayout>
     </div>

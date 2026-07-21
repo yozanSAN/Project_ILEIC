@@ -1,25 +1,61 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  LockClosedIcon,
-  EnvelopeIcon,
-  ArrowRightIcon,
-} from "@heroicons/react/24/outline";
+import {LockClosedIcon,EnvelopeIcon,ArrowRightIcon,} from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/authStore";
+import { loginUser } from "../../services/authService";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
+  const [error, setError] = useState("");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    setTimeout(() => {
-      console.log("Login:", { email, password });
-      setLoading(false);
-    }, 1200);
-  };
+  setLoading(true);
+  setError("");
+
+  try {
+    const data = await loginUser({ email, password });
+    console.log("LOGIN RESPONSE:", data);
+
+    login({
+      token: data.token,
+      role: data.role,
+      email: data.email,
+    });
+
+    switch (data.role) {
+      case "ADMIN":
+        navigate("/admin");
+        break;
+
+      case "FORMATEUR":
+        navigate("/formateur");
+        break;
+
+      case "SECRETAIRE":
+        navigate("/secretaire");
+        break;
+
+      case "STAGIAIRE":
+        navigate("/stagiaire/profil");
+        break;
+
+      default:
+        navigate("/");
+    }
+  } catch (err) {
+    setError(err.response?.data?.message || err.response?.data || "Email ou mot de passe incorrect");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="w-screen h-screen flex items-center justify-center bg-gray-900 px-4">
@@ -45,6 +81,14 @@ const Login = () => {
           <p className="text-gray-500 mb-8 text-center">
             Accédez à votre espace pédagogique
           </p>
+
+            {  
+            error && (
+              <div className="mb-4 w-full max-w-sm rounded-lg bg-red-100 p-3 text-red-700">
+                {error}
+              </div>
+            )}
+          
 
           <form onSubmit={handleSubmit} className="space-y-5 w-full max-w-sm">
 
