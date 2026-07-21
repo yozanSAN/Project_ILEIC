@@ -1,4 +1,5 @@
 package com.ProjetILEIC.ILIEC.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -28,6 +29,7 @@ public class Filiere {
 
     @ManyToOne
     @JoinColumn(name = "centre_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Centre centre;
 
     @ManyToOne
